@@ -38,9 +38,10 @@ public class Augmentation : MonoBehaviour
     {
         var eyeTrackingData = TobiiXR.GetEyeTrackingData(TobiiXR_TrackingSpace.World);
         if(eyeTrackingData.GazeRay.IsValid)
-        {
+        {   
+            int layerMask = 1 << 6;
             RaycastHit hit;
-            if (Physics.Raycast(eyeTrackingData.GazeRay.Origin,eyeTrackingData.GazeRay.Direction, out hit, Mathf.Infinity))
+            if (Physics.Raycast(eyeTrackingData.GazeRay.Origin, eyeTrackingData.GazeRay.Direction, out hit, Mathf.Infinity, layerMask))
             {
                 if (Equals(hit.transform, this.transform))
                 {
@@ -51,7 +52,7 @@ public class Augmentation : MonoBehaviour
                     timer = 0f;
                 }
             }
-            if (timer >= 1.0f)
+            if (timer >= 1.5f)
             {
                 scaleAug = false;
                 augFrames = INIT_FRAMES;
