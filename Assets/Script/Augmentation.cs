@@ -36,6 +36,10 @@ public class Augmentation : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (Input.GetKeyDown(KeyCode.A))
+        {
+            scaleAug = true;
+        }
         var eyeTrackingData = TobiiXR.GetEyeTrackingData(TobiiXR_TrackingSpace.World);
         if(eyeTrackingData.GazeRay.IsValid)
         {   

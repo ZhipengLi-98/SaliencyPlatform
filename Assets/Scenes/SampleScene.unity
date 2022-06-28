@@ -218,7 +218,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 13
+  m_RootOrder: 14
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &416391718
 GameObject:
@@ -820,6 +820,127 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 12
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1001 &1247176357
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 1000010145710606, guid: f28287b1c722ebd4aa4f4d8547ed7fa8, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1000010614386324, guid: f28287b1c722ebd4aa4f4d8547ed7fa8, type: 3}
+      propertyPath: m_Name
+      value: VRKeys
+      objectReference: {fileID: 0}
+    - target: {fileID: 1000010614386324, guid: f28287b1c722ebd4aa4f4d8547ed7fa8, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1000011759236714, guid: f28287b1c722ebd4aa4f4d8547ed7fa8, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1000011812438282, guid: f28287b1c722ebd4aa4f4d8547ed7fa8, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1000012940491476, guid: f28287b1c722ebd4aa4f4d8547ed7fa8, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4000013025176432, guid: f28287b1c722ebd4aa4f4d8547ed7fa8, type: 3}
+      propertyPath: m_RootOrder
+      value: 13
+      objectReference: {fileID: 0}
+    - target: {fileID: 4000013025176432, guid: f28287b1c722ebd4aa4f4d8547ed7fa8, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 0.3
+      objectReference: {fileID: 0}
+    - target: {fileID: 4000013025176432, guid: f28287b1c722ebd4aa4f4d8547ed7fa8, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 0.3
+      objectReference: {fileID: 0}
+    - target: {fileID: 4000013025176432, guid: f28287b1c722ebd4aa4f4d8547ed7fa8, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 0.3
+      objectReference: {fileID: 0}
+    - target: {fileID: 4000013025176432, guid: f28287b1c722ebd4aa4f4d8547ed7fa8, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4000013025176432, guid: f28287b1c722ebd4aa4f4d8547ed7fa8, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0.608
+      objectReference: {fileID: 0}
+    - target: {fileID: 4000013025176432, guid: f28287b1c722ebd4aa4f4d8547ed7fa8, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0.46
+      objectReference: {fileID: 0}
+    - target: {fileID: 4000013025176432, guid: f28287b1c722ebd4aa4f4d8547ed7fa8, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4000013025176432, guid: f28287b1c722ebd4aa4f4d8547ed7fa8, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4000013025176432, guid: f28287b1c722ebd4aa4f4d8547ed7fa8, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4000013025176432, guid: f28287b1c722ebd4aa4f4d8547ed7fa8, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4000013025176432, guid: f28287b1c722ebd4aa4f4d8547ed7fa8, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4000013025176432, guid: f28287b1c722ebd4aa4f4d8547ed7fa8, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4000013025176432, guid: f28287b1c722ebd4aa4f4d8547ed7fa8, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 33000010021271790, guid: f28287b1c722ebd4aa4f4d8547ed7fa8, type: 3}
+      propertyPath: m_Mesh
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 33000010119433598, guid: f28287b1c722ebd4aa4f4d8547ed7fa8, type: 3}
+      propertyPath: m_Mesh
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 33000010230176176, guid: f28287b1c722ebd4aa4f4d8547ed7fa8, type: 3}
+      propertyPath: m_Mesh
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 33000010442368214, guid: f28287b1c722ebd4aa4f4d8547ed7fa8, type: 3}
+      propertyPath: m_Mesh
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 33000010996379544, guid: f28287b1c722ebd4aa4f4d8547ed7fa8, type: 3}
+      propertyPath: m_Mesh
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 33000012412326362, guid: f28287b1c722ebd4aa4f4d8547ed7fa8, type: 3}
+      propertyPath: m_Mesh
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 33000012771258936, guid: f28287b1c722ebd4aa4f4d8547ed7fa8, type: 3}
+      propertyPath: m_Mesh
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 33000013318251906, guid: f28287b1c722ebd4aa4f4d8547ed7fa8, type: 3}
+      propertyPath: m_Mesh
+      value: 
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: f28287b1c722ebd4aa4f4d8547ed7fa8, type: 3}
 --- !u!1 &1272789999
 GameObject:
   m_ObjectHideFlags: 0
@@ -1027,7 +1148,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 41c961dfab8b2df4e9571450691e81b6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  scaleAug: 1
+  scaleAug: 0
 --- !u!1001 &1501323465
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1180,7 +1301,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 1
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1842612338 stripped
 GameObject:
@@ -1213,6 +1334,386 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   gazeCursor: {fileID: 1610857784}
+--- !u!114 &1842612343
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1842612338}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7d19cb45925d6c94c8764c42d640dbba, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  objects:
+  - {fileID: 799084128}
+  - {fileID: 1065392083}
+  - {fileID: 1398991517}
+  - {fileID: 416391718}
+  - {fileID: 1272789999}
+  - {fileID: 1080713891}
+  - {fileID: 183052245}
+  - {fileID: 1952743579}
+--- !u!1 &1952743579
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1952743582}
+  - component: {fileID: 1952743581}
+  - component: {fileID: 1952743580}
+  m_Layer: 0
+  m_Name: BarGraph
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1952743580
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1952743579}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d02117b31f7b8d24ead3290f68e98a10, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  exampleDataSet:
+  - GroupName: Oil
+    barColor: {r: 0, g: 0, b: 0, a: 0}
+    barMaterial: {fileID: 0}
+    ListOfBars:
+    - XValue: 2010
+      YValue: 900
+    - XValue: 2011
+      YValue: 800
+    - XValue: 2012
+      YValue: 700
+    - XValue: 2013
+      YValue: 600
+    - XValue: 2014
+      YValue: 500
+    - XValue: 2015
+      YValue: 400
+    - XValue: 2016
+      YValue: 350
+    - XValue: 2017
+      YValue: 300
+    - XValue: 2018
+      YValue: 250
+    - XValue: 2019
+      YValue: 200
+  - GroupName: Gas
+    barColor: {r: 0, g: 0, b: 0, a: 0}
+    barMaterial: {fileID: 0}
+    ListOfBars:
+    - XValue: 2010
+      YValue: 800
+    - XValue: 2011
+      YValue: 700
+    - XValue: 2012
+      YValue: 600
+    - XValue: 2013
+      YValue: 500
+    - XValue: 2014
+      YValue: 400
+    - XValue: 2015
+      YValue: 350
+    - XValue: 2016
+      YValue: 300
+    - XValue: 2017
+      YValue: 250
+    - XValue: 2018
+      YValue: 200
+    - XValue: 2019
+      YValue: 150
+  - GroupName: Naphthas
+    barColor: {r: 0, g: 0, b: 0, a: 0}
+    barMaterial: {fileID: 0}
+    ListOfBars:
+    - XValue: 2010
+      YValue: 700
+    - XValue: 2011
+      YValue: 600
+    - XValue: 2012
+      YValue: 500
+    - XValue: 2013
+      YValue: 400
+    - XValue: 2014
+      YValue: 350
+    - XValue: 2015
+      YValue: 300
+    - XValue: 2016
+      YValue: 250
+    - XValue: 2017
+      YValue: 200
+    - XValue: 2018
+      YValue: 150
+    - XValue: 2019
+      YValue: 100
+  - GroupName: LPG
+    barColor: {r: 0, g: 0, b: 0, a: 0}
+    barMaterial: {fileID: 0}
+    ListOfBars:
+    - XValue: 2010
+      YValue: 600
+    - XValue: 2011
+      YValue: 500
+    - XValue: 2012
+      YValue: 400
+    - XValue: 2013
+      YValue: 350
+    - XValue: 2014
+      YValue: 300
+    - XValue: 2015
+      YValue: 250
+    - XValue: 2016
+      YValue: 200
+    - XValue: 2017
+      YValue: 150
+    - XValue: 2018
+      YValue: 100
+    - XValue: 2019
+      YValue: 50
+  - GroupName: Kerosenenes
+    barColor: {r: 0, g: 0, b: 0, a: 0}
+    barMaterial: {fileID: 0}
+    ListOfBars:
+    - XValue: 2010
+      YValue: 500
+    - XValue: 2011
+      YValue: 400
+    - XValue: 2012
+      YValue: 350
+    - XValue: 2013
+      YValue: 300
+    - XValue: 2014
+      YValue: 250
+    - XValue: 2015
+      YValue: 200
+    - XValue: 2016
+      YValue: 150
+    - XValue: 2017
+      YValue: 100
+    - XValue: 2018
+      YValue: 50
+    - XValue: 2019
+      YValue: 25
+  - GroupName: Jet Fuel
+    barColor: {r: 0, g: 0, b: 0, a: 0}
+    barMaterial: {fileID: 0}
+    ListOfBars:
+    - XValue: 2010
+      YValue: 400
+    - XValue: 2011
+      YValue: 350
+    - XValue: 2012
+      YValue: 300
+    - XValue: 2013
+      YValue: 250
+    - XValue: 2014
+      YValue: 200
+    - XValue: 2015
+      YValue: 150
+    - XValue: 2016
+      YValue: 100
+    - XValue: 2017
+      YValue: 50
+    - XValue: 2018
+      YValue: 25
+    - XValue: 2019
+      YValue: 25
+  - GroupName: Diesel Fule
+    barColor: {r: 0, g: 0, b: 0, a: 0}
+    barMaterial: {fileID: 0}
+    ListOfBars:
+    - XValue: 2010
+      YValue: 350
+    - XValue: 2011
+      YValue: 300
+    - XValue: 2012
+      YValue: 250
+    - XValue: 2013
+      YValue: 200
+    - XValue: 2014
+      YValue: 150
+    - XValue: 2015
+      YValue: 100
+    - XValue: 2016
+      YValue: 50
+    - XValue: 2017
+      YValue: 25
+    - XValue: 2018
+      YValue: 25
+    - XValue: 2019
+      YValue: 25
+  - GroupName: Lubricants
+    barColor: {r: 0, g: 0, b: 0, a: 0}
+    barMaterial: {fileID: 0}
+    ListOfBars:
+    - XValue: 2010
+      YValue: 300
+    - XValue: 2011
+      YValue: 250
+    - XValue: 2012
+      YValue: 200
+    - XValue: 2013
+      YValue: 150
+    - XValue: 2014
+      YValue: 100
+    - XValue: 2015
+      YValue: 50
+    - XValue: 2016
+      YValue: 25
+    - XValue: 2017
+      YValue: 25
+    - XValue: 2018
+      YValue: 25
+    - XValue: 2019
+      YValue: 25
+  - GroupName: Motor Oil
+    barColor: {r: 0, g: 0, b: 0, a: 0}
+    barMaterial: {fileID: 0}
+    ListOfBars:
+    - XValue: 2010
+      YValue: 250
+    - XValue: 2011
+      YValue: 200
+    - XValue: 2012
+      YValue: 150
+    - XValue: 2013
+      YValue: 100
+    - XValue: 2014
+      YValue: 50
+    - XValue: 2015
+      YValue: 25
+    - XValue: 2016
+      YValue: 25
+    - XValue: 2017
+      YValue: 25
+    - XValue: 2018
+      YValue: 25
+    - XValue: 2019
+      YValue: 25
+  - GroupName: Fuel Oil
+    barColor: {r: 0, g: 0, b: 0, a: 0}
+    barMaterial: {fileID: 0}
+    ListOfBars:
+    - XValue: 2010
+      YValue: 200
+    - XValue: 2011
+      YValue: 150
+    - XValue: 2012
+      YValue: 100
+    - XValue: 2013
+      YValue: 50
+    - XValue: 2014
+      YValue: 25
+    - XValue: 2015
+      YValue: 25
+    - XValue: 2016
+      YValue: 25
+    - XValue: 2017
+      YValue: 25
+    - XValue: 2018
+      YValue: 25
+    - XValue: 2019
+      YValue: 25
+--- !u!114 &1952743581
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1952743579}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1ddead78b26f39d4a8126f3099e140c0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  MaxHeight: 10
+  xStart: 0.05
+  yStart: 0.05
+  zStart: 0.05
+  segmentSizeOnXaxis: 0.05
+  segmentSizeOnYaxis: 0.05
+  segmentSizeOnZaxis: 0.05
+  offsetBetweenXRow: 0
+  offsetBetweenZRow: 0
+  animationSpeed: 15
+  graphAnimation: 2
+  barPrefab: {fileID: 3270554237759918115, guid: 6e321fc2afeafcb48935a819cfa7d769, type: 3}
+  barColorProperty: 3
+  barScaleFactor: 0.1
+  GraphRef: {fileID: 7617952447880570657, guid: 8cfb9fb4bf046474399ed32661948261, type: 3}
+  yMaxValue: 0
+  yMinValue: 0
+  HeightWiseGradient:
+    serializedVersion: 2
+    key0: {r: 1, g: 0, b: 0, a: 1}
+    key1: {r: 1, g: 0.9128059, b: 0, a: 1}
+    key2: {r: 0, g: 1, b: 0, a: 0}
+    key3: {r: 0, g: 0, b: 1, a: 0}
+    key4: {r: 1, g: 0, b: 1, a: 0}
+    key5: {r: 0, g: 0, b: 0, a: 0}
+    key6: {r: 0, g: 0, b: 0, a: 0}
+    key7: {r: 0, g: 0, b: 0, a: 0}
+    ctime0: 0
+    ctime1: 10601
+    ctime2: 23130
+    ctime3: 45296
+    ctime4: 65535
+    ctime5: 0
+    ctime6: 0
+    ctime7: 0
+    atime0: 0
+    atime1: 65535
+    atime2: 0
+    atime3: 0
+    atime4: 0
+    atime5: 0
+    atime6: 0
+    atime7: 0
+    m_Mode: 0
+    m_NumColorKeys: 5
+    m_NumAlphaKeys: 2
+  OnBarPointerDown:
+    m_PersistentCalls:
+      m_Calls: []
+  OnBarPointerUp:
+    m_PersistentCalls:
+      m_Calls: []
+  OnBarHoverEnter:
+    m_PersistentCalls:
+      m_Calls: []
+  OnBarHoverExit:
+    m_PersistentCalls:
+      m_Calls: []
+  OnInitialGraphCompleted:
+    m_PersistentCalls:
+      m_Calls: []
+--- !u!4 &1952743582
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1952743579}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0.464, z: 1.277}
+  m_LocalScale: {x: 0.01, y: 0.01, z: 0.01}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 15
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &2042806062
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1423,7 +1924,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 808951037656818317, guid: 49f576a03ece56a4e9c640ed081f6a68, type: 3}
       propertyPath: m_RootOrder
-      value: 2
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 808951037656818317, guid: 49f576a03ece56a4e9c640ed081f6a68, type: 3}
       propertyPath: m_LocalPosition.x
