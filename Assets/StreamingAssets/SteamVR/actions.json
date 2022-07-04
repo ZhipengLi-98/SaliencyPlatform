@@ -50,6 +50,14 @@
       "type": "boolean"
     },
     {
+      "name": "/actions/default/in/Test",
+      "type": "boolean"
+    },
+    {
+      "name": "/actions/default/in/Notice",
+      "type": "boolean"
+    },
+    {
       "name": "/actions/default/out/Haptic",
       "type": "vibration"
     },
@@ -86,7 +94,7 @@
   "action_sets": [
     {
       "name": "/actions/default",
-      "usage": "single"
+      "usage": "leftright"
     },
     {
       "name": "/actions/platformer",
