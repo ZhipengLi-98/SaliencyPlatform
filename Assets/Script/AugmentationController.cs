@@ -41,6 +41,9 @@ public class AugmentationController : MonoBehaviour
 
     private bool ifGaze = true;
 
+    private int augLayer;
+    private int norLayer;
+
     string Vector3ToString(Vector3 v)
     {
         string res = v.x + " " + v.y + " " + v.z;
@@ -56,6 +59,8 @@ public class AugmentationController : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        augLayer = LayerMask.NameToLayer("AugObj");
+        norLayer = LayerMask.NameToLayer("NorObj");
         if (!ifGaze)
         {
             notice.AddOnStateDownListener(TriggerDown, controller);
@@ -65,6 +70,7 @@ public class AugmentationController : MonoBehaviour
 
         augFrames = INIT_FRAMES;
         curObject = userInterefaces[Random.Range(0, userInterefaces.Count)];
+        curObject.layer = augLayer;
         print(curObject.transform.name);
 
         iconList.Add("Facebook");
@@ -168,10 +174,12 @@ public class AugmentationController : MonoBehaviour
                 if (timer >= 1.5f)
                 {
                     curObject.transform.localScale = minScale;
+                    curObject.layer = norLayer;
                     scaleAug = false;
                     augFrames = INIT_FRAMES;
                     curFrames = 0;
                     curObject = userInterefaces[Random.Range(0, userInterefaces.Count)];
+                    curObject.layer = augLayer;
                     print(curObject.transform.name);
                     writer.WriteLine("Noticed" + " " + Time.time);
                     writer.Flush();
