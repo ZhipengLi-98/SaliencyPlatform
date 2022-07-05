@@ -47,6 +47,8 @@ public class AugmentationController : MonoBehaviour
     public Material redMaterial;
     private Material oriMaterial;
 
+    public bool isTyping;
+
     string Vector3ToString(Vector3 v)
     {
         string res = v.x + " " + v.y + " " + v.z;
@@ -93,7 +95,7 @@ public class AugmentationController : MonoBehaviour
         }
         oriScale = minScale;
         tarScale = maxScale;
-        RandomPosition();
+        // RandomPosition();
     }
 
     private void RandomPosition()
@@ -102,12 +104,20 @@ public class AugmentationController : MonoBehaviour
         {
             float x1 = Random.Range(-1.0f, -0.6f);
             float x2 = Random.Range(0.6f, 1.0f);
+            float x = Random.Range(-1.0f, 1.0f);
             List<float> xs = new List<float>();
             xs.Add(x1);
             xs.Add(x2);
             float y = Random.Range(0.5f, 1.5f);
             float z = Random.Range(0.5f, 1.2f);
-            obj.transform.position = new Vector3(xs[Random.Range(0, xs.Count)], y, z);
+            if (isTyping)
+            {
+                obj.transform.position = new Vector3(xs[Random.Range(0, xs.Count)], y, z);
+            }
+            else
+            {
+                obj.transform.position = new Vector3(x, y, z);
+            }
             obj.transform.LookAt(camera.transform);
         }
     }
@@ -160,6 +170,10 @@ public class AugmentationController : MonoBehaviour
             scaleAug = true;
             writer.WriteLine(curObject.transform.name + " " + Time.time);
             writer.Flush();
+            if (!isTyping)
+            {
+                RandomPosition();
+            }
         }        
         if (Input.GetKeyDown(KeyCode.S))
         {
