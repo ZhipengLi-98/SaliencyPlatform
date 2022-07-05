@@ -108,6 +108,7 @@ public class AugmentationController : MonoBehaviour
             float y = Random.Range(0.5f, 1.5f);
             float z = Random.Range(0.5f, 1.2f);
             obj.transform.position = new Vector3(xs[Random.Range(0, xs.Count)], y, z);
+            obj.transform.LookAt(camera.transform);
         }
     }
 

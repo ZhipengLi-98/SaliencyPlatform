@@ -21,6 +21,8 @@ public class ChangePosition : MonoBehaviour
     private bool isGrab;
     private Vector3 hitInitPos;
 
+    public GameObject camera;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -67,6 +69,7 @@ public class ChangePosition : MonoBehaviour
         if (isGrab)
         {
             hit.transform.position = hand.transform.position + hand.transform.rotation * (((hit.transform.position - hand.transform.position).magnitude + touchPos[SteamVR_Input_Sources.LeftHand].axis[1] / 10f) * Vector3.forward);
+            hit.transform.LookAt(camera.transform);
         }
     }
 }
