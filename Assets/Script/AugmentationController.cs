@@ -39,10 +39,13 @@ public class AugmentationController : MonoBehaviour
     private string user = "test.txt";
     private StreamWriter writer;
 
-    private bool ifGaze = true;
+    public bool ifGaze = false;
 
     private int augLayer;
     private int norLayer;
+
+    public Material redMaterial;
+    private Material oriMaterial;
 
     string Vector3ToString(Vector3 v)
     {
@@ -63,6 +66,7 @@ public class AugmentationController : MonoBehaviour
         norLayer = LayerMask.NameToLayer("NorObj");
         if (!ifGaze)
         {
+            notice.AddOnStateUpListener(TriggerUp, controller);
             notice.AddOnStateDownListener(TriggerDown, controller);
         }
 
@@ -89,6 +93,11 @@ public class AugmentationController : MonoBehaviour
         }
         oriScale = minScale;
         tarScale = maxScale;
+        RandomPosition();
+    }
+
+    private void RandomPosition()
+    {
         foreach (GameObject obj in userInterefaces)
         {
             float x1 = Random.Range(-1.0f, -0.6f);
@@ -102,13 +111,13 @@ public class AugmentationController : MonoBehaviour
         }
     }
 
-    public void TriggerDown(SteamVR_Action_Boolean fromAction, SteamVR_Input_Sources fromSource)
+    public void TriggerUp(SteamVR_Action_Boolean fromAction, SteamVR_Input_Sources fromSource)
     {
         curObject.transform.localScale = minScale;
-        scaleAug = false;
-        augFrames = INIT_FRAMES;
-        curFrames = 0;
+        curObject.layer = norLayer;
+        curObject.GetComponent<Renderer>().material = oriMaterial;
         curObject = userInterefaces[Random.Range(0, userInterefaces.Count)];
+        curObject.layer = augLayer;
         print(curObject.transform.name);
         writer.WriteLine("Noticed" + " " + Time.time);
         writer.Flush();
@@ -124,6 +133,16 @@ public class AugmentationController : MonoBehaviour
         }
         oriScale = minScale;
         tarScale = maxScale;
+        RandomPosition();
+    }
+
+    public void TriggerDown(SteamVR_Action_Boolean fromAction, SteamVR_Input_Sources fromSource)
+    {
+        oriMaterial = curObject.GetComponent<Renderer>().material;
+        curObject.GetComponent<Renderer>().material = redMaterial;
+        scaleAug = false;
+        augFrames = INIT_FRAMES;
+        curFrames = 0;
     }
 
     void OnApplicationQuit()
@@ -144,6 +163,10 @@ public class AugmentationController : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.S))
         {
             scaleAug = false;
+        }
+        if (Input.GetKeyDown(KeyCode.Z))
+        {
+            RandomPosition();
         }
         var eyeTrackingData = TobiiXR.GetEyeTrackingData(TobiiXR_TrackingSpace.World);
         if (scaleAug)
@@ -177,11 +200,17 @@ public class AugmentationController : MonoBehaviour
                 }
                 if (timer >= 1.5f)
                 {
-                    curObject.transform.localScale = minScale;
-                    curObject.layer = norLayer;
+                    oriMaterial = curObject.GetComponent<Renderer>().material;
+                    curObject.GetComponent<Renderer>().material = redMaterial;
                     scaleAug = false;
                     augFrames = INIT_FRAMES;
                     curFrames = 0;
+                }
+                if (timer >= 1.55f)
+                {
+                    curObject.transform.localScale = minScale;
+                    curObject.layer = norLayer;
+                    curObject.GetComponent<Renderer>().material = oriMaterial;
                     curObject = userInterefaces[Random.Range(0, userInterefaces.Count)];
                     curObject.layer = augLayer;
                     print(curObject.transform.name);
@@ -199,6 +228,8 @@ public class AugmentationController : MonoBehaviour
                     }
                     oriScale = minScale;
                     tarScale = maxScale;
+                    RandomPosition();
+                    timer = 0f;
                 }
             }
 
