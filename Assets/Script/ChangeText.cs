@@ -4,6 +4,7 @@ using UnityEngine;
 using Valve.VR;
 using TMPro;
 using System.IO;
+using UnityEngine.UI;
 
 public class ChangeText : MonoBehaviour
 {
@@ -12,6 +13,8 @@ public class ChangeText : MonoBehaviour
     public SteamVR_Input_Sources controller;
     
     public TextMeshProUGUI tmp;
+
+    public Text text;
 
     private List<string> sentences;
     private string fileName = "./sentences.txt";
@@ -42,6 +45,7 @@ public class ChangeText : MonoBehaviour
 
     public void TriggerDown(SteamVR_Action_Boolean fromAction, SteamVR_Input_Sources fromSource)
     {
+        text.text = "";
         tmp.text = sentences[cnt];
         cnt += 1;
     }

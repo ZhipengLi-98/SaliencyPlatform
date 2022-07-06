@@ -15,7 +15,7 @@ public class AugmentationController : MonoBehaviour
     public List<GameObject> userInterefaces = new List<GameObject>();
 
     public GameObject camera;
-    
+
     private float INIT_FRAMES = 300;
 
     private float augFrames;
@@ -46,6 +46,7 @@ public class AugmentationController : MonoBehaviour
 
     public Material redMaterial;
     private Material oriMaterial;
+    private GameObject redObject;
 
     public bool isTyping;
 
@@ -150,10 +151,46 @@ public class AugmentationController : MonoBehaviour
     public void TriggerDown(SteamVR_Action_Boolean fromAction, SteamVR_Input_Sources fromSource)
     {
         oriMaterial = curObject.GetComponent<Renderer>().material;
+        print(oriMaterial.name);
         curObject.GetComponent<Renderer>().material = redMaterial;
         scaleAug = false;
         augFrames = INIT_FRAMES;
         curFrames = 0;
+    }
+
+    private void NoticeDown()
+    {
+        oriMaterial = curObject.GetComponent<Renderer>().material;
+        print(oriMaterial.name);
+        curObject.GetComponent<Renderer>().material = redMaterial;
+        scaleAug = false;
+        augFrames = INIT_FRAMES;
+        curFrames = 0;
+    }
+
+    private void NoticeUp()
+    {
+        curObject.transform.localScale = minScale;
+        curObject.layer = norLayer;
+        curObject.GetComponent<Renderer>().material = oriMaterial;
+        curObject = userInterefaces[Random.Range(0, userInterefaces.Count)];
+        curObject.layer = augLayer;
+        print(curObject.transform.name);
+        writer.WriteLine("Noticed" + " " + Time.time);
+        writer.Flush();
+        if (iconList.Contains(curObject.transform.name))
+        {
+            minScale = minScale1;
+            maxScale = maxScale1;
+        }
+        else
+        {
+            minScale = minScale2;
+            maxScale = maxScale2;
+        }
+        oriScale = minScale;
+        tarScale = maxScale;
+        RandomPosition();
     }
 
     void OnApplicationQuit()
@@ -170,10 +207,7 @@ public class AugmentationController : MonoBehaviour
             scaleAug = true;
             writer.WriteLine(curObject.transform.name + " " + Time.time);
             writer.Flush();
-            if (!isTyping)
-            {
-                RandomPosition();
-            }
+            RandomPosition();
         }        
         if (Input.GetKeyDown(KeyCode.S))
         {
@@ -195,58 +229,6 @@ public class AugmentationController : MonoBehaviour
             string t = "Camera: " + Vector3ToString(camera.transform.position) + " " + QuaternionToString(camera.transform.rotation) + " " + Time.time;
             writer.WriteLine(t);
             writer.Flush();
-            if(ifGaze && eyeTrackingData.GazeRay.IsValid)
-            {   
-                string g = "Gaze: " + Vector3ToString(eyeTrackingData.GazeRay.Origin) + " " + Vector3ToString(eyeTrackingData.GazeRay.Direction) + " " + Time.time;
-                writer.WriteLine(g);
-                writer.Flush();
-                int layerMask = 1 << 6;
-                RaycastHit hit;
-                if (Physics.Raycast(eyeTrackingData.GazeRay.Origin, eyeTrackingData.GazeRay.Direction, out hit, Mathf.Infinity, layerMask))
-                {
-                    if (Equals(hit.transform, this.transform))
-                    {
-                        timer += Time.deltaTime;
-                    }
-                    else
-                    {
-                        timer = 0f;
-                    }
-                }
-                if (timer >= 1.5f)
-                {
-                    oriMaterial = curObject.GetComponent<Renderer>().material;
-                    curObject.GetComponent<Renderer>().material = redMaterial;
-                    scaleAug = false;
-                    augFrames = INIT_FRAMES;
-                    curFrames = 0;
-                }
-                if (timer >= 1.55f)
-                {
-                    curObject.transform.localScale = minScale;
-                    curObject.layer = norLayer;
-                    curObject.GetComponent<Renderer>().material = oriMaterial;
-                    curObject = userInterefaces[Random.Range(0, userInterefaces.Count)];
-                    curObject.layer = augLayer;
-                    print(curObject.transform.name);
-                    writer.WriteLine("Noticed" + " " + Time.time);
-                    writer.Flush();
-                    if (iconList.Contains(curObject.transform.name))
-                    {
-                        minScale = minScale1;
-                        maxScale = maxScale1;
-                    }
-                    else
-                    {
-                        minScale = minScale2;
-                        maxScale = maxScale2;
-                    }
-                    oriScale = minScale;
-                    tarScale = maxScale;
-                    RandomPosition();
-                    timer = 0f;
-                }
-            }
 
             float interpolationRatio = (float) curFrames / augFrames;
             Vector3 interpolatedScale = Vector3.Lerp(oriScale, tarScale, interpolationRatio);
@@ -255,7 +237,7 @@ public class AugmentationController : MonoBehaviour
             {
                 if (tarScale.x < oriScale.x)
                 {
-                    augFrames *= 0.8f;
+                    // augFrames *= 0.8f;
                 }
                 // Vector3 temp = new Vector3(oriScale.x, oriScale.y, oriScale.z);
                 Vector3 temp = oriScale;
@@ -263,6 +245,35 @@ public class AugmentationController : MonoBehaviour
                 tarScale = temp;
             }
             curFrames = (curFrames + 1) % (augFrames + 1);
+        }
+
+        if (ifGaze && eyeTrackingData.GazeRay.IsValid)
+        {
+            string g = "Gaze: " + Vector3ToString(eyeTrackingData.GazeRay.Origin) + " " + Vector3ToString(eyeTrackingData.GazeRay.Direction) + " " + Time.time;
+            writer.WriteLine(g);
+            writer.Flush();
+            int layerMask = 1 << 6 | 1 << 7;
+            RaycastHit hit;
+            if (Physics.Raycast(eyeTrackingData.GazeRay.Origin, eyeTrackingData.GazeRay.Direction, out hit, Mathf.Infinity, layerMask))
+            {
+                if (Equals(hit.transform, curObject.transform))
+                {
+                    timer += Time.deltaTime;
+                }
+                else
+                {
+                    timer = 0f;
+                }
+            }
+        }
+        if (timer >= 1.5f && scaleAug)
+        {
+            NoticeDown();
+        }
+        if (timer >= 1.55f)
+        {
+            NoticeUp();
+            timer = 0f;
         }
     }
 }
