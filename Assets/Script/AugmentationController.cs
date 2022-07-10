@@ -38,7 +38,7 @@ public class AugmentationController : MonoBehaviour
 
     private GameObject curObject;
 
-    private string user = "jy_typing_gaze.txt";
+    private string user = "jy_restoring_con.txt";
     private StreamWriter writer;
 
     public bool ifGaze = false;
