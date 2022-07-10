@@ -5,6 +5,7 @@ using Tobii.XR;
 using System.IO;
 using Valve.VR.InteractionSystem;
 using Valve.VR;
+using System;
 
 public class AugmentationController : MonoBehaviour
 {
@@ -32,7 +33,8 @@ public class AugmentationController : MonoBehaviour
     private Vector3 maxScale1 = new Vector3(0.15f, 0.15f, 0.15f);
     private Vector3 minScale2 = new Vector3(0.4f, 0.2f, 0.001f);
     private Vector3 maxScale2 = new Vector3(0.6f, 0.3f, 0.001f);
-    private List<string> iconList = new List<string>();
+    public List<GameObject> iconList = new List<GameObject>();
+    public List<GameObject> viewerList = new List<GameObject>();
 
     private GameObject curObject;
 
@@ -50,6 +52,10 @@ public class AugmentationController : MonoBehaviour
 
     public bool isTyping;
 
+    private string layoutFile = "./layout.txt";
+    private List<Dictionary<string, List<Vector3>>> layout;
+    private int layoutCnt = 0;
+
     string Vector3ToString(Vector3 v)
     {
         string res = v.x + " " + v.y + " " + v.z;
@@ -60,6 +66,28 @@ public class AugmentationController : MonoBehaviour
     {
         string res = q.x + " " + q.y + " " + q.z + " " + q.w;
         return res;
+    }
+    
+    void ReadLayout()
+    {
+        StreamReader reader = new StreamReader(layoutFile);
+        string[] content = reader.ReadToEnd().Split(new string[] { "Start" }, StringSplitOptions.None);
+        for (int i = 1; i < content.Length; i++)
+        {
+            string[] line = content[i].Split('\n');
+            Dictionary<string, List<Vector3>> cur = new Dictionary<string, List<Vector3>>();
+            for (int j = 1; j < line.Length - 1; j++)
+            {
+                string[] temp = line[j].Split(new string[] { ", " }, StringSplitOptions.None);
+                if (!cur.ContainsKey(temp[0]))
+                {
+                    List<Vector3> n = new List<Vector3>();
+                    cur.Add(temp[0], n);
+                }
+                cur[temp[0]].Add(new Vector3(float.Parse(temp[1]), float.Parse(temp[2]), float.Parse(temp[3])));
+            }
+            layout.Add(cur);
+        }
     }
 
     // Start is called before the first frame update
@@ -76,15 +104,11 @@ public class AugmentationController : MonoBehaviour
         writer = new StreamWriter(user, false);
 
         augFrames = INIT_FRAMES;
-        curObject = userInterefaces[Random.Range(0, userInterefaces.Count)];
+        curObject = userInterefaces[UnityEngine.Random.Range(0, userInterefaces.Count)];
         curObject.layer = augLayer;
         print(curObject.transform.name);
 
-        iconList.Add("Facebook");
-        iconList.Add("Ins");
-        iconList.Add("Tiktok");
-        iconList.Add("Twitter");
-        if (iconList.Contains(curObject.transform.name))
+        if (iconList.Contains(curObject))
         {
             minScale = minScale1;
             maxScale = maxScale1;
@@ -97,23 +121,26 @@ public class AugmentationController : MonoBehaviour
         oriScale = minScale;
         tarScale = maxScale;
         // RandomPosition();
+        layout = new List<Dictionary<string, List<Vector3>>>();
+        ReadLayout();
+        NextLayout();
     }
 
     private void RandomPosition()
     {
         foreach (GameObject obj in userInterefaces)
         {
-            float x1 = Random.Range(-1.0f, -0.6f);
-            float x2 = Random.Range(0.6f, 1.0f);
-            float x = Random.Range(-1.0f, 1.0f);
+            float x1 = UnityEngine.Random.Range(-1.0f, -0.6f);
+            float x2 = UnityEngine.Random.Range(0.6f, 1.0f);
+            float x = UnityEngine.Random.Range(-1.0f, 1.0f);
             List<float> xs = new List<float>();
             xs.Add(x1);
             xs.Add(x2);
-            float y = Random.Range(0.5f, 1.5f);
-            float z = Random.Range(0.5f, 1.2f);
+            float y = UnityEngine.Random.Range(0.5f, 1.5f);
+            float z = UnityEngine.Random.Range(0.5f, 1.2f);
             if (isTyping)
             {
-                obj.transform.position = new Vector3(xs[Random.Range(0, xs.Count)], y, z);
+                obj.transform.position = new Vector3(xs[UnityEngine.Random.Range(0, xs.Count)], y, z);
             }
             else
             {
@@ -123,17 +150,53 @@ public class AugmentationController : MonoBehaviour
         }
     }
 
+    private void NextLayout()
+    {
+        List<int> list = new List<int>();
+        for (int n = 0; n < iconList.Count; n++) 
+        {
+            list.Add(n);
+        }
+        foreach (GameObject icon in iconList)
+        {
+            int index = UnityEngine.Random.Range(0, list.Count - 1);
+            int i = list[index];
+            list.RemoveAt(index);
+            icon.transform.position = layout[layoutCnt]["Icon"][i];
+            icon.transform.LookAt(camera.transform);
+        }
+        list.Clear();
+        for (int n = 0; n < viewerList.Count; n++) 
+        {
+            list.Add(n);
+        }
+        foreach (GameObject viewer in viewerList)
+        {
+            int index = UnityEngine.Random.Range(0, list.Count - 1);
+            int i = list[index];
+            list.RemoveAt(index);
+            viewer.transform.position = layout[layoutCnt]["Viewer"][i];
+            viewer.transform.LookAt(camera.transform);
+        }
+        int next = UnityEngine.Random.Range(0, layout.Count);
+        while (next == layoutCnt)
+        {
+            next = UnityEngine.Random.Range(0, layout.Count);
+        }
+        layoutCnt = next;
+    }
+
     public void TriggerUp(SteamVR_Action_Boolean fromAction, SteamVR_Input_Sources fromSource)
     {
         curObject.transform.localScale = minScale;
         curObject.layer = norLayer;
         curObject.GetComponent<Renderer>().material = oriMaterial;
-        curObject = userInterefaces[Random.Range(0, userInterefaces.Count)];
+        curObject = userInterefaces[UnityEngine.Random.Range(0, userInterefaces.Count)];
         curObject.layer = augLayer;
         print(curObject.transform.name);
         writer.WriteLine("Noticed" + " " + Time.time);
         writer.Flush();
-        if (iconList.Contains(curObject.transform.name))
+        if (iconList.Contains(curObject))
         {
             minScale = minScale1;
             maxScale = maxScale1;
@@ -145,7 +208,8 @@ public class AugmentationController : MonoBehaviour
         }
         oriScale = minScale;
         tarScale = maxScale;
-        RandomPosition();
+        // RandomPosition();
+        NextLayout();
     }
 
     public void TriggerDown(SteamVR_Action_Boolean fromAction, SteamVR_Input_Sources fromSource)
@@ -173,12 +237,12 @@ public class AugmentationController : MonoBehaviour
         curObject.transform.localScale = minScale;
         curObject.layer = norLayer;
         curObject.GetComponent<Renderer>().material = oriMaterial;
-        curObject = userInterefaces[Random.Range(0, userInterefaces.Count)];
+        curObject = userInterefaces[UnityEngine.Random.Range(0, userInterefaces.Count)];
         curObject.layer = augLayer;
         print(curObject.transform.name);
         writer.WriteLine("Noticed" + " " + Time.time);
         writer.Flush();
-        if (iconList.Contains(curObject.transform.name))
+        if (iconList.Contains(curObject))
         {
             minScale = minScale1;
             maxScale = maxScale1;
@@ -190,7 +254,8 @@ public class AugmentationController : MonoBehaviour
         }
         oriScale = minScale;
         tarScale = maxScale;
-        RandomPosition();
+        // RandomPosition();
+        NextLayout();
     }
 
     void OnApplicationQuit()
@@ -207,7 +272,8 @@ public class AugmentationController : MonoBehaviour
             scaleAug = true;
             writer.WriteLine(curObject.transform.name + " " + Time.time);
             writer.Flush();
-            RandomPosition();
+            // RandomPosition();
+            NextLayout();
         }        
         if (Input.GetKeyDown(KeyCode.S))
         {
@@ -215,7 +281,8 @@ public class AugmentationController : MonoBehaviour
         }
         if (Input.GetKeyDown(KeyCode.Z))
         {
-            RandomPosition();
+            // RandomPosition();
+            NextLayout();
         }
         var eyeTrackingData = TobiiXR.GetEyeTrackingData(TobiiXR_TrackingSpace.World);
         if (scaleAug)
@@ -237,7 +304,7 @@ public class AugmentationController : MonoBehaviour
             {
                 if (tarScale.x < oriScale.x)
                 {
-                    // augFrames *= 0.8f;
+                    augFrames *= 0.8f;
                 }
                 // Vector3 temp = new Vector3(oriScale.x, oriScale.y, oriScale.z);
                 Vector3 temp = oriScale;

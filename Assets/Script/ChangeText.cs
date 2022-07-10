@@ -14,7 +14,7 @@ public class ChangeText : MonoBehaviour
     
     public TextMeshProUGUI tmp;
 
-    public Text text;
+    public InputField inputField;
 
     private List<string> sentences;
     private string fileName = "./sentences.txt";
@@ -45,7 +45,8 @@ public class ChangeText : MonoBehaviour
 
     public void TriggerDown(SteamVR_Action_Boolean fromAction, SteamVR_Input_Sources fromSource)
     {
-        text.text = "";
+        inputField.Select();
+        inputField.text = "";
         tmp.text = sentences[cnt];
         cnt += 1;
     }
