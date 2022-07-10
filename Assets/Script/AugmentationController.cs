@@ -17,10 +17,10 @@ public class AugmentationController : MonoBehaviour
 
     public GameObject camera;
 
-    private float INIT_FRAMES = 300;
+    private int INIT_FRAMES = 300;
 
-    private float augFrames;
-    private float curFrames = 0;
+    private int augFrames;
+    private int curFrames = 0;
 
     private float timer = 0f;
 
@@ -300,11 +300,13 @@ public class AugmentationController : MonoBehaviour
             float interpolationRatio = (float) curFrames / augFrames;
             Vector3 interpolatedScale = Vector3.Lerp(oriScale, tarScale, interpolationRatio);
             curObject.transform.localScale = interpolatedScale;
-            if (interpolationRatio == 1)
+            // if (interpolationRatio == 1)
+            // if (Mathf.Approximately(interpolationRatio, 1f))
+            if (Mathf.Approximately(curFrames, augFrames))
             {
                 if (tarScale.x < oriScale.x)
                 {
-                    augFrames *= 0.8f;
+                    augFrames = (int) (augFrames * 0.8f);
                 }
                 // Vector3 temp = new Vector3(oriScale.x, oriScale.y, oriScale.z);
                 Vector3 temp = oriScale;
