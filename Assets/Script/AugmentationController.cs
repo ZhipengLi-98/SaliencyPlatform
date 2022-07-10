@@ -38,7 +38,7 @@ public class AugmentationController : MonoBehaviour
 
     private GameObject curObject;
 
-    private string user = "test.txt";
+    private string user = "jy_typing_gaze.txt";
     private StreamWriter writer;
 
     public bool ifGaze = false;
@@ -58,6 +58,9 @@ public class AugmentationController : MonoBehaviour
 
     private bool isAug = false;
     private float augTimer = 0f;
+
+    private bool isWait = false;
+    private float waitTimer = 0f;
 
     string Vector3ToString(Vector3 v)
     {
@@ -212,7 +215,7 @@ public class AugmentationController : MonoBehaviour
         oriScale = minScale;
         tarScale = maxScale;
         // RandomPosition();
-        NextLayout();
+        // NextLayout();
     }
 
     public void TriggerDown(SteamVR_Action_Boolean fromAction, SteamVR_Input_Sources fromSource)
@@ -258,7 +261,7 @@ public class AugmentationController : MonoBehaviour
         oriScale = minScale;
         tarScale = maxScale;
         // RandomPosition();
-        NextLayout();
+        // NextLayout();
     }
 
     void OnApplicationQuit()
@@ -300,33 +303,41 @@ public class AugmentationController : MonoBehaviour
         var eyeTrackingData = TobiiXR.GetEyeTrackingData(TobiiXR_TrackingSpace.World);
         if (scaleAug)
         {   
-            // ScreenCapture.CaptureScreenshot("./Screenshots/screenshot" + Time.time + ".png");
-            // int camLayerMask = 1 << 3;
-            // camera.GetComponent<Camera>().cullingMask = camLayerMask;
-            // ScreenCapture.CaptureScreenshot("./Gaze/gaze" + Time.time + ".png");
-            // camLayerMask = 1 << 7;
-            // camera.GetComponent<Camera>().cullingMask = ~camLayerMask;
-            string t = "Camera: " + Vector3ToString(camera.transform.position) + " " + QuaternionToString(camera.transform.rotation) + " " + Time.time;
-            writer.WriteLine(t);
-            writer.Flush();
-
-            float interpolationRatio = (float) curFrames / augFrames;
-            Vector3 interpolatedScale = Vector3.Lerp(oriScale, tarScale, interpolationRatio);
-            curObject.transform.localScale = interpolatedScale;
-            // if (interpolationRatio == 1)
-            // if (Mathf.Approximately(interpolationRatio, 1f))
-            if (Mathf.Approximately(curFrames, augFrames))
+            if (waitTimer > 0)
             {
-                if (tarScale.x < oriScale.x)
-                {
-                    augFrames = (int) (augFrames * 0.8f);
-                }
+                waitTimer -= Time.deltaTime;
+            }
+            if (waitTimer <= 0 && isWait)
+            {
+                isWait = false;
                 // Vector3 temp = new Vector3(oriScale.x, oriScale.y, oriScale.z);
                 Vector3 temp = oriScale;
                 oriScale = tarScale;
                 tarScale = temp;
             }
-            curFrames = (curFrames + 1) % (augFrames + 1);
+            if (!isWait)
+            {
+                string t = "Camera: " + Vector3ToString(camera.transform.position) + " " + QuaternionToString(camera.transform.rotation) + " " + Time.time;
+                writer.WriteLine(t);
+                writer.Flush();
+
+                curFrames = (curFrames + 1) % (augFrames + 1);
+                float interpolationRatio = (float) curFrames / augFrames;
+                Vector3 interpolatedScale = Vector3.Lerp(oriScale, tarScale, interpolationRatio);
+                curObject.transform.localScale = interpolatedScale;
+                // if (interpolationRatio == 1)
+                // if (Mathf.Approximately(interpolationRatio, 1f))
+                if (Mathf.Approximately(curFrames, augFrames))
+                {
+                    if (tarScale.x < oriScale.x)
+                    {
+                        augFrames = (int) (augFrames * 0.8f);
+                    }
+                    curFrames = -1;
+                    isWait = true;
+                    waitTimer = UnityEngine.Random.Range(1, 3);
+                }
+            }
         }
 
         if (ifGaze && eyeTrackingData.GazeRay.IsValid)
