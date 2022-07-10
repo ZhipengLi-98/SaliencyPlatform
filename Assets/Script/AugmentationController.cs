@@ -56,6 +56,9 @@ public class AugmentationController : MonoBehaviour
     private List<Dictionary<string, List<Vector3>>> layout;
     private int layoutCnt = 0;
 
+    private bool isAug = false;
+    private float augTimer = 0f;
+
     string Vector3ToString(Vector3 v)
     {
         string res = v.x + " " + v.y + " " + v.z;
@@ -269,12 +272,22 @@ public class AugmentationController : MonoBehaviour
     {        
         if (Input.GetKeyDown(KeyCode.A))
         {
+            augTimer = UnityEngine.Random.Range(3, 10);
+            isAug = true;
+            // RandomPosition();
+            NextLayout();
+        }
+        if (augTimer > 0)
+        {
+            augTimer -= Time.deltaTime;
+        }
+        if (augTimer <= 0 && isAug)
+        {
+            isAug = false;
             scaleAug = true;
             writer.WriteLine(curObject.transform.name + " " + Time.time);
             writer.Flush();
-            // RandomPosition();
-            NextLayout();
-        }        
+        }
         if (Input.GetKeyDown(KeyCode.S))
         {
             scaleAug = false;
