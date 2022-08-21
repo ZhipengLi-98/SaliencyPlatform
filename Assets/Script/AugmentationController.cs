@@ -38,7 +38,7 @@ public class AugmentationController : MonoBehaviour
 
     private GameObject curObject;
 
-    private string user = "jy_restoring_con.txt";
+    private string user = "djx_typing_con.txt";
     private StreamWriter writer;
 
     public bool ifGaze = false;
@@ -275,7 +275,7 @@ public class AugmentationController : MonoBehaviour
     {        
         if (Input.GetKeyDown(KeyCode.A))
         {
-            augTimer = UnityEngine.Random.Range(3, 10);
+            augTimer = UnityEngine.Random.Range(5, 15);
             isAug = true;
             // RandomPosition();
             NextLayout();
