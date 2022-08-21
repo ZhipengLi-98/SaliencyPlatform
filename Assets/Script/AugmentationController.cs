@@ -9,6 +9,14 @@ using System;
 
 public class AugmentationController : MonoBehaviour
 {
+    public GameObject home;
+    public GameObject lab;
+    public GameObject cafe;
+
+    public bool isHome;
+    public bool isLab;
+    public bool isCafe;
+
     public SteamVR_Action_Boolean notice;
 
     public SteamVR_Input_Sources controller;
@@ -99,6 +107,10 @@ public class AugmentationController : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        home.SetActive(isHome);
+        lab.SetActive(isLab);
+        cafe.SetActive(isCafe);
+        
         augLayer = LayerMask.NameToLayer("AugObj");
         norLayer = LayerMask.NameToLayer("NorObj");
         if (!ifGaze)
