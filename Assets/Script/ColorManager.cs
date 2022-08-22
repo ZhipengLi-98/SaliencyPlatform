@@ -6,6 +6,7 @@ using System.IO;
 using Valve.VR.InteractionSystem;
 using Valve.VR;
 using System;
+using UnityEngine.UI;
 
 public class ColorManager : MonoBehaviour
 {
@@ -34,7 +35,7 @@ public class ColorManager : MonoBehaviour
 
     private float timer = 0f;
 
-    public bool scaleAug = false;
+    public bool colorAug = false;
 
     private string user = "test.txt";
     private StreamWriter writer;
@@ -59,6 +60,8 @@ public class ColorManager : MonoBehaviour
 
     private bool isWait = false;
     private float waitTimer = 0f;
+
+    private float curHue = 0f;
     
     public void TriggerUp(SteamVR_Action_Boolean fromAction, SteamVR_Input_Sources fromSource)
     {
@@ -91,7 +94,7 @@ public class ColorManager : MonoBehaviour
         // oriMaterial = curObject.GetComponent<Renderer>().material;
         // print(oriMaterial.name);
         // curObject.GetComponent<Renderer>().material = redMaterial;
-        // scaleAug = false;
+        // colorAug = false;
         // augFrames = INIT_FRAMES;
         // curFrames = 0;
     }
@@ -165,10 +168,13 @@ public class ColorManager : MonoBehaviour
         // notice.AddOnStateDownListener(TriggerDown, controller);
         
         writer = new StreamWriter(user, false);
+        
+        curHue = Random.Range(0f, 1f);
 
         augFrames = INIT_FRAMES;
         curObject = userInterefaces[UnityEngine.Random.Range(0, userInterefaces.Count)];
         curObject.layer = augLayer;
+        curObject.GetComponent<Renderer>().material.color = Color.HSVToRGB(curHue, 1.0f, 1.0f);
         print(curObject.transform.name);
 
         layout = new List<Dictionary<string, List<Vector3>>>();
@@ -179,6 +185,59 @@ public class ColorManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+        var eyeTrackingData = TobiiXR.GetEyeTrackingData(TobiiXR_TrackingSpace.World);
+        if (Input.GetKeyDown(KeyCode.A))
+        {
+            augTimer = UnityEngine.Random.Range(5, 15);
+            isAug = true;
+            // RandomPosition();
+            NextLayout();
+        }
+        if (augTimer > 0)
+        {
+            augTimer -= Time.deltaTime;
+        }
+        if (augTimer <= 0 && isAug)
+        {
+            isAug = false;
+            colorAug = true;
+            writer.WriteLine(curObject.transform.name + " " + Time.time);
+            writer.Flush();
+        }
+        if (colorAug)
+        {   
+        //     if (waitTimer > 0)
+        //     {
+        //         waitTimer -= Time.deltaTime;
+        //     }
+        //     if (waitTimer <= 0 && isWait)
+        //     {
+        //         isWait = false;
+        //         Vector3 temp = oriScale;
+        //         oriScale = tarScale;
+        //         tarScale = temp;
+        //     }
+        //     if (!isWait)
+        //     {
+        //         string t = "Camera: " + Vector3ToString(camera.transform.position) + " " + QuaternionToString(camera.transform.rotation) + " " + Time.time;
+        //         writer.WriteLine(t);
+        //         writer.Flush();
+
+        //         curFrames = (curFrames + 1) % (augFrames + 1);
+        //         float interpolationRatio = (float) curFrames / augFrames;
+        //         Vector3 interpolatedScale = Vector3.Lerp(oriScale, tarScale, interpolationRatio);
+        //         curObject.transform.localScale = interpolatedScale;
+        //         if (Mathf.Approximately(curFrames, augFrames))
+        //         {
+        //             if (tarScale.x < oriScale.x)
+        //             {
+        //                 augFrames = (int) (augFrames * 0.8f);
+        //             }
+        //             curFrames = -1;
+        //             isWait = true;
+        //             waitTimer = UnityEngine.Random.Range(1, 3);
+        //         }
+        //     }
+        }
     }
 }
