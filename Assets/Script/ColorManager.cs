@@ -28,7 +28,7 @@ public class ColorManager : MonoBehaviour
 
     public GameObject camera;
 
-    private int INIT_FRAMES = 3000;
+    private int INIT_FRAMES = 1500;
 
     private int augFrames;
     private int curFrames = 0;
@@ -37,7 +37,7 @@ public class ColorManager : MonoBehaviour
 
     public bool colorAug = false;
 
-    private string user = "test.txt";
+    public string user = "test.txt";
     private StreamWriter writer;
 
     private GameObject curObject;
@@ -130,6 +130,7 @@ public class ColorManager : MonoBehaviour
             list.RemoveAt(index);
             icon.transform.position = layout[layoutCnt]["Icon"][i];
             icon.transform.LookAt(camera.transform);
+            icon.GetComponent<Renderer>().material.color = Color.HSVToRGB(UnityEngine.Random.Range(0f, 1f), 1.0f, 1.0f);
         }
         list.Clear();
         for (int n = 0; n < viewerList.Count; n++) 
@@ -143,6 +144,7 @@ public class ColorManager : MonoBehaviour
             list.RemoveAt(index);
             viewer.transform.position = layout[layoutCnt]["Viewer"][i];
             viewer.transform.LookAt(camera.transform);
+            viewer.GetComponent<Renderer>().material.color = Color.HSVToRGB(UnityEngine.Random.Range(0f, 1f), 1.0f, 1.0f);
         }
         int next = UnityEngine.Random.Range(0, layout.Count);
         while (next == layoutCnt)
@@ -152,9 +154,7 @@ public class ColorManager : MonoBehaviour
         layoutCnt = next;
         
         curObject.layer = norLayer;
-        curObject.GetComponent<Renderer>().material.color = Color.HSVToRGB(curHue, 0f, 1.0f);
         curObject = userInterefaces[UnityEngine.Random.Range(0, userInterefaces.Count)];
-        curObject.layer = augLayer;
         curHue = UnityEngine.Random.Range(0f, 1f);
         targetHue = curHue - error;
         curObject.GetComponent<Renderer>().material.color = Color.HSVToRGB(curHue, 1.0f, 1.0f);
@@ -164,6 +164,9 @@ public class ColorManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        augLayer = LayerMask.NameToLayer("AugObj");
+        norLayer = LayerMask.NameToLayer("NorObj");
+
         home.SetActive(isHome);
         lab.SetActive(isLab);
         cafe.SetActive(isCafe);
@@ -175,7 +178,6 @@ public class ColorManager : MonoBehaviour
         
         augFrames = INIT_FRAMES;
         curObject = userInterefaces[UnityEngine.Random.Range(0, userInterefaces.Count)];
-        curObject.layer = augLayer;
         curHue = UnityEngine.Random.Range(0f, 1f);
         curObject.GetComponent<Renderer>().material.color = Color.HSVToRGB(curHue, 1.0f, 1.0f);
         print(curObject.transform.name);
@@ -200,7 +202,6 @@ public class ColorManager : MonoBehaviour
             curObject.layer = norLayer;
             curObject.GetComponent<Renderer>().material.color = Color.HSVToRGB(curHue, 0f, 1.0f);
             curObject = userInterefaces[UnityEngine.Random.Range(0, userInterefaces.Count)];
-            curObject.layer = augLayer;
             curHue = UnityEngine.Random.Range(0f, 1f);
             curObject.GetComponent<Renderer>().material.color = Color.HSVToRGB(curHue, 1.0f, 1.0f);
             print(Time.time);
@@ -218,6 +219,7 @@ public class ColorManager : MonoBehaviour
         }
         if (colorAug)
         {   
+            curObject.layer = augLayer;
             string t = "Camera: " + Vector3ToString(camera.transform.position) + " " + QuaternionToString(camera.transform.rotation) + " " + Time.time;
             writer.WriteLine(t);
             writer.Flush();
