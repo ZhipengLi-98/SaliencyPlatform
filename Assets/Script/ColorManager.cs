@@ -28,7 +28,7 @@ public class ColorManager : MonoBehaviour
 
     public GameObject camera;
 
-    private int INIT_FRAMES = 300;
+    private int INIT_FRAMES = 3000;
 
     private int augFrames;
     private int curFrames = 0;
@@ -45,7 +45,7 @@ public class ColorManager : MonoBehaviour
     private int augLayer;
     private int norLayer;
 
-    public Material redMaterial;
+    public Material blackMaterial;
     private Material oriMaterial;
     private GameObject redObject;
 
@@ -62,41 +62,35 @@ public class ColorManager : MonoBehaviour
     private float waitTimer = 0f;
 
     private float curHue = 0f;
+    private float targetHue = 0f;
+    private float error = 1e-6f;
+
+    string Vector3ToString(Vector3 v)
+    {
+        string res = v.x + " " + v.y + " " + v.z;
+        return res;
+    }
+
+    string QuaternionToString(Quaternion q)
+    {
+        string res = q.x + " " + q.y + " " + q.z + " " + q.w;
+        return res;
+    }
     
     public void TriggerUp(SteamVR_Action_Boolean fromAction, SteamVR_Input_Sources fromSource)
     {
-        // curObject.transform.localScale = minScale;
-        // curObject.layer = norLayer;
-        // curObject.GetComponent<Renderer>().material = oriMaterial;
-        // curObject = userInterefaces[UnityEngine.Random.Range(0, userInterefaces.Count)];
-        // curObject.layer = augLayer;
-        // print(curObject.transform.name);
-        // writer.WriteLine("Noticed" + " " + Time.time);
-        // writer.Flush();
-        // if (iconList.Contains(curObject))
-        // {
-        //     minScale = minScale1;
-        //     maxScale = maxScale1;
-        // }
-        // else
-        // {
-        //     minScale = minScale2;
-        //     maxScale = maxScale2;
-        // }
-        // oriScale = minScale;
-        // tarScale = maxScale;
-        // RandomPosition();
-        // NextLayout();
+        curObject.layer = norLayer;
+        curObject.GetComponent<Renderer>().material.color = Color.HSVToRGB(curHue, 0f, 1.0f);
+        writer.WriteLine("Noticed" + " " + Time.time);
+        writer.Flush();
     }
 
     public void TriggerDown(SteamVR_Action_Boolean fromAction, SteamVR_Input_Sources fromSource)
     {
-        // oriMaterial = curObject.GetComponent<Renderer>().material;
-        // print(oriMaterial.name);
-        // curObject.GetComponent<Renderer>().material = redMaterial;
-        // colorAug = false;
-        // augFrames = INIT_FRAMES;
-        // curFrames = 0;
+        curObject.GetComponent<Renderer>().material.color = Color.HSVToRGB(curHue, 1.0f, 0f);
+        colorAug = false;
+        augFrames = INIT_FRAMES;
+        curFrames = 0;
     }
     
     void ReadLayout()
@@ -155,6 +149,15 @@ public class ColorManager : MonoBehaviour
             next = UnityEngine.Random.Range(0, layout.Count);
         }
         layoutCnt = next;
+        
+        curObject.layer = norLayer;
+        curObject.GetComponent<Renderer>().material.color = Color.HSVToRGB(curHue, 0f, 1.0f);
+        curObject = userInterefaces[UnityEngine.Random.Range(0, userInterefaces.Count)];
+        curObject.layer = augLayer;
+        curHue = UnityEngine.Random.Range(0f, 1f);
+        targetHue = curHue - error;
+        curObject.GetComponent<Renderer>().material.color = Color.HSVToRGB(curHue, 1.0f, 1.0f);
+        print(curObject.transform.name);
     }
 
     // Start is called before the first frame update
@@ -164,16 +167,16 @@ public class ColorManager : MonoBehaviour
         lab.SetActive(isLab);
         cafe.SetActive(isCafe);
         
-        // notice.AddOnStateUpListener(TriggerUp, controller);
-        // notice.AddOnStateDownListener(TriggerDown, controller);
+        notice.AddOnStateUpListener(TriggerUp, controller);
+        notice.AddOnStateDownListener(TriggerDown, controller);
         
         writer = new StreamWriter(user, false);
         
-        curHue = Random.Range(0f, 1f);
-
         augFrames = INIT_FRAMES;
         curObject = userInterefaces[UnityEngine.Random.Range(0, userInterefaces.Count)];
         curObject.layer = augLayer;
+        curHue = UnityEngine.Random.Range(0f, 1f);
+        targetHue = curHue - error;
         curObject.GetComponent<Renderer>().material.color = Color.HSVToRGB(curHue, 1.0f, 1.0f);
         print(curObject.transform.name);
 
@@ -190,7 +193,6 @@ public class ColorManager : MonoBehaviour
         {
             augTimer = UnityEngine.Random.Range(5, 15);
             isAug = true;
-            // RandomPosition();
             NextLayout();
         }
         if (augTimer > 0)
@@ -206,38 +208,27 @@ public class ColorManager : MonoBehaviour
         }
         if (colorAug)
         {   
-        //     if (waitTimer > 0)
-        //     {
-        //         waitTimer -= Time.deltaTime;
-        //     }
-        //     if (waitTimer <= 0 && isWait)
-        //     {
-        //         isWait = false;
-        //         Vector3 temp = oriScale;
-        //         oriScale = tarScale;
-        //         tarScale = temp;
-        //     }
-        //     if (!isWait)
-        //     {
-        //         string t = "Camera: " + Vector3ToString(camera.transform.position) + " " + QuaternionToString(camera.transform.rotation) + " " + Time.time;
-        //         writer.WriteLine(t);
-        //         writer.Flush();
+            string t = "Camera: " + Vector3ToString(camera.transform.position) + " " + QuaternionToString(camera.transform.rotation) + " " + Time.time;
+            writer.WriteLine(t);
+            writer.Flush();
 
-        //         curFrames = (curFrames + 1) % (augFrames + 1);
-        //         float interpolationRatio = (float) curFrames / augFrames;
-        //         Vector3 interpolatedScale = Vector3.Lerp(oriScale, tarScale, interpolationRatio);
-        //         curObject.transform.localScale = interpolatedScale;
-        //         if (Mathf.Approximately(curFrames, augFrames))
-        //         {
-        //             if (tarScale.x < oriScale.x)
-        //             {
-        //                 augFrames = (int) (augFrames * 0.8f);
-        //             }
-        //             curFrames = -1;
-        //             isWait = true;
-        //             waitTimer = UnityEngine.Random.Range(1, 3);
-        //         }
-        //     }
+            curFrames = (curFrames + 1) % (augFrames);
+            curHue += (1.0f / augFrames);
+            if (curHue - 1.0f > error)
+            {
+                curHue -= 1.0f;
+            }
+            curObject.GetComponent<Renderer>().material.color = Color.HSVToRGB(curHue, 1.0f, 1.0f);
+            if (curFrames == 0)
+            {
+                augFrames -= 60;
+            }
         }
+    }
+
+    void OnApplicationQuit()
+    {
+        writer.Flush();
+        writer.Close();
     }
 }
