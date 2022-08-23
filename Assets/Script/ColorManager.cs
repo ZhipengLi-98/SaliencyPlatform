@@ -46,10 +46,6 @@ public class ColorManager : MonoBehaviour
     private int norLayer;
 
     public Material blackMaterial;
-    private Material oriMaterial;
-    private GameObject redObject;
-
-    public bool isTyping;
 
     private string layoutFile = "./layout.txt";
     private List<Dictionary<string, List<Vector3>>> layout;
@@ -64,6 +60,8 @@ public class ColorManager : MonoBehaviour
     private float curHue = 0f;
     private float targetHue = 0f;
     private float error = 1e-6f;
+
+    public UnityEngine.Video.VideoPlayer player;
 
     string Vector3ToString(Vector3 v)
     {
