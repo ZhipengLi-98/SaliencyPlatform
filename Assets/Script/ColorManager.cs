@@ -77,6 +77,7 @@ public class ColorManager : MonoBehaviour
     
     public void TriggerUp(SteamVR_Action_Boolean fromAction, SteamVR_Input_Sources fromSource)
     {
+        // Set as white
         curObject.layer = norLayer;
         curObject.GetComponent<Renderer>().material.color = Color.HSVToRGB(curHue, 0f, 1.0f);
         writer.WriteLine("Noticed" + " " + Time.time);
@@ -85,10 +86,12 @@ public class ColorManager : MonoBehaviour
 
     public void TriggerDown(SteamVR_Action_Boolean fromAction, SteamVR_Input_Sources fromSource)
     {
+        // Set as black
         curObject.GetComponent<Renderer>().material.color = Color.HSVToRGB(curHue, 1.0f, 0f);
         colorAug = false;
         augFrames = INIT_FRAMES;
         curFrames = 0;
+        print(Time.time);
     }
     
     void ReadLayout()
@@ -174,7 +177,6 @@ public class ColorManager : MonoBehaviour
         curObject = userInterefaces[UnityEngine.Random.Range(0, userInterefaces.Count)];
         curObject.layer = augLayer;
         curHue = UnityEngine.Random.Range(0f, 1f);
-        targetHue = curHue - error;
         curObject.GetComponent<Renderer>().material.color = Color.HSVToRGB(curHue, 1.0f, 1.0f);
         print(curObject.transform.name);
 
@@ -192,6 +194,16 @@ public class ColorManager : MonoBehaviour
             augTimer = UnityEngine.Random.Range(5, 15);
             isAug = true;
             NextLayout();
+        }
+        if (Input.GetKeyDown(KeyCode.S))
+        {
+            curObject.layer = norLayer;
+            curObject.GetComponent<Renderer>().material.color = Color.HSVToRGB(curHue, 0f, 1.0f);
+            curObject = userInterefaces[UnityEngine.Random.Range(0, userInterefaces.Count)];
+            curObject.layer = augLayer;
+            curHue = UnityEngine.Random.Range(0f, 1f);
+            curObject.GetComponent<Renderer>().material.color = Color.HSVToRGB(curHue, 1.0f, 1.0f);
+            print(Time.time);
         }
         if (augTimer > 0)
         {
