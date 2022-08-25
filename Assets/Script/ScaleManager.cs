@@ -58,8 +58,6 @@ public class ScaleManager : MonoBehaviour
     private Material oriMaterial;
     private GameObject redObject;
 
-    public bool isTyping;
-
     private string layoutFile = "./layout.txt";
     private List<Dictionary<string, List<Vector3>>> layout;
     private int layoutCnt = 0;
@@ -141,30 +139,6 @@ public class ScaleManager : MonoBehaviour
         layout = new List<Dictionary<string, List<Vector3>>>();
         ReadLayout();
         NextLayout();
-    }
-
-    private void RandomPosition()
-    {
-        foreach (GameObject obj in userInterefaces)
-        {
-            float x1 = UnityEngine.Random.Range(-1.0f, -0.6f);
-            float x2 = UnityEngine.Random.Range(0.6f, 1.0f);
-            float x = UnityEngine.Random.Range(-1.0f, 1.0f);
-            List<float> xs = new List<float>();
-            xs.Add(x1);
-            xs.Add(x2);
-            float y = UnityEngine.Random.Range(0.5f, 1.5f);
-            float z = UnityEngine.Random.Range(0.5f, 1.2f);
-            if (isTyping)
-            {
-                obj.transform.position = new Vector3(xs[UnityEngine.Random.Range(0, xs.Count)], y, z);
-            }
-            else
-            {
-                obj.transform.position = new Vector3(x, y, z);
-            }
-            obj.transform.LookAt(camera.transform);
-        }
     }
 
     private void NextLayout()
@@ -269,8 +243,6 @@ public class ScaleManager : MonoBehaviour
         }
         oriScale = minScale;
         tarScale = maxScale;
-        // RandomPosition();
-        // NextLayout();
     }
 
     void OnApplicationQuit()
@@ -335,7 +307,6 @@ public class ScaleManager : MonoBehaviour
         }
         if (Input.GetKeyDown(KeyCode.Z))
         {
-            // RandomPosition();
             NextLayout();
         }
         var eyeTrackingData = TobiiXR.GetEyeTrackingData(TobiiXR_TrackingSpace.World);
