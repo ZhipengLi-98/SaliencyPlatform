@@ -46,7 +46,7 @@ public class AugmentationController : MonoBehaviour
 
     private GameObject curObject;
 
-    private string user = "djx_typing_con.txt";
+    public string user = "test.txt";
     private StreamWriter writer;
 
     public bool ifGaze = false;
@@ -138,7 +138,6 @@ public class AugmentationController : MonoBehaviour
         }
         oriScale = minScale;
         tarScale = maxScale;
-        // RandomPosition();
         layout = new List<Dictionary<string, List<Vector3>>>();
         ReadLayout();
         NextLayout();
@@ -226,8 +225,6 @@ public class AugmentationController : MonoBehaviour
         }
         oriScale = minScale;
         tarScale = maxScale;
-        // RandomPosition();
-        // NextLayout();
     }
 
     public void TriggerDown(SteamVR_Action_Boolean fromAction, SteamVR_Input_Sources fromSource)
