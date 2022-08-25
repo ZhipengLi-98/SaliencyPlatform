@@ -7,7 +7,7 @@ using Valve.VR.InteractionSystem;
 using Valve.VR;
 using System;
 
-public class AugmentationController : MonoBehaviour
+public class ScaleManager : MonoBehaviour
 {
     public GameObject home;
     public GameObject lab;
@@ -284,9 +284,38 @@ public class AugmentationController : MonoBehaviour
     {        
         if (Input.GetKeyDown(KeyCode.A))
         {
+            // If not noticed and press A, it will stop the current scaled one and then start the next trial
+            if (scaleAug)
+            {
+                curObject.transform.localScale = minScale;
+                curObject.layer = norLayer;
+                curObject.GetComponent<Renderer>().material = oriMaterial;
+                curObject = userInterefaces[UnityEngine.Random.Range(0, userInterefaces.Count)];
+                curObject.layer = augLayer;
+                print(curObject.transform.name);
+                if (iconList.Contains(curObject))
+                {
+                    minScale = minScale1;
+                    maxScale = maxScale1;
+                }
+                else
+                {
+                    minScale = minScale2;
+                    maxScale = maxScale2;
+                }
+                oriScale = minScale;
+                tarScale = maxScale;
+                oriMaterial = curObject.GetComponent<Renderer>().material;
+                print(oriMaterial.name);
+                curObject.GetComponent<Renderer>().material = redMaterial;
+                scaleAug = false;
+                augFrames = INIT_FRAMES;
+                curFrames = 0;
+            }
+
+            // Random time interval before starting animation
             augTimer = UnityEngine.Random.Range(5, 15);
             isAug = true;
-            // RandomPosition();
             NextLayout();
         }
         if (augTimer > 0)
@@ -312,6 +341,7 @@ public class AugmentationController : MonoBehaviour
         var eyeTrackingData = TobiiXR.GetEyeTrackingData(TobiiXR_TrackingSpace.World);
         if (scaleAug)
         {   
+            // waitTimer is a random time interval to prevent the sudden change between scaling up and down
             if (waitTimer > 0)
             {
                 waitTimer -= Time.deltaTime;
@@ -319,7 +349,6 @@ public class AugmentationController : MonoBehaviour
             if (waitTimer <= 0 && isWait)
             {
                 isWait = false;
-                // Vector3 temp = new Vector3(oriScale.x, oriScale.y, oriScale.z);
                 Vector3 temp = oriScale;
                 oriScale = tarScale;
                 tarScale = temp;
@@ -349,6 +378,7 @@ public class AugmentationController : MonoBehaviour
             }
         }
 
+        // record gaze data
         if (ifGaze && eyeTrackingData.GazeRay.IsValid)
         {
             string g = "Gaze: " + Vector3ToString(eyeTrackingData.GazeRay.Origin) + " " + Vector3ToString(eyeTrackingData.GazeRay.Direction) + " " + Time.time;
