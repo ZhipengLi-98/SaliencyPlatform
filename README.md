@@ -1,0 +1,4 @@
+# SaliencyPlatform
+
+## File structure
+
