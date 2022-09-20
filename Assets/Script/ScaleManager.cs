@@ -25,7 +25,7 @@ public class ScaleManager : MonoBehaviour
 
     public GameObject camera;
 
-    private int INIT_FRAMES = 300;
+    private int INIT_FRAMES = 600;
 
     private int augFrames;
     private int curFrames = 0;
@@ -124,16 +124,19 @@ public class ScaleManager : MonoBehaviour
         curObject.layer = augLayer;
         print(curObject.transform.name);
 
-        if (iconList.Contains(curObject))
-        {
-            minScale = minScale1;
-            maxScale = maxScale1;
-        }
-        else
-        {
-            minScale = minScale2;
-            maxScale = maxScale2;
-        }
+        minScale = new Vector3(curObject.transform.localScale.x, curObject.transform.localScale.y, curObject.transform.localScale.z);
+        maxScale = new Vector3(1.5f * curObject.transform.localScale.x, 1.5f * curObject.transform.localScale.y, 1.5f * curObject.transform.localScale.z);
+
+        // if (iconList.Contains(curObject))
+        // {
+        //     minScale = minScale1;
+        //     maxScale = maxScale1;
+        // }
+        // else
+        // {
+        //     minScale = minScale2;
+        //     maxScale = maxScale2;
+        // }
         oriScale = minScale;
         tarScale = maxScale;
         layout = new List<Dictionary<string, List<Vector3>>>();
@@ -187,16 +190,20 @@ public class ScaleManager : MonoBehaviour
         print(curObject.transform.name);
         writer.WriteLine("Noticed" + " " + Time.time);
         writer.Flush();
-        if (iconList.Contains(curObject))
-        {
-            minScale = minScale1;
-            maxScale = maxScale1;
-        }
-        else
-        {
-            minScale = minScale2;
-            maxScale = maxScale2;
-        }
+        
+        minScale = new Vector3(curObject.transform.localScale.x, curObject.transform.localScale.y, curObject.transform.localScale.z);
+        maxScale = new Vector3(1.5f * curObject.transform.localScale.x, 1.5f * curObject.transform.localScale.y, 1.5f * curObject.transform.localScale.z);
+
+        // if (iconList.Contains(curObject))
+        // {
+        //     minScale = minScale1;
+        //     maxScale = maxScale1;
+        // }
+        // else
+        // {
+        //     minScale = minScale2;
+        //     maxScale = maxScale2;
+        // }
         oriScale = minScale;
         tarScale = maxScale;
     }
@@ -231,16 +238,20 @@ public class ScaleManager : MonoBehaviour
         print(curObject.transform.name);
         writer.WriteLine("Noticed" + " " + Time.time);
         writer.Flush();
-        if (iconList.Contains(curObject))
-        {
-            minScale = minScale1;
-            maxScale = maxScale1;
-        }
-        else
-        {
-            minScale = minScale2;
-            maxScale = maxScale2;
-        }
+        
+        minScale = new Vector3(curObject.transform.localScale.x, curObject.transform.localScale.y, curObject.transform.localScale.z);
+        maxScale = new Vector3(1.5f * curObject.transform.localScale.x, 1.5f * curObject.transform.localScale.y, 1.5f * curObject.transform.localScale.z);
+
+        // if (iconList.Contains(curObject))
+        // {
+        //     minScale = minScale1;
+        //     maxScale = maxScale1;
+        // }
+        // else
+        // {
+        //     minScale = minScale2;
+        //     maxScale = maxScale2;
+        // }
         oriScale = minScale;
         tarScale = maxScale;
     }
@@ -265,16 +276,19 @@ public class ScaleManager : MonoBehaviour
                 curObject = userInterefaces[UnityEngine.Random.Range(0, userInterefaces.Count)];
                 curObject.layer = augLayer;
                 print(curObject.transform.name);
-                if (iconList.Contains(curObject))
-                {
-                    minScale = minScale1;
-                    maxScale = maxScale1;
-                }
-                else
-                {
-                    minScale = minScale2;
-                    maxScale = maxScale2;
-                }
+                
+                minScale = new Vector3(curObject.transform.localScale.x, curObject.transform.localScale.y, curObject.transform.localScale.z);
+                maxScale = new Vector3(1.5f * curObject.transform.localScale.x, 1.5f * curObject.transform.localScale.y, 1.5f * curObject.transform.localScale.z);
+                // if (iconList.Contains(curObject))
+                // {
+                //     minScale = minScale1;
+                //     maxScale = maxScale1;
+                // }
+                // else
+                // {
+                //     minScale = minScale2;
+                //     maxScale = maxScale2;
+                // }
                 oriScale = minScale;
                 tarScale = maxScale;
                 oriMaterial = curObject.GetComponent<Renderer>().material;
@@ -303,7 +317,8 @@ public class ScaleManager : MonoBehaviour
         }
         if (Input.GetKeyDown(KeyCode.S))
         {
-            scaleAug = false;
+            NoticeDown();
+            NoticeUp();
         }
         if (Input.GetKeyDown(KeyCode.Z))
         {
