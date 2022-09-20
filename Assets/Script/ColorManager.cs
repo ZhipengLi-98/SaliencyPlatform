@@ -238,9 +238,9 @@ public class ColorManager : MonoBehaviour
         }
     }
 
-    void OnApplicationQuit()
-    {
-        writer.Flush();
-        writer.Close();
-    }
+    // void OnApplicationQuit()
+    // {
+    //     writer.Flush();
+    //     writer.Close();
+    // }
 }

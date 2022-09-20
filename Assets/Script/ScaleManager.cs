@@ -158,6 +158,10 @@ public class ScaleManager : MonoBehaviour
             list.RemoveAt(index);
             icon.transform.position = layout[layoutCnt]["Icon"][i];
             icon.transform.LookAt(camera.transform);
+            if (icon.transform.name == "HMDModel")
+            {
+                icon.transform.rotation = icon.transform.rotation * Quaternion.Euler(0, 180, 0);
+            }
         }
         list.Clear();
         for (int n = 0; n < viewerList.Count; n++) 
@@ -171,6 +175,10 @@ public class ScaleManager : MonoBehaviour
             list.RemoveAt(index);
             viewer.transform.position = layout[layoutCnt]["Viewer"][i];
             viewer.transform.LookAt(camera.transform);
+            if (viewer.transform.name == "TimeWidget")
+            {
+                viewer.transform.rotation = viewer.transform.rotation * Quaternion.Euler(0, 180, 0);
+            }
         }
         int next = UnityEngine.Random.Range(0, layout.Count);
         while (next == layoutCnt)
