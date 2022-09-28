@@ -30,7 +30,7 @@ public class ColorManager : MonoBehaviour
 
     public GameObject camera;
 
-    private int INIT_FRAMES = 1500;
+    private int INIT_FRAMES = 1200;
 
     private int augFrames;
     private int curFrames = 0;
