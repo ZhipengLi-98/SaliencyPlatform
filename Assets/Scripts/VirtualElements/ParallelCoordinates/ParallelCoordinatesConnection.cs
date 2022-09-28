@@ -24,6 +24,7 @@ public class ParallelCoordinatesConnection : MonoBehaviour
         this.m_lrPos[1] = m_points[1].transform.position;
         this.m_lrPos[2] = m_points[2].transform.position;
         this.m_lr.SetPositions(this.m_lrPos);
+        this.transform.gameObject.layer = LayerMask.NameToLayer("Default");
     }
 
     // Start is called before the first frame update
