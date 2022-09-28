@@ -155,8 +155,16 @@ public class PositionManager : MonoBehaviour
         }
         curObject = userInterefaces[UnityEngine.Random.Range(0, userInterefaces.Count)];
 
-        minPosition = new Vector3(curObject.transform.position.x, curObject.transform.position.y, curObject.transform.position.z);
-        maxPosition = new Vector3(curObject.transform.position.x, 0.2f + curObject.transform.position.y, curObject.transform.position.z);
+        if (UnityEngine.Random.Range(0, 2) > 1)
+        {
+            minPosition = new Vector3(curObject.transform.position.x, curObject.transform.position.y, curObject.transform.position.z);
+            maxPosition = new Vector3(curObject.transform.position.x, 0.1f + curObject.transform.position.y, curObject.transform.position.z);
+        }
+        else
+        {
+            minPosition = new Vector3(curObject.transform.position.x, curObject.transform.position.y, curObject.transform.position.z);
+            maxPosition = new Vector3(0.1f + curObject.transform.position.x, curObject.transform.position.y, curObject.transform.position.z);
+        }
         
         oriPosition = minPosition;
         tarPosition = maxPosition;
@@ -175,8 +183,16 @@ public class PositionManager : MonoBehaviour
         writer.WriteLine("Noticed" + " " + Time.time);
         writer.Flush();
         
-        minPosition = new Vector3(curObject.transform.position.x, curObject.transform.position.y, curObject.transform.position.z);
-        maxPosition = new Vector3(curObject.transform.position.x, 0.2f + curObject.transform.position.y, curObject.transform.position.z);
+        if (UnityEngine.Random.Range(0, 2) > 1)
+        {
+            minPosition = new Vector3(curObject.transform.position.x, curObject.transform.position.y, curObject.transform.position.z);
+            maxPosition = new Vector3(curObject.transform.position.x, 0.1f + curObject.transform.position.y, curObject.transform.position.z);
+        }
+        else
+        {
+            minPosition = new Vector3(curObject.transform.position.x, curObject.transform.position.y, curObject.transform.position.z);
+            maxPosition = new Vector3(0.1f + curObject.transform.position.x, curObject.transform.position.y, curObject.transform.position.z);
+        }
         
         oriPosition = minPosition;
         tarPosition = maxPosition;
@@ -266,7 +282,7 @@ public class PositionManager : MonoBehaviour
                 // if (Mathf.Approximately(interpolationRatio, 1f))
                 if (Mathf.Approximately(curFrames, augFrames))
                 {
-                    if (tarPosition.x < oriPosition.x)
+                    if (tarPosition.y < oriPosition.y || tarPosition.x < oriPosition.x)
                     {
                         augFrames = (int) (augFrames * 0.8f);
                     }

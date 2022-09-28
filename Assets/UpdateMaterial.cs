@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using TMPro;
 
 public class UpdateMaterial : MonoBehaviour
 {
@@ -18,7 +19,14 @@ public class UpdateMaterial : MonoBehaviour
             Renderer temp = t.gameObject.GetComponent<Renderer>();
             if (temp != null)
             {
-                temp.material = this.GetComponent<Renderer>().material;
+                if (t.name.Contains("TMP"))
+                {   
+                    t.gameObject.GetComponent<TextMeshPro>().color = this.GetComponent<Renderer>().material.color;
+                }
+                else
+                {
+                    temp.material.color = this.GetComponent<Renderer>().material.color;   
+                }
             }
         }
     }
