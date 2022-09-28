@@ -43,6 +43,8 @@ public class ScaleManager : MonoBehaviour
     private Vector3 maxScale2 = new Vector3(0.6f, 0.3f, 0.001f);
     public List<GameObject> iconList = new List<GameObject>();
     public List<GameObject> viewerList = new List<GameObject>();
+    public GameObject videoPlayer;
+    public GameObject keyboard;
 
     private GameObject curObject;
 
@@ -120,25 +122,7 @@ public class ScaleManager : MonoBehaviour
         writer = new StreamWriter(user, false);
 
         augFrames = INIT_FRAMES;
-        curObject = userInterefaces[UnityEngine.Random.Range(0, userInterefaces.Count)];
-        curObject.layer = augLayer;
-        print(curObject.transform.name);
 
-        minScale = new Vector3(curObject.transform.localScale.x, curObject.transform.localScale.y, curObject.transform.localScale.z);
-        maxScale = new Vector3(1.5f * curObject.transform.localScale.x, 1.5f * curObject.transform.localScale.y, 1.5f * curObject.transform.localScale.z);
-
-        // if (iconList.Contains(curObject))
-        // {
-        //     minScale = minScale1;
-        //     maxScale = maxScale1;
-        // }
-        // else
-        // {
-        //     minScale = minScale2;
-        //     maxScale = maxScale2;
-        // }
-        oriScale = minScale;
-        tarScale = maxScale;
         layout = new List<Dictionary<string, List<Vector3>>>();
         ReadLayout();
         NextLayout();
@@ -180,12 +164,30 @@ public class ScaleManager : MonoBehaviour
                 viewer.transform.rotation = viewer.transform.rotation * Quaternion.Euler(0, 180, 0);
             }
         }
+        keyboard.transform.position = layout[layoutCnt]["Keyboard"][0];
+        keyboard.transform.LookAt(camera.transform);
+        keyboard.transform.rotation = keyboard.transform.rotation * Quaternion.Euler(0, 180, 0);
+        videoPlayer.transform.position = layout[layoutCnt]["VideoPlayer"][0];
+        videoPlayer.transform.LookAt(camera.transform);
         int next = UnityEngine.Random.Range(0, layout.Count);
         while (next == layoutCnt)
         {
             next = UnityEngine.Random.Range(0, layout.Count);
         }
         layoutCnt = next;
+        
+        if (curObject != null)
+        {
+            curObject.transform.localScale = minScale;
+            curObject.layer = norLayer;
+            curObject.GetComponent<Renderer>().material = oriMaterial;
+        }
+        curObject = userInterefaces[UnityEngine.Random.Range(0, userInterefaces.Count)];
+        minScale = new Vector3(curObject.transform.localScale.x, curObject.transform.localScale.y, curObject.transform.localScale.z);
+        maxScale = new Vector3(1.5f * curObject.transform.localScale.x, 1.5f * curObject.transform.localScale.y, 1.5f * curObject.transform.localScale.z);
+        oriScale = minScale;
+        tarScale = maxScale;
+        oriMaterial = curObject.GetComponent<Renderer>().material;
     }
 
     public void TriggerUp(SteamVR_Action_Boolean fromAction, SteamVR_Input_Sources fromSource)
@@ -275,41 +277,11 @@ public class ScaleManager : MonoBehaviour
     {        
         if (Input.GetKeyDown(KeyCode.A))
         {
-            // If not noticed and press A, it will stop the current scaled one and then start the next trial
-            if (scaleAug)
-            {
-                curObject.transform.localScale = minScale;
-                curObject.layer = norLayer;
-                curObject.GetComponent<Renderer>().material = oriMaterial;
-                curObject = userInterefaces[UnityEngine.Random.Range(0, userInterefaces.Count)];
-                curObject.layer = augLayer;
-                print(curObject.transform.name);
-                
-                minScale = new Vector3(curObject.transform.localScale.x, curObject.transform.localScale.y, curObject.transform.localScale.z);
-                maxScale = new Vector3(1.5f * curObject.transform.localScale.x, 1.5f * curObject.transform.localScale.y, 1.5f * curObject.transform.localScale.z);
-                // if (iconList.Contains(curObject))
-                // {
-                //     minScale = minScale1;
-                //     maxScale = maxScale1;
-                // }
-                // else
-                // {
-                //     minScale = minScale2;
-                //     maxScale = maxScale2;
-                // }
-                oriScale = minScale;
-                tarScale = maxScale;
-                oriMaterial = curObject.GetComponent<Renderer>().material;
-                print(oriMaterial.name);
-                curObject.GetComponent<Renderer>().material = redMaterial;
-                scaleAug = false;
-                augFrames = INIT_FRAMES;
-                curFrames = 0;
-            }
-
             // Random time interval before starting animation
             augTimer = UnityEngine.Random.Range(5, 15);
             isAug = true;
+            scaleAug = false;
+            curFrames = 0;
             NextLayout();
         }
         if (augTimer > 0)

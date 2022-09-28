@@ -25,6 +25,8 @@ public class ColorManager : MonoBehaviour
     public List<GameObject> userInterefaces = new List<GameObject>();
     public List<GameObject> iconList = new List<GameObject>();
     public List<GameObject> viewerList = new List<GameObject>();
+    public GameObject videoPlayer;
+    public GameObject keyboard;
 
     public GameObject camera;
 
@@ -44,8 +46,6 @@ public class ColorManager : MonoBehaviour
 
     private int augLayer;
     private int norLayer;
-
-    public Material blackMaterial;
 
     private string layoutFile = "./layout.txt";
     private List<Dictionary<string, List<Vector3>>> layout;
@@ -130,6 +130,10 @@ public class ColorManager : MonoBehaviour
             list.RemoveAt(index);
             icon.transform.position = layout[layoutCnt]["Icon"][i];
             icon.transform.LookAt(camera.transform);
+            if (icon.transform.name == "HMDModel")
+            {
+                icon.transform.rotation = icon.transform.rotation * Quaternion.Euler(0, 180, 0);
+            }
             icon.GetComponent<Renderer>().material.color = Color.HSVToRGB(UnityEngine.Random.Range(0f, 1f), 1.0f, 1.0f);
         }
         list.Clear();
@@ -144,8 +148,17 @@ public class ColorManager : MonoBehaviour
             list.RemoveAt(index);
             viewer.transform.position = layout[layoutCnt]["Viewer"][i];
             viewer.transform.LookAt(camera.transform);
+            if (viewer.transform.name == "TimeWidget")
+            {
+                viewer.transform.rotation = viewer.transform.rotation * Quaternion.Euler(0, 180, 0);
+            }
             viewer.GetComponent<Renderer>().material.color = Color.HSVToRGB(UnityEngine.Random.Range(0f, 1f), 1.0f, 1.0f);
         }
+        keyboard.transform.position = layout[layoutCnt]["Keyboard"][0];
+        keyboard.transform.LookAt(camera.transform);
+        keyboard.transform.rotation = keyboard.transform.rotation * Quaternion.Euler(0, 180, 0);
+        videoPlayer.transform.position = layout[layoutCnt]["VideoPlayer"][0];
+        videoPlayer.transform.LookAt(camera.transform);
         int next = UnityEngine.Random.Range(0, layout.Count);
         while (next == layoutCnt)
         {
@@ -154,6 +167,7 @@ public class ColorManager : MonoBehaviour
         layoutCnt = next;
         
         curObject.layer = norLayer;
+        curObject.GetComponent<Renderer>().material.color = Color.HSVToRGB(curHue, 0f, 1.0f);
         curObject = userInterefaces[UnityEngine.Random.Range(0, userInterefaces.Count)];
         curHue = UnityEngine.Random.Range(0f, 1f);
         targetHue = curHue - error;
@@ -195,6 +209,7 @@ public class ColorManager : MonoBehaviour
         {
             augTimer = UnityEngine.Random.Range(5, 15);
             isAug = true;
+            colorAug = false;
             NextLayout();
         }
         if (Input.GetKeyDown(KeyCode.S))
