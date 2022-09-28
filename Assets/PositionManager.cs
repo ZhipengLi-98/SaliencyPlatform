@@ -7,7 +7,7 @@ using Valve.VR.InteractionSystem;
 using Valve.VR;
 using System;
 
-public class ScaleManager : MonoBehaviour
+public class PositionManager : MonoBehaviour
 {
     public GameObject home;
     public GameObject lab;
@@ -32,11 +32,11 @@ public class ScaleManager : MonoBehaviour
 
     private float timer = 0f;
 
-    public bool scaleAug = false;
-    private Vector3 oriScale;
-    private Vector3 tarScale;
-    private Vector3 minScale;
-    private Vector3 maxScale;
+    public bool positionAug = false;
+    private Vector3 oriPosition;
+    private Vector3 tarPosition;
+    private Vector3 minPosition;
+    private Vector3 maxPosition;
     public List<GameObject> iconList = new List<GameObject>();
     public List<GameObject> viewerList = new List<GameObject>();
     public GameObject videoPlayer;
@@ -46,8 +46,6 @@ public class ScaleManager : MonoBehaviour
 
     public string user = "test.txt";
     private StreamWriter writer;
-
-    public bool ifGaze = false;
 
     private int augLayer;
     private int norLayer;
@@ -77,7 +75,7 @@ public class ScaleManager : MonoBehaviour
         string res = q.x + " " + q.y + " " + q.z + " " + q.w;
         return res;
     }
-    
+
     void ReadLayout()
     {
         StreamReader reader = new StreamReader(layoutFile);
@@ -100,30 +98,6 @@ public class ScaleManager : MonoBehaviour
         }
     }
 
-    // Start is called before the first frame update
-    void Start()
-    {
-        home.SetActive(isHome);
-        lab.SetActive(isLab);
-        cafe.SetActive(isCafe);
-        
-        augLayer = LayerMask.NameToLayer("AugObj");
-        norLayer = LayerMask.NameToLayer("NorObj");
-        if (!ifGaze)
-        {
-            notice.AddOnStateUpListener(TriggerUp, controller);
-            notice.AddOnStateDownListener(TriggerDown, controller);
-        }
-
-        writer = new StreamWriter(user, false);
-
-        augFrames = INIT_FRAMES;
-
-        layout = new List<Dictionary<string, List<Vector3>>>();
-        ReadLayout();
-        NextLayout();
-    }
-
     private void NextLayout()
     {
         List<int> list = new List<int>();
@@ -142,6 +116,7 @@ public class ScaleManager : MonoBehaviour
             {
                 icon.transform.rotation = icon.transform.rotation * Quaternion.Euler(0, 180, 0);
             }
+            // print(icon.transform.name + " " + i + " "+ icon.transform.position);
         }
         list.Clear();
         for (int n = 0; n < viewerList.Count; n++) 
@@ -159,6 +134,7 @@ public class ScaleManager : MonoBehaviour
             {
                 viewer.transform.rotation = viewer.transform.rotation * Quaternion.Euler(0, 180, 0);
             }
+            // print(viewer.transform.name + " " + i + " "+ viewer.transform.position);
         }
         keyboard.transform.position = layout[layoutCnt]["Keyboard"][0];
         keyboard.transform.LookAt(camera.transform);
@@ -174,21 +150,23 @@ public class ScaleManager : MonoBehaviour
         
         if (curObject != null)
         {
-            curObject.transform.localScale = minScale;
             curObject.layer = norLayer;
             curObject.GetComponent<Renderer>().material = oriMaterial;
         }
         curObject = userInterefaces[UnityEngine.Random.Range(0, userInterefaces.Count)];
-        minScale = new Vector3(curObject.transform.localScale.x, curObject.transform.localScale.y, curObject.transform.localScale.z);
-        maxScale = new Vector3(1.5f * curObject.transform.localScale.x, 1.5f * curObject.transform.localScale.y, 1.5f * curObject.transform.localScale.z);
-        oriScale = minScale;
-        tarScale = maxScale;
+
+        minPosition = new Vector3(curObject.transform.position.x, curObject.transform.position.y, curObject.transform.position.z);
+        maxPosition = new Vector3(curObject.transform.position.x, 0.2f + curObject.transform.position.y, curObject.transform.position.z);
+        
+        oriPosition = minPosition;
+        tarPosition = maxPosition;
+        
         oriMaterial = curObject.GetComponent<Renderer>().material;
     }
 
     public void TriggerUp(SteamVR_Action_Boolean fromAction, SteamVR_Input_Sources fromSource)
     {
-        curObject.transform.localScale = minScale;
+        curObject.transform.position = minPosition;
         curObject.layer = norLayer;
         curObject.GetComponent<Renderer>().material = oriMaterial;
         curObject = userInterefaces[UnityEngine.Random.Range(0, userInterefaces.Count)];
@@ -197,11 +175,11 @@ public class ScaleManager : MonoBehaviour
         writer.WriteLine("Noticed" + " " + Time.time);
         writer.Flush();
         
-        minScale = new Vector3(curObject.transform.localScale.x, curObject.transform.localScale.y, curObject.transform.localScale.z);
-        maxScale = new Vector3(1.5f * curObject.transform.localScale.x, 1.5f * curObject.transform.localScale.y, 1.5f * curObject.transform.localScale.z);
-
-        oriScale = minScale;
-        tarScale = maxScale;
+        minPosition = new Vector3(curObject.transform.position.x, curObject.transform.position.y, curObject.transform.position.z);
+        maxPosition = new Vector3(curObject.transform.position.x, 0.2f + curObject.transform.position.y, curObject.transform.position.z);
+        
+        oriPosition = minPosition;
+        tarPosition = maxPosition;
     }
 
     public void TriggerDown(SteamVR_Action_Boolean fromAction, SteamVR_Input_Sources fromSource)
@@ -209,54 +187,41 @@ public class ScaleManager : MonoBehaviour
         oriMaterial = curObject.GetComponent<Renderer>().material;
         print(oriMaterial.name);
         curObject.GetComponent<Renderer>().material = redMaterial;
-        scaleAug = false;
+        positionAug = false;
         augFrames = INIT_FRAMES;
         curFrames = 0;
     }
 
-    private void NoticeDown()
+    // Start is called before the first frame update
+    void Start()
     {
-        oriMaterial = curObject.GetComponent<Renderer>().material;
-        print(oriMaterial.name);
-        curObject.GetComponent<Renderer>().material = redMaterial;
-        scaleAug = false;
-        augFrames = INIT_FRAMES;
-        curFrames = 0;
-    }
-
-    private void NoticeUp()
-    {
-        curObject.transform.localScale = minScale;
-        curObject.layer = norLayer;
-        curObject.GetComponent<Renderer>().material = oriMaterial;
-        curObject = userInterefaces[UnityEngine.Random.Range(0, userInterefaces.Count)];
-        curObject.layer = augLayer;
-        print(curObject.transform.name);
-        writer.WriteLine("Noticed" + " " + Time.time);
-        writer.Flush();
+        home.SetActive(isHome);
+        lab.SetActive(isLab);
+        cafe.SetActive(isCafe);
         
-        minScale = new Vector3(curObject.transform.localScale.x, curObject.transform.localScale.y, curObject.transform.localScale.z);
-        maxScale = new Vector3(1.5f * curObject.transform.localScale.x, 1.5f * curObject.transform.localScale.y, 1.5f * curObject.transform.localScale.z);
+        augLayer = LayerMask.NameToLayer("AugObj");
+        norLayer = LayerMask.NameToLayer("NorObj");
+        notice.AddOnStateUpListener(TriggerUp, controller);
+        notice.AddOnStateDownListener(TriggerDown, controller);
+        
+        writer = new StreamWriter(user, false);
 
-        oriScale = minScale;
-        tarScale = maxScale;
-    }
+        augFrames = INIT_FRAMES;
 
-    void OnApplicationQuit()
-    {
-        writer.Flush();
-        writer.Close();
+        layout = new List<Dictionary<string, List<Vector3>>>();
+        ReadLayout();
+        NextLayout();
     }
 
     // Update is called once per frame
     void Update()
-    {        
+    {
         if (Input.GetKeyDown(KeyCode.A))
         {
             // Random time interval before starting animation
             augTimer = UnityEngine.Random.Range(5, 15);
             isAug = true;
-            scaleAug = false;
+            positionAug = false;
             curFrames = 0;
             NextLayout();
         }
@@ -267,21 +232,13 @@ public class ScaleManager : MonoBehaviour
         if (augTimer <= 0 && isAug)
         {
             isAug = false;
-            scaleAug = true;
+            positionAug = true;
             writer.WriteLine(curObject.transform.name + " " + Time.time);
             writer.Flush();
         }
-        if (Input.GetKeyDown(KeyCode.S))
-        {
-            NoticeDown();
-            NoticeUp();
-        }
-        if (Input.GetKeyDown(KeyCode.Z))
-        {
-            NextLayout();
-        }
+        
         var eyeTrackingData = TobiiXR.GetEyeTrackingData(TobiiXR_TrackingSpace.World);
-        if (scaleAug)
+        if (positionAug)
         {   
             // waitTimer is a random time interval to prevent the sudden change between scaling up and down
             if (waitTimer > 0)
@@ -291,9 +248,9 @@ public class ScaleManager : MonoBehaviour
             if (waitTimer <= 0 && isWait)
             {
                 isWait = false;
-                Vector3 temp = oriScale;
-                oriScale = tarScale;
-                tarScale = temp;
+                Vector3 temp = oriPosition;
+                oriPosition = tarPosition;
+                tarPosition = temp;
             }
             if (!isWait)
             {
@@ -303,13 +260,13 @@ public class ScaleManager : MonoBehaviour
 
                 curFrames = (curFrames + 1) % (augFrames + 1);
                 float interpolationRatio = (float) curFrames / augFrames;
-                Vector3 interpolatedScale = Vector3.Lerp(oriScale, tarScale, interpolationRatio);
-                curObject.transform.localScale = interpolatedScale;
+                Vector3 interpolatedPosition = Vector3.Lerp(oriPosition, tarPosition, interpolationRatio);
+                curObject.transform.position = interpolatedPosition;
                 // if (interpolationRatio == 1)
                 // if (Mathf.Approximately(interpolationRatio, 1f))
                 if (Mathf.Approximately(curFrames, augFrames))
                 {
-                    if (tarScale.x < oriScale.x)
+                    if (tarPosition.x < oriPosition.x)
                     {
                         augFrames = (int) (augFrames * 0.8f);
                     }
@@ -318,36 +275,6 @@ public class ScaleManager : MonoBehaviour
                     waitTimer = UnityEngine.Random.Range(1, 3);
                 }
             }
-        }
-
-        // record gaze data
-        if (ifGaze && eyeTrackingData.GazeRay.IsValid)
-        {
-            string g = "Gaze: " + Vector3ToString(eyeTrackingData.GazeRay.Origin) + " " + Vector3ToString(eyeTrackingData.GazeRay.Direction) + " " + Time.time;
-            writer.WriteLine(g);
-            writer.Flush();
-            int layerMask = 1 << 6 | 1 << 7;
-            RaycastHit hit;
-            if (Physics.Raycast(eyeTrackingData.GazeRay.Origin, eyeTrackingData.GazeRay.Direction, out hit, Mathf.Infinity, layerMask))
-            {
-                if (Equals(hit.transform, curObject.transform))
-                {
-                    timer += Time.deltaTime;
-                }
-                else
-                {
-                    timer = 0f;
-                }
-            }
-        }
-        if (timer >= 1.5f && scaleAug)
-        {
-            NoticeDown();
-        }
-        if (timer >= 1.55f)
-        {
-            NoticeUp();
-            timer = 0f;
         }
     }
 }
