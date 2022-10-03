@@ -11,6 +11,7 @@
     - ColorManager: enable color animation and noticing logistic
     - GetGaze: get the gaze data and render a gaze cursor
     - ScaleManager: enable scale animation and noticing logistic
+    - PositionManager: enable position moving animation and noticing logistic
 
 ## Requirement
 
@@ -25,11 +26,12 @@
  - if restoring layout task: enable Manager.ChangePosition, disable Canvas, VideoPlayer, and Manager.ChangeText
 
 2. Animation type
- - if scaled animation, enable Manager.ScaleManager, disable Manager.ColorManager
- - if color animation, enable Manager.ColorManager, disable Manager.ScaleManager
+ - if scaled animation, enable Manager.ScaleManager, disable Manager.ColorManager, Manager.PositionManager
+ - if color animation, enable Manager.ColorManager, disable Manager.ScaleManager, Manager.PositionManager
+ - if moving animation, enable Manager.PositionManager, disable Manager.ScaleManager, Manager.ColorManager
 
-3. Scene
- - check the test scene in Manager.ScaleManager or Manager.ColorManager, and uncheck the other two
+3. Background
+ - select CurBackground of Manager.
 
 4. Conduct the eye calibration in Vive, then play the scene 
 
