@@ -9,13 +9,17 @@ using System;
 
 public class ScaleManager : MonoBehaviour
 {
-    public GameObject home;
-    public GameObject lab;
-    public GameObject cafe;
+    public GameObject VirtualHome;
+    public GameObject VirtualLab;
+    public GameObject VirtualCafe;
+    public GameObject PhysicalHome1;
+    public GameObject PhysicalHome2;
+    public GameObject PhysicalHome3;
 
-    public bool isHome;
-    public bool isLab;
-    public bool isCafe;
+    public enum Background {
+        VirtualHome, VirtualLab, VirtualCafe, PhysicalHome1, PhysicalHome2, PhysicalHome3
+    }
+    public Background curBackground;
 
     public SteamVR_Action_Boolean notice;
 
@@ -118,9 +122,35 @@ public class ScaleManager : MonoBehaviour
         {
             INIT_FRAMES = 300;
         }
-        home.SetActive(isHome);
-        lab.SetActive(isLab);
-        cafe.SetActive(isCafe);
+        VirtualHome.SetActive(false);
+        VirtualLab.SetActive(false);
+        VirtualCafe.SetActive(false);
+        PhysicalHome1.SetActive(false);
+        PhysicalHome2.SetActive(false);
+        PhysicalHome3.SetActive(false);
+        switch (curBackground)
+        {
+            case (Background.VirtualHome):
+                VirtualHome.SetActive(true);
+                break;
+            case (Background.VirtualLab):
+                VirtualLab.SetActive(true);
+                break;
+            case (Background.VirtualCafe):
+                VirtualCafe.SetActive(true);
+                break;
+            case (Background.PhysicalHome1):
+                PhysicalHome1.SetActive(true);
+                break;
+            case (Background.PhysicalHome2):
+                PhysicalHome2.SetActive(true);
+                break;
+            case (Background.PhysicalHome3):
+                PhysicalHome3.SetActive(true);
+                break;
+            default:
+                break;
+        }
         
         augLayer = LayerMask.NameToLayer("AugObj");
         norLayer = LayerMask.NameToLayer("NorObj");
