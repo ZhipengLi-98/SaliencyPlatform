@@ -180,6 +180,22 @@ public class ColorManager : MonoBehaviour
         targetHue = curHue - error;
         curObject.GetComponent<Renderer>().material.color = Color.HSVToRGB(curHue, 1.0f, 1.0f);
         print(curObject.transform.name);
+        
+        int t = UnityEngine.Random.Range(1, 4);
+        startLevel = t;
+        if (startLevel == 1)
+        {
+            INIT_FRAMES = 600;
+        }
+        else if (startLevel == 2)
+        {
+            INIT_FRAMES = 450;
+        }
+        else if (startLevel == 3)
+        {
+            INIT_FRAMES = 300;
+        }
+        augFrames = INIT_FRAMES;
     }
 
     // Start is called before the first frame update

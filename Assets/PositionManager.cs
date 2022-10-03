@@ -177,6 +177,22 @@ public class PositionManager : MonoBehaviour
         tarPosition = maxPosition;
         
         oriMaterial = curObject.GetComponent<Renderer>().material;
+
+        int t = UnityEngine.Random.Range(1, 4);
+        startLevel = t;
+        if (startLevel == 1)
+        {
+            INIT_FRAMES = 600;
+        }
+        else if (startLevel == 2)
+        {
+            INIT_FRAMES = 450;
+        }
+        else if (startLevel == 3)
+        {
+            INIT_FRAMES = 300;
+        }
+        augFrames = INIT_FRAMES;
     }
 
     public void TriggerUp(SteamVR_Action_Boolean fromAction, SteamVR_Input_Sources fromSource)
