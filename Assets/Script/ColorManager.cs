@@ -30,6 +30,9 @@ public class ColorManager : MonoBehaviour
 
     public GameObject camera;
 
+    [Range(1, 3)]
+    public int startLevel = 1;
+
     private int INIT_FRAMES = 1200;
 
     private int augFrames;
@@ -178,6 +181,18 @@ public class ColorManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        if (startLevel == 1)
+        {
+            INIT_FRAMES = 1200;
+        }
+        else if (startLevel == 2)
+        {
+            INIT_FRAMES = 900;
+        }
+        else if (startLevel == 3)
+        {
+            INIT_FRAMES = 600;
+        }
         augLayer = LayerMask.NameToLayer("AugObj");
         norLayer = LayerMask.NameToLayer("NorObj");
 

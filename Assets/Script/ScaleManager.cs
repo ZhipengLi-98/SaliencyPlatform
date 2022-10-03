@@ -25,6 +25,9 @@ public class ScaleManager : MonoBehaviour
 
     public GameObject camera;
 
+    [Range(1, 3)]
+    public int startLevel = 1;
+
     private int INIT_FRAMES = 600;
 
     private int augFrames;
@@ -103,6 +106,18 @@ public class ScaleManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        if (startLevel == 1)
+        {
+            INIT_FRAMES = 600;
+        }
+        else if (startLevel == 2)
+        {
+            INIT_FRAMES = 450;
+        }
+        else if (startLevel == 3)
+        {
+            INIT_FRAMES = 300;
+        }
         home.SetActive(isHome);
         lab.SetActive(isLab);
         cafe.SetActive(isCafe);

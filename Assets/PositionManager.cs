@@ -25,6 +25,8 @@ public class PositionManager : MonoBehaviour
 
     public GameObject camera;
 
+    [Range(1, 3)]
+    public int startLevel = 1;
     private int INIT_FRAMES = 600;
 
     private int augFrames;
@@ -154,8 +156,7 @@ public class PositionManager : MonoBehaviour
             curObject.GetComponent<Renderer>().material = oriMaterial;
         }
         curObject = userInterefaces[UnityEngine.Random.Range(0, userInterefaces.Count)];
-
-        if (UnityEngine.Random.Range(0, 2) > 1)
+        if (UnityEngine.Random.Range(0, 2) > 0.5f)
         {
             minPosition = new Vector3(curObject.transform.position.x, curObject.transform.position.y, curObject.transform.position.z);
             maxPosition = new Vector3(curObject.transform.position.x, 0.1f + curObject.transform.position.y, curObject.transform.position.z);
@@ -165,7 +166,7 @@ public class PositionManager : MonoBehaviour
             minPosition = new Vector3(curObject.transform.position.x, curObject.transform.position.y, curObject.transform.position.z);
             maxPosition = new Vector3(0.1f + curObject.transform.position.x, curObject.transform.position.y, curObject.transform.position.z);
         }
-        
+
         oriPosition = minPosition;
         tarPosition = maxPosition;
         
@@ -183,7 +184,7 @@ public class PositionManager : MonoBehaviour
         writer.WriteLine("Noticed" + " " + Time.time);
         writer.Flush();
         
-        if (UnityEngine.Random.Range(0, 2) > 1)
+        if (UnityEngine.Random.Range(0, 2) > 0.5f)
         {
             minPosition = new Vector3(curObject.transform.position.x, curObject.transform.position.y, curObject.transform.position.z);
             maxPosition = new Vector3(curObject.transform.position.x, 0.1f + curObject.transform.position.y, curObject.transform.position.z);
@@ -211,6 +212,19 @@ public class PositionManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        if (startLevel == 1)
+        {
+            INIT_FRAMES = 600;
+        }
+        else if (startLevel == 2)
+        {
+            INIT_FRAMES = 450;
+        }
+        else if (startLevel == 3)
+        {
+            INIT_FRAMES = 300;
+        }
+
         home.SetActive(isHome);
         lab.SetActive(isLab);
         cafe.SetActive(isCafe);

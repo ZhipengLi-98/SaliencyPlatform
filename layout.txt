@@ -138,17 +138,3 @@ Viewer, -0.6, 1.7, 0.7
 Viewer, -0.6, 1.4, 0.7
 Viewer, 0.6, 1.7, 0.7
 Viewer, 0.6, 1.4, 0.7
-Start
-Keyboard, -0.6, 1.4, 0.99
-VideoPlayer, -0.7, 1.2, 0.7
-Icon, 0.6, 0.8, 0.7
-Icon, 0.6, 1.0, 0.7
-Icon, 0.6, 1.2, 0.7
-Icon, 0.6, 1.4, 0.7
-Icon, 0.6, 1.6, 0.7
-Viewer, -0.6, 1.7, 0.7
-Viewer, -0.6, 0.8, 0.7
-Viewer, 0, 1.7, 0.7
-Viewer, 0, 1.4, 0.7
-Viewer, 0, 1.1, 0.7
-Viewer, 0, 0.8, 0.7
