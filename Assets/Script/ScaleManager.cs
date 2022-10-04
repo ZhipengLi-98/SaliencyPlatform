@@ -169,10 +169,6 @@ public class ScaleManager : MonoBehaviour
         layout = new List<Dictionary<string, List<Vector3>>>();
         ReadLayout();
         NextLayout();
-
-        player = videoPlayer.GetComponent<UnityEngine.Video.VideoPlayer>();
-        int videoIndex = UnityEngine.Random.Range(1, 14);
-        player.url = "./Assets/Videos/" + videoIndex + ".mp4";
     }
 
     private void NextLayout()
@@ -253,9 +249,9 @@ public class ScaleManager : MonoBehaviour
             INIT_FRAMES = 300;
         }
         augFrames = INIT_FRAMES;
-        
+
         player = videoPlayer.GetComponent<UnityEngine.Video.VideoPlayer>();
-        int videoIndex = UnityEngine.Random.Range(1, 14);
+        int videoIndex = UnityEngine.Random.Range(1, 20);
         player.url = "./Assets/Videos/" + videoIndex + ".mp4";
     }
 

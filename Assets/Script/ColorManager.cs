@@ -198,7 +198,7 @@ public class ColorManager : MonoBehaviour
         augFrames = INIT_FRAMES;
 
         player = videoPlayer.GetComponent<UnityEngine.Video.VideoPlayer>();
-        int videoIndex = UnityEngine.Random.Range(1, 14);
+        int videoIndex = UnityEngine.Random.Range(1, 20);
         player.url = "./Assets/Videos/" + videoIndex + ".mp4";
     }
 
