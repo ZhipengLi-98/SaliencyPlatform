@@ -271,6 +271,12 @@ public class ScaleManager : MonoBehaviour
 
         oriScale = minScale;
         tarScale = maxScale;
+        
+        augTimer = UnityEngine.Random.Range(5, 15);
+        isAug = true;
+        scaleAug = false;
+        curFrames = 0;
+        NextLayout();
     }
 
     public void TriggerDown(SteamVR_Action_Boolean fromAction, SteamVR_Input_Sources fromSource)

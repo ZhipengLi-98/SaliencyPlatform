@@ -89,6 +89,11 @@ public class ColorManager : MonoBehaviour
         curObject.GetComponent<Renderer>().material.color = Color.HSVToRGB(curHue, 0f, 1.0f);
         writer.WriteLine("Noticed" + " " + Time.time);
         writer.Flush();
+        
+        augTimer = UnityEngine.Random.Range(5, 15);
+        isAug = true;
+        colorAug = false;
+        NextLayout();
     }
 
     public void TriggerDown(SteamVR_Action_Boolean fromAction, SteamVR_Input_Sources fromSource)
