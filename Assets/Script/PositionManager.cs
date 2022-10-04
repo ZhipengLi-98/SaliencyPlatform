@@ -70,6 +70,8 @@ public class PositionManager : MonoBehaviour
     private bool isWait = false;
     private float waitTimer = 0f;
 
+    private UnityEngine.Video.VideoPlayer player;
+
     string Vector3ToString(Vector3 v)
     {
         string res = v.x + " " + v.y + " " + v.z;
@@ -193,6 +195,10 @@ public class PositionManager : MonoBehaviour
             INIT_FRAMES = 300;
         }
         augFrames = INIT_FRAMES;
+
+        player = videoPlayer.GetComponent<UnityEngine.Video.VideoPlayer>();
+        int videoIndex = UnityEngine.Random.Range(1, 14);
+        player.url = "./Assets/Videos/" + videoIndex + ".mp4";
     }
 
     public void TriggerUp(SteamVR_Action_Boolean fromAction, SteamVR_Input_Sources fromSource)

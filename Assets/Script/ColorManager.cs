@@ -68,7 +68,7 @@ public class ColorManager : MonoBehaviour
     private float targetHue = 0f;
     private float error = 1e-6f;
 
-    public UnityEngine.Video.VideoPlayer player;
+    private UnityEngine.Video.VideoPlayer player;
 
     string Vector3ToString(Vector3 v)
     {
@@ -196,6 +196,10 @@ public class ColorManager : MonoBehaviour
             INIT_FRAMES = 300;
         }
         augFrames = INIT_FRAMES;
+
+        player = videoPlayer.GetComponent<UnityEngine.Video.VideoPlayer>();
+        int videoIndex = UnityEngine.Random.Range(1, 14);
+        player.url = "./Assets/Videos/" + videoIndex + ".mp4";
     }
 
     // Start is called before the first frame update
