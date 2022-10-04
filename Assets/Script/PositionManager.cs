@@ -352,7 +352,10 @@ public class PositionManager : MonoBehaviour
                 {
                     if (tarPosition.y < oriPosition.y || tarPosition.x < oriPosition.x)
                     {
-                        augFrames = (int) (augFrames * 0.8f);
+                        if (augFrames > 60)
+                        {
+                            augFrames = (int) (augFrames - 60);
+                        }
                     }
                     curFrames = -1;
                     isWait = true;

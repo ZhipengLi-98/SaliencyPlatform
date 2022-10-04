@@ -380,7 +380,10 @@ public class ScaleManager : MonoBehaviour
                 {
                     if (tarScale.x < oriScale.x)
                     {
-                        augFrames = (int) (augFrames * 0.8f);
+                        if (augFrames > 60)
+                        {
+                            augFrames = (int) (augFrames - 60);
+                        }
                     }
                     curFrames = -1;
                     isWait = true;

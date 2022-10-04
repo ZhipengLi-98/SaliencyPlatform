@@ -313,7 +313,10 @@ public class ColorManager : MonoBehaviour
             curObject.GetComponent<Renderer>().material.color = Color.HSVToRGB(curHue, 1.0f, 1.0f);
             if (curFrames == 0)
             {
-                augFrames = (int) (augFrames * 0.8f);
+                if (augFrames > 120)
+                {
+                    augFrames = (int) (augFrames - 120);
+                }
             }
         }
     }
