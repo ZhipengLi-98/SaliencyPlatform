@@ -70,6 +70,8 @@ public class PositionManager : MonoBehaviour
     private bool isWait = false;
     private float waitTimer = 0f;
 
+    private float curHue = 0f;
+
     private UnityEngine.Video.VideoPlayer player;
 
     string Vector3ToString(Vector3 v)
@@ -164,6 +166,7 @@ public class PositionManager : MonoBehaviour
             curObject.GetComponent<Renderer>().material = oriMaterial;
         }
         curObject = userInterefaces[UnityEngine.Random.Range(0, userInterefaces.Count)];
+        curHue = curObject.GetComponent<Renderer>().material.color[0];
         if (UnityEngine.Random.Range(0, 2) > 0.5f)
         {
             minPosition = new Vector3(curObject.transform.position.x, curObject.transform.position.y, curObject.transform.position.z);
@@ -205,8 +208,10 @@ public class PositionManager : MonoBehaviour
     {
         curObject.transform.position = minPosition;
         curObject.layer = norLayer;
-        curObject.GetComponent<Renderer>().material = oriMaterial;
+        // curObject.GetComponent<Renderer>().material = oriMaterial;
+        curObject.GetComponent<Renderer>().material.color = Color.HSVToRGB(curHue, 0f, 1.0f);
         curObject = userInterefaces[UnityEngine.Random.Range(0, userInterefaces.Count)];
+        curHue = curObject.GetComponent<Renderer>().material.color[0];
         curObject.layer = augLayer;
         print(curObject.transform.name);
         writer.WriteLine("Noticed" + " " + Time.time);
@@ -225,7 +230,7 @@ public class PositionManager : MonoBehaviour
         
         oriPosition = minPosition;
         tarPosition = maxPosition;
-        
+
         augTimer = UnityEngine.Random.Range(5, 15);
         isAug = true;
         positionAug = false;
@@ -235,9 +240,10 @@ public class PositionManager : MonoBehaviour
 
     public void TriggerDown(SteamVR_Action_Boolean fromAction, SteamVR_Input_Sources fromSource)
     {
-        oriMaterial = curObject.GetComponent<Renderer>().material;
-        print(oriMaterial.name);
-        curObject.GetComponent<Renderer>().material = redMaterial;
+        // oriMaterial = curObject.GetComponent<Renderer>().material;
+        // print(oriMaterial.name);
+        // curObject.GetComponent<Renderer>().material = redMaterial;
+        curObject.GetComponent<Renderer>().material.color = Color.HSVToRGB(curHue, 1.0f, 0f);
         positionAug = false;
         augFrames = INIT_FRAMES;
         curFrames = 0;
