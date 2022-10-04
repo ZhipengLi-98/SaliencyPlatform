@@ -163,7 +163,8 @@ public class PositionManager : MonoBehaviour
         if (curObject != null)
         {
             curObject.layer = norLayer;
-            curObject.GetComponent<Renderer>().material = oriMaterial;
+            // curObject.GetComponent<Renderer>().material = oriMaterial;
+            curObject.GetComponent<Renderer>().material.color = Color.HSVToRGB(curHue, 0f, 1.0f);
         }
         curObject = userInterefaces[UnityEngine.Random.Range(0, userInterefaces.Count)];
         curHue = curObject.GetComponent<Renderer>().material.color[0];
