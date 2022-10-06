@@ -184,20 +184,28 @@ public class PositionManager : MonoBehaviour
         
         oriMaterial = curObject.GetComponent<Renderer>().material;
 
-        int t = UnityEngine.Random.Range(1, 4);
-        startLevel = t;
-        if (startLevel == 1)
+        if (viewerList.Contains(curObject))
         {
             INIT_FRAMES = 600;
         }
-        else if (startLevel == 2)
-        {
-            INIT_FRAMES = 450;
-        }
-        else if (startLevel == 3)
+        else if  (iconList.Contains(curObject))
         {
             INIT_FRAMES = 300;
         }
+        // int t = UnityEngine.Random.Range(1, 4);
+        // startLevel = t;
+        // if (startLevel == 1)
+        // {
+        //     INIT_FRAMES = 600;
+        // }
+        // else if (startLevel == 2)
+        // {
+        //     INIT_FRAMES = 450;
+        // }
+        // else if (startLevel == 3)
+        // {
+        //     INIT_FRAMES = 300;
+        // }
         augFrames = INIT_FRAMES;
 
         player = videoPlayer.GetComponent<UnityEngine.Video.VideoPlayer>();
@@ -252,18 +260,19 @@ public class PositionManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        if (startLevel == 1)
-        {
-            INIT_FRAMES = 600;
-        }
-        else if (startLevel == 2)
-        {
-            INIT_FRAMES = 450;
-        }
-        else if (startLevel == 3)
-        {
-            INIT_FRAMES = 300;
-        }
+        INIT_FRAMES = 900;
+        // if (startLevel == 1)
+        // {
+        //     INIT_FRAMES = 600;
+        // }
+        // else if (startLevel == 2)
+        // {
+        //     INIT_FRAMES = 450;
+        // }
+        // else if (startLevel == 3)
+        // {
+        //     INIT_FRAMES = 300;
+        // }
 
         VirtualHome.SetActive(false);
         VirtualLab.SetActive(false);
