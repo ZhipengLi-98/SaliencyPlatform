@@ -208,7 +208,8 @@ public class ColorManager : MonoBehaviour
         // {
         //     INIT_FRAMES = 300;
         // }
-        augFrames = INIT_FRAMES;
+        augFrames = UnityEngine.Random.Range(INIT_FRAMES * 2 / 3, INIT_FRAMES * 5 / 4);
+        // augFrames = INIT_FRAMES;
 
         player = videoPlayer.GetComponent<UnityEngine.Video.VideoPlayer>();
         int videoIndex = UnityEngine.Random.Range(1, 20);

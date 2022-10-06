@@ -249,7 +249,7 @@ public class ScaleManager : MonoBehaviour
         }
         else if  (iconList.Contains(curObject))
         {
-            INIT_FRAMES = 300;
+            INIT_FRAMES = 600;
         }
         // int t = UnityEngine.Random.Range(1, 4);
         // startLevel = t;
@@ -265,7 +265,8 @@ public class ScaleManager : MonoBehaviour
         // {
         //     INIT_FRAMES = 300;
         // }
-        augFrames = INIT_FRAMES;
+        augFrames = UnityEngine.Random.Range(INIT_FRAMES * 2 / 3, INIT_FRAMES * 5 / 4);
+        // augFrames = INIT_FRAMES;
 
         player = videoPlayer.GetComponent<UnityEngine.Video.VideoPlayer>();
         int videoIndex = UnityEngine.Random.Range(1, 20);
