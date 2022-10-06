@@ -1,13 +1,12 @@
 {
   "dependencies": {
-    "com.tobii.xr.sdk": "file:C:/Users/a/Downloads/TobiiXRSDK_3.0.1.179",
+    "com.tobii.xr.sdk": "file:C:/Users/lizhi/Downloads/TobiiXRSDK_3.0.1.179",
     "com.unity.collab-proxy": "1.15.17",
-    "com.unity.ext.nunit": "1.0.0",
+    "com.unity.ext.nunit": "1.0.6",
     "com.unity.feature.development": "1.0.1",
     "com.unity.ide.rider": "3.0.14",
     "com.unity.ide.visualstudio": "2.0.15",
     "com.unity.ide.vscode": "1.2.5",
-    "com.unity.package-manager-ui": "2.2.0",
     "com.unity.postprocessing": "3.2.2",
     "com.unity.probuilder": "5.0.6",
     "com.unity.progrids": "3.0.3-preview.6",

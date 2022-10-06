@@ -28,6 +28,7 @@ public class UpdateMaterial : MonoBehaviour
                     temp.material.color = this.GetComponent<Renderer>().material.color;   
                 }
             }
+            t.gameObject.layer = this.transform.gameObject.layer;
         }
     }
 }

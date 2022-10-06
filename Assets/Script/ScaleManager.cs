@@ -267,7 +267,6 @@ public class ScaleManager : MonoBehaviour
         curObject.GetComponent<Renderer>().material.color = Color.HSVToRGB(curHue, 0f, 1.0f);
         curObject = userInterefaces[UnityEngine.Random.Range(0, userInterefaces.Count)];
         curHue = curObject.GetComponent<Renderer>().material.color[0];
-        curObject.layer = augLayer;
         print(curObject.transform.name);
         writer.WriteLine("Noticed" + " " + Time.time);
         writer.Flush();
@@ -365,6 +364,7 @@ public class ScaleManager : MonoBehaviour
         var eyeTrackingData = TobiiXR.GetEyeTrackingData(TobiiXR_TrackingSpace.World);
         if (scaleAug)
         {   
+            curObject.layer = augLayer;
             // waitTimer is a random time interval to prevent the sudden change between scaling up and down
             if (waitTimer > 0)
             {
