@@ -230,6 +230,10 @@ public class ScaleManager : MonoBehaviour
             // curObject.GetComponent<Renderer>().material = oriMaterial;
             curObject.GetComponent<Renderer>().material.color = Color.HSVToRGB(curHue, 0f, 1.0f);
         }
+        foreach (GameObject ui in userInterefaces)
+        {
+            ui.transform.localScale = UnityEngine.Random.Range(0.8f, 1.2f) * ui.transform.localScale;
+        }
         curObject = userInterefaces[UnityEngine.Random.Range(0, userInterefaces.Count)];
         curHue = curObject.GetComponent<Renderer>().material.color[0];
         minScale = new Vector3(curObject.transform.localScale.x, curObject.transform.localScale.y, curObject.transform.localScale.z);
