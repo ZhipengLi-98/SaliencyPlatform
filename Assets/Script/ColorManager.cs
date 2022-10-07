@@ -146,7 +146,7 @@ public class ColorManager : MonoBehaviour
             {
                 icon.transform.rotation = icon.transform.rotation * Quaternion.Euler(0, 180, 0);
             }
-            icon.GetComponent<Renderer>().material.color = Color.HSVToRGB(UnityEngine.Random.Range(0f, 1f), 1.0f, 1.0f);
+            // icon.GetComponent<Renderer>().material.color = Color.HSVToRGB(UnityEngine.Random.Range(0f, 1f), 1.0f, 1.0f);
         }
         list.Clear();
         for (int n = 0; n < viewerList.Count; n++) 
@@ -164,7 +164,7 @@ public class ColorManager : MonoBehaviour
             {
                 viewer.transform.rotation = viewer.transform.rotation * Quaternion.Euler(0, 180, 0);
             }
-            viewer.GetComponent<Renderer>().material.color = Color.HSVToRGB(UnityEngine.Random.Range(0f, 1f), 1.0f, 1.0f);
+            // viewer.GetComponent<Renderer>().material.color = Color.HSVToRGB(UnityEngine.Random.Range(0f, 1f), 1.0f, 1.0f);
         }
         keyboard.transform.position = layout[layoutCnt]["Keyboard"][0];
         keyboard.transform.LookAt(camera.transform);
