@@ -26,16 +26,24 @@ public class ColorManager : MonoBehaviour
 
     public SteamVR_Input_Sources controller;
 
-    public List<GameObject> userInterefaces = new List<GameObject>();
-    public List<GameObject> iconList = new List<GameObject>();
-    public List<GameObject> viewerList = new List<GameObject>();
+    public List<GameObject> typingUserInterefaces = new List<GameObject>();
+    public List<GameObject> typingIconList = new List<GameObject>();
+    public List<GameObject> typingViewerList = new List<GameObject>();
+    public List<GameObject> videoUserInterefaces = new List<GameObject>();
+    public List<GameObject> videoIconList = new List<GameObject>();
+    public List<GameObject> videoViewerList = new List<GameObject>();
+    private List<GameObject> userInterefaces;
+    private List<GameObject> iconList;
+    private List<GameObject> viewerList;
     public GameObject videoPlayer;
     public GameObject keyboard;
 
+    public bool isVideo;
+
     public GameObject camera;
 
-    [Range(1, 3)]
-    public int startLevel = 1;
+    // [Range(1, 3)]
+    // public int startLevel = 1;
 
     private int INIT_FRAMES = 1200;
 
@@ -148,6 +156,14 @@ public class ColorManager : MonoBehaviour
             {
                 icon.transform.rotation = icon.transform.rotation * Quaternion.Euler(0, 180, 0);
             }
+            if (icon.transform.name == "TimeWidget")
+            {
+                icon.transform.rotation = icon.transform.rotation * Quaternion.Euler(0, 180, 0);
+            }
+            if (icon.transform.name == "10621_CoastGuardHelicopter")
+            {
+                icon.transform.rotation = icon.transform.rotation * Quaternion.Euler(-90, -90, 0);
+            }
             // icon.GetComponent<Renderer>().material.color = Color.HSVToRGB(UnityEngine.Random.Range(0f, 1f), 1.0f, 1.0f);
         }
         list.Clear();
@@ -162,10 +178,6 @@ public class ColorManager : MonoBehaviour
             list.RemoveAt(index);
             viewer.transform.position = layout[layoutCnt]["Viewer"][i];
             viewer.transform.LookAt(camera.transform);
-            if (viewer.transform.name == "TimeWidget")
-            {
-                viewer.transform.rotation = viewer.transform.rotation * Quaternion.Euler(0, 180, 0);
-            }
             // viewer.GetComponent<Renderer>().material.color = Color.HSVToRGB(UnityEngine.Random.Range(0f, 1f), 1.0f, 1.0f);
         }
         keyboard.transform.position = layout[layoutCnt]["Keyboard"][0];
@@ -237,6 +249,35 @@ public class ColorManager : MonoBehaviour
         // }
         augLayer = LayerMask.NameToLayer("AugObj");
         norLayer = LayerMask.NameToLayer("NorObj");
+
+        if (isVideo)
+        {
+            userInterefaces = videoUserInterefaces;
+            iconList = videoIconList;
+            viewerList = videoViewerList;
+            foreach (GameObject g in typingUserInterefaces)
+            {
+                g.SetActive(false);
+            }
+            foreach (GameObject g in videoUserInterefaces)
+            {
+                g.SetActive(true);
+            }
+        }
+        else
+        {
+            userInterefaces = typingUserInterefaces;
+            iconList = typingIconList;
+            viewerList = typingViewerList;
+            foreach (GameObject g in typingUserInterefaces)
+            {
+                g.SetActive(true);
+            }
+            foreach (GameObject g in videoUserInterefaces)
+            {
+                g.SetActive(false);
+            }
+        }
 
         VirtualHome.SetActive(false);
         VirtualLab.SetActive(false);

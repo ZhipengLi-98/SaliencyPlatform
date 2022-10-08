@@ -25,12 +25,10 @@ public class ScaleManager : MonoBehaviour
 
     public SteamVR_Input_Sources controller;
 
-    public List<GameObject> userInterefaces = new List<GameObject>();
-
     public GameObject camera;
 
-    [Range(1, 3)]
-    public int startLevel = 1;
+    // [Range(1, 3)]
+    // public int startLevel = 1;
 
     private int INIT_FRAMES = 600;
 
@@ -44,10 +42,19 @@ public class ScaleManager : MonoBehaviour
     private Vector3 tarScale;
     private Vector3 minScale;
     private Vector3 maxScale;
-    public List<GameObject> iconList = new List<GameObject>();
-    public List<GameObject> viewerList = new List<GameObject>();
+    public List<GameObject> typingUserInterefaces = new List<GameObject>();
+    public List<GameObject> typingIconList = new List<GameObject>();
+    public List<GameObject> typingViewerList = new List<GameObject>();
+    public List<GameObject> videoUserInterefaces = new List<GameObject>();
+    public List<GameObject> videoIconList = new List<GameObject>();
+    public List<GameObject> videoViewerList = new List<GameObject>();
+    private List<GameObject> userInterefaces;
+    private List<GameObject> iconList;
+    private List<GameObject> viewerList;
     public GameObject videoPlayer;
     public GameObject keyboard;
+
+    public bool isVideo;
 
     private GameObject curObject;
 
@@ -159,6 +166,36 @@ public class ScaleManager : MonoBehaviour
         
         augLayer = LayerMask.NameToLayer("AugObj");
         norLayer = LayerMask.NameToLayer("NorObj");
+
+        if (isVideo)
+        {
+            userInterefaces = videoUserInterefaces;
+            iconList = videoIconList;
+            viewerList = videoViewerList;
+            foreach (GameObject g in typingUserInterefaces)
+            {
+                g.SetActive(false);
+            }
+            foreach (GameObject g in videoUserInterefaces)
+            {
+                g.SetActive(true);
+            }
+        }
+        else
+        {
+            userInterefaces = typingUserInterefaces;
+            iconList = typingIconList;
+            viewerList = typingViewerList;
+            foreach (GameObject g in typingUserInterefaces)
+            {
+                g.SetActive(true);
+            }
+            foreach (GameObject g in videoUserInterefaces)
+            {
+                g.SetActive(false);
+            }
+        }
+
         if (!ifGaze)
         {
             notice.AddOnStateUpListener(TriggerUp, controller);
@@ -192,7 +229,15 @@ public class ScaleManager : MonoBehaviour
             {
                 icon.transform.rotation = icon.transform.rotation * Quaternion.Euler(0, 180, 0);
             }
-            icon.GetComponent<Renderer>().material.color = Color.HSVToRGB(UnityEngine.Random.Range(0f, 1f), 1.0f, 1.0f);
+            if (icon.transform.name == "TimeWidget")
+            {
+                icon.transform.rotation = icon.transform.rotation * Quaternion.Euler(0, 180, 0);
+            }
+            if (icon.transform.name == "10621_CoastGuardHelicopter")
+            {
+                icon.transform.rotation = icon.transform.rotation * Quaternion.Euler(-90, -90, 0);
+            }
+            // icon.GetComponent<Renderer>().material.color = Color.HSVToRGB(UnityEngine.Random.Range(0f, 1f), 1.0f, 1.0f);
         }
         list.Clear();
         for (int n = 0; n < viewerList.Count; n++) 
@@ -206,11 +251,7 @@ public class ScaleManager : MonoBehaviour
             list.RemoveAt(index);
             viewer.transform.position = layout[layoutCnt]["Viewer"][i];
             viewer.transform.LookAt(camera.transform);
-            if (viewer.transform.name == "TimeWidget")
-            {
-                viewer.transform.rotation = viewer.transform.rotation * Quaternion.Euler(0, 180, 0);
-            }
-            viewer.GetComponent<Renderer>().material.color = Color.HSVToRGB(UnityEngine.Random.Range(0f, 1f), 1.0f, 1.0f);
+            // viewer.GetComponent<Renderer>().material.color = Color.HSVToRGB(UnityEngine.Random.Range(0f, 1f), 1.0f, 1.0f);
         }
         keyboard.transform.position = layout[layoutCnt]["Keyboard"][0];
         keyboard.transform.LookAt(camera.transform);
@@ -229,7 +270,7 @@ public class ScaleManager : MonoBehaviour
             curObject.transform.localScale = minScale;
             curObject.layer = norLayer;
             // curObject.GetComponent<Renderer>().material = oriMaterial;
-            curObject.GetComponent<Renderer>().material.color = Color.HSVToRGB(curHue, 0f, 1.0f);
+            // curObject.GetComponent<Renderer>().material.color = Color.HSVToRGB(curHue, 0f, 1.0f);
         }
         foreach (GameObject ui in userInterefaces)
         {
@@ -407,9 +448,9 @@ public class ScaleManager : MonoBehaviour
                 {
                     if (tarScale.x < oriScale.x)
                     {
-                        if (augFrames > 60)
+                        if (augFrames > INIT_FRAMES / 10)
                         {
-                            augFrames = (int) (augFrames - 60);
+                            augFrames = (int) (augFrames - INIT_FRAMES / 10);
                         }
                     }
                     curFrames = -1;
