@@ -65,6 +65,8 @@ public class ColorManager : MonoBehaviour
     private float waitTimer = 0f;
 
     private float curHue = 0f;
+    private float curSat = 0f;
+    private bool satFlag = true;
     private float targetHue = 0f;
     private float error = 1e-6f;
 
@@ -99,7 +101,7 @@ public class ColorManager : MonoBehaviour
     public void TriggerDown(SteamVR_Action_Boolean fromAction, SteamVR_Input_Sources fromSource)
     {
         // Set as black
-        curObject.GetComponent<Renderer>().material.color = Color.HSVToRGB(curHue, 1.0f, 0f);
+        curObject.GetComponent<Renderer>().material.color = Color.HSVToRGB(curHue, 1f, 0f);
         colorAug = false;
         augFrames = INIT_FRAMES;
         curFrames = 0;
@@ -182,8 +184,9 @@ public class ColorManager : MonoBehaviour
         curObject.GetComponent<Renderer>().material.color = Color.HSVToRGB(curHue, 0f, 1.0f);
         curObject = userInterefaces[UnityEngine.Random.Range(0, userInterefaces.Count)];
         curHue = UnityEngine.Random.Range(0f, 1f);
-        targetHue = curHue - error;
-        curObject.GetComponent<Renderer>().material.color = Color.HSVToRGB(curHue, 1.0f, 1.0f);
+        satFlag = true;
+        curSat = 0f;
+        curObject.GetComponent<Renderer>().material.color = Color.HSVToRGB(curHue, curSat, 1.0f);
         print(curObject.transform.name);
         
         if (viewerList.Contains(curObject))
@@ -273,7 +276,9 @@ public class ColorManager : MonoBehaviour
         augFrames = INIT_FRAMES;
         curObject = userInterefaces[UnityEngine.Random.Range(0, userInterefaces.Count)];
         curHue = UnityEngine.Random.Range(0f, 1f);
-        curObject.GetComponent<Renderer>().material.color = Color.HSVToRGB(curHue, 1.0f, 1.0f);
+        satFlag = true;
+        curSat = 0f;
+        curObject.GetComponent<Renderer>().material.color = Color.HSVToRGB(curHue, curSat, 1.0f);
         print(curObject.transform.name);
 
         layout = new List<Dictionary<string, List<Vector3>>>();
@@ -298,7 +303,9 @@ public class ColorManager : MonoBehaviour
             curObject.GetComponent<Renderer>().material.color = Color.HSVToRGB(curHue, 0f, 1.0f);
             curObject = userInterefaces[UnityEngine.Random.Range(0, userInterefaces.Count)];
             curHue = UnityEngine.Random.Range(0f, 1f);
-            curObject.GetComponent<Renderer>().material.color = Color.HSVToRGB(curHue, 1.0f, 1.0f);
+            satFlag = true;
+            curSat = 0f;
+            curObject.GetComponent<Renderer>().material.color = Color.HSVToRGB(curHue, curSat, 1.0f);
             print(Time.time);
         }
         if (augTimer > 0)
@@ -320,17 +327,33 @@ public class ColorManager : MonoBehaviour
             writer.Flush();
 
             curFrames = (curFrames + 1) % (augFrames);
-            curHue += (1.0f / augFrames);
-            if (curHue - 1.0f > error)
+            if (satFlag)
             {
-                curHue -= 1.0f;
+                curSat += (1f / augFrames);
+                if (curSat > 1f)
+                {
+                    satFlag = false;
+                }
             }
-            curObject.GetComponent<Renderer>().material.color = Color.HSVToRGB(curHue, 1.0f, 1.0f);
+            else
+            {
+                curSat -= (1f / augFrames);
+                if (curSat < 0f)
+                {
+                    satFlag = true;
+                }
+            }
+            // curHue += (1.0f / augFrames);
+            // if (curHue - 1.0f > error)
+            // {
+            //     curHue -= 1.0f;
+            // }
+            curObject.GetComponent<Renderer>().material.color = Color.HSVToRGB(curHue, curSat, 1.0f);
             if (curFrames == 0)
             {
-                if (augFrames > 120)
+                if (augFrames > INIT_FRAMES / 10)
                 {
-                    augFrames = (int) (augFrames - 120);
+                    augFrames = (int) (augFrames - INIT_FRAMES / 10);
                 }
             }
         }
