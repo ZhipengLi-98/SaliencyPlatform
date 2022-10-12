@@ -47,7 +47,7 @@ public class ColorManager : MonoBehaviour
 
     private int INIT_FRAMES = 1200;
 
-    private int augFrames;
+    public int augFrames;
     private int curFrames = 0;
 
     private float timer = 0f;
@@ -57,7 +57,7 @@ public class ColorManager : MonoBehaviour
     public string user = "test.txt";
     private StreamWriter writer;
 
-    private GameObject curObject;
+    public GameObject curObject;
 
     private int augLayer;
     private int norLayer;
@@ -203,11 +203,11 @@ public class ColorManager : MonoBehaviour
         
         if (viewerList.Contains(curObject))
         {
-            INIT_FRAMES = 1200;
+            INIT_FRAMES = 450;
         }
         else if  (iconList.Contains(curObject))
         {
-            INIT_FRAMES = 900;
+            INIT_FRAMES = 240;
         }
         // int t = UnityEngine.Random.Range(1, 4);
         // startLevel = t;
@@ -224,7 +224,6 @@ public class ColorManager : MonoBehaviour
         //     INIT_FRAMES = 300;
         // }
         augFrames = UnityEngine.Random.Range(INIT_FRAMES * 2 / 3, INIT_FRAMES * 5 / 4);
-        // augFrames = INIT_FRAMES;
 
         player = videoPlayer.GetComponent<UnityEngine.Video.VideoPlayer>();
         int videoIndex = UnityEngine.Random.Range(1, 20);

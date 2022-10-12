@@ -32,7 +32,7 @@ public class ScaleManager : MonoBehaviour
 
     private int INIT_FRAMES = 600;
 
-    private int augFrames;
+    public int augFrames;
     private int curFrames = 0;
 
     private float timer = 0f;
@@ -56,7 +56,7 @@ public class ScaleManager : MonoBehaviour
 
     public bool isVideo;
 
-    private GameObject curObject;
+    public GameObject curObject;
 
     public string user = "test.txt";
     private StreamWriter writer;
