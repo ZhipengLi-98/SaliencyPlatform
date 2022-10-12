@@ -127,7 +127,7 @@ public class PositionManager : MonoBehaviour
             int index = UnityEngine.Random.Range(0, list.Count - 1);
             int i = list[index];
             list.RemoveAt(index);
-            icon.transform.position = layout[layoutCnt]["Icon"][i];
+            icon.transform.position = camera.transform.position + camera.transform.rotation * (layout[layoutCnt]["Icon"][i] - new Vector3(0f, 1.2f, 0f));
             icon.transform.LookAt(camera.transform);
             if (icon.transform.name == "HMDModel")
             {
@@ -139,7 +139,7 @@ public class PositionManager : MonoBehaviour
             }
             if (icon.transform.name == "10621_CoastGuardHelicopter")
             {
-                icon.transform.rotation = icon.transform.rotation * Quaternion.Euler(-90, -90, 0);
+                icon.transform.rotation = icon.transform.rotation * Quaternion.Euler(-90, -45, 0);
             }
             // print(icon.transform.name + " " + i + " "+ icon.transform.position);
             // icon.GetComponent<Renderer>().material.color = Color.HSVToRGB(UnityEngine.Random.Range(0f, 1f), 1.0f, 1.0f);
@@ -154,7 +154,7 @@ public class PositionManager : MonoBehaviour
             int index = UnityEngine.Random.Range(0, list.Count - 1);
             int i = list[index];
             list.RemoveAt(index);
-            viewer.transform.position = layout[layoutCnt]["Viewer"][i];
+            viewer.transform.position = camera.transform.position + camera.transform.rotation * (layout[layoutCnt]["Viewer"][i] - new Vector3(0f, 1.2f, 0f));
             viewer.transform.LookAt(camera.transform);
             // print(viewer.transform.name + " " + i + " "+ viewer.transform.position);
             // viewer.GetComponent<Renderer>().material.color = Color.HSVToRGB(UnityEngine.Random.Range(0f, 1f), 1.0f, 1.0f);
