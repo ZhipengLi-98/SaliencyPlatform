@@ -246,7 +246,7 @@
             {
                "inputs" : {
                   "click" : {
-                     "output" : "/actions/default/in/test"
+                     "output" : "/actions/default/in/notice"
                   }
                },
                "mode" : "button",
@@ -255,11 +255,29 @@
             {
                "inputs" : {
                   "click" : {
-                     "output" : "/actions/default/in/test"
+                     "output" : "/actions/default/in/grab"
                   }
                },
                "mode" : "button",
                "path" : "/user/hand/right/input/trigger"
+            },
+            {
+               "inputs" : {
+                  "click" : {
+                     "output" : "/actions/default/in/test"
+                  }
+               },
+               "mode" : "button",
+               "path" : "/user/hand/left/input/grip"
+            },
+            {
+               "inputs" : {
+                  "click" : {
+                     "output" : "/actions/default/in/test"
+                  }
+               },
+               "mode" : "button",
+               "path" : "/user/hand/right/input/grip"
             }
          ]
       },
@@ -307,7 +325,7 @@
    "category" : "steamvr_input",
    "controller_type" : "vive_controller",
    "description" : "",
-   "name" : "vive_controller",
+   "name" : "为 Vive Controller 保存的 [Testing] SaliencyPlatform 配置",
    "options" : {},
    "simulated_actions" : []
 }
