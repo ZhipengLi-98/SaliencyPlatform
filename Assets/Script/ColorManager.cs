@@ -203,11 +203,11 @@ public class ColorManager : MonoBehaviour
         
         if (viewerList.Contains(curObject))
         {
-            INIT_FRAMES = 450;
+            INIT_FRAMES = 600;
         }
         else if  (iconList.Contains(curObject))
         {
-            INIT_FRAMES = 240;
+            INIT_FRAMES = 300;
         }
         // int t = UnityEngine.Random.Range(1, 4);
         // startLevel = t;
