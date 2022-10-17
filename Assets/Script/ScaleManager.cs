@@ -223,7 +223,7 @@ public class ScaleManager : MonoBehaviour
             int index = UnityEngine.Random.Range(0, list.Count - 1);
             int i = list[index];
             list.RemoveAt(index);
-            icon.transform.position = camera.transform.position + camera.transform.rotation * (layout[layoutCnt]["Icon"][i] - new Vector3(0f, 1.2f, 0f));
+            icon.transform.position = camera.transform.position + camera.transform.rotation * (layout[layoutCnt]["Icon"][i] - new Vector3(0f, 1.4f, 0f));
             icon.transform.LookAt(camera.transform);
             if (icon.transform.name == "HMDModel")
             {
@@ -249,14 +249,14 @@ public class ScaleManager : MonoBehaviour
             int index = UnityEngine.Random.Range(0, list.Count - 1);
             int i = list[index];
             list.RemoveAt(index);
-            viewer.transform.position = camera.transform.position + camera.transform.rotation * (layout[layoutCnt]["Viewer"][i] - new Vector3(0f, 1.2f, 0f));
+            viewer.transform.position = camera.transform.position + camera.transform.rotation * (layout[layoutCnt]["Viewer"][i] - new Vector3(0f, 1.4f, 0f));
             viewer.transform.LookAt(camera.transform);
             // viewer.GetComponent<Renderer>().material.color = Color.HSVToRGB(UnityEngine.Random.Range(0f, 1f), 1.0f, 1.0f);
         }
-        keyboard.transform.position = camera.transform.position + camera.transform.rotation * (layout[layoutCnt]["Keyboard"][0] - new Vector3(0f, 1.2f, 0f));
+        keyboard.transform.position = camera.transform.position + camera.transform.rotation * (layout[layoutCnt]["Keyboard"][0] - new Vector3(0f, 1.4f, 0f));
         keyboard.transform.LookAt(camera.transform);
         keyboard.transform.rotation = keyboard.transform.rotation * Quaternion.Euler(0, 180, 0);
-        videoPlayer.transform.position = camera.transform.position + camera.transform.rotation * (layout[layoutCnt]["VideoPlayer"][0] - new Vector3(0f, 1.2f, 0f));
+        videoPlayer.transform.position = camera.transform.position + camera.transform.rotation * (layout[layoutCnt]["VideoPlayer"][0] - new Vector3(0f, 1.4f, 0f));
         videoPlayer.transform.LookAt(camera.transform);
         int next = UnityEngine.Random.Range(0, layout.Count);
         while (next == layoutCnt)
@@ -279,7 +279,7 @@ public class ScaleManager : MonoBehaviour
         curObject = userInterefaces[UnityEngine.Random.Range(0, userInterefaces.Count)];
         curHue = curObject.GetComponent<Renderer>().material.color[0];
         minScale = new Vector3(curObject.transform.localScale.x, curObject.transform.localScale.y, curObject.transform.localScale.z);
-        maxScale = new Vector3(1.5f * curObject.transform.localScale.x, 1.5f * curObject.transform.localScale.y, 1.5f * curObject.transform.localScale.z);
+        maxScale = new Vector3(1.35f * curObject.transform.localScale.x, 1.35f * curObject.transform.localScale.y, 1.35f * curObject.transform.localScale.z);
         oriScale = minScale;
         tarScale = maxScale;
         oriMaterial = curObject.GetComponent<Renderer>().material;
@@ -448,7 +448,7 @@ public class ScaleManager : MonoBehaviour
                 {
                     if (tarScale.x < oriScale.x)
                     {
-                        if (augFrames > INIT_FRAMES / 10)
+                        if (augFrames > 2 * INIT_FRAMES / 10)
                         {
                             augFrames = (int) (augFrames - INIT_FRAMES / 10);
                         }

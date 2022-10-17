@@ -150,7 +150,7 @@ public class ColorManager : MonoBehaviour
             int index = UnityEngine.Random.Range(0, list.Count - 1);
             int i = list[index];
             list.RemoveAt(index);
-            icon.transform.position = camera.transform.position + camera.transform.rotation * (layout[layoutCnt]["Icon"][i] - new Vector3(0f, 1.2f, 0f));
+            icon.transform.position = camera.transform.position + camera.transform.rotation * (layout[layoutCnt]["Icon"][i] - new Vector3(0f, 1.4f, 0f));
             icon.transform.LookAt(camera.transform);
             if (icon.transform.name == "HMDModel")
             {
@@ -176,14 +176,14 @@ public class ColorManager : MonoBehaviour
             int index = UnityEngine.Random.Range(0, list.Count - 1);
             int i = list[index];
             list.RemoveAt(index);
-            viewer.transform.position = camera.transform.position + camera.transform.rotation * (layout[layoutCnt]["Viewer"][i] - new Vector3(0f, 1.2f, 0f));
+            viewer.transform.position = camera.transform.position + camera.transform.rotation * (layout[layoutCnt]["Viewer"][i] - new Vector3(0f, 1.4f, 0f));
             viewer.transform.LookAt(camera.transform);
             // viewer.GetComponent<Renderer>().material.color = Color.HSVToRGB(UnityEngine.Random.Range(0f, 1f), 1.0f, 1.0f);
         }
-        keyboard.transform.position = camera.transform.position + camera.transform.rotation * (layout[layoutCnt]["Keyboard"][0] - new Vector3(0f, 1.2f, 0f));
+        keyboard.transform.position = camera.transform.position + camera.transform.rotation * (layout[layoutCnt]["Keyboard"][0] - new Vector3(0f, 1.4f, 0f));
         keyboard.transform.LookAt(camera.transform);
         keyboard.transform.rotation = keyboard.transform.rotation * Quaternion.Euler(0, 180, 0);
-        videoPlayer.transform.position = camera.transform.position + camera.transform.rotation * (layout[layoutCnt]["VideoPlayer"][0] - new Vector3(0f, 1.2f, 0f));
+        videoPlayer.transform.position = camera.transform.position + camera.transform.rotation * (layout[layoutCnt]["VideoPlayer"][0] - new Vector3(0f, 1.4f, 0f));
         videoPlayer.transform.LookAt(camera.transform);
         int next = UnityEngine.Random.Range(0, layout.Count);
         while (next == layoutCnt)
@@ -196,6 +196,10 @@ public class ColorManager : MonoBehaviour
         curObject.GetComponent<Renderer>().material.color = Color.HSVToRGB(curHue, 0f, 1.0f);
         curObject = userInterefaces[UnityEngine.Random.Range(0, userInterefaces.Count)];
         curHue = UnityEngine.Random.Range(0f, 1f);
+        while (Math.Abs(curHue - 0f) < 0.1f || Math.Abs(curHue - 0.66f) < 0.1f)
+        {
+            curHue = UnityEngine.Random.Range(0f, 1f);
+        }
         satFlag = true;
         curSat = 0f;
         curObject.GetComponent<Renderer>().material.color = Color.HSVToRGB(curHue, curSat, 1.0f);
@@ -203,11 +207,11 @@ public class ColorManager : MonoBehaviour
         
         if (viewerList.Contains(curObject))
         {
-            INIT_FRAMES = 600;
+            INIT_FRAMES = 480;
         }
         else if  (iconList.Contains(curObject))
         {
-            INIT_FRAMES = 300;
+            INIT_FRAMES = 180;
         }
         // int t = UnityEngine.Random.Range(1, 4);
         // startLevel = t;
@@ -268,13 +272,13 @@ public class ColorManager : MonoBehaviour
             userInterefaces = typingUserInterefaces;
             iconList = typingIconList;
             viewerList = typingViewerList;
-            foreach (GameObject g in typingUserInterefaces)
-            {
-                g.SetActive(true);
-            }
             foreach (GameObject g in videoUserInterefaces)
             {
                 g.SetActive(false);
+            }
+            foreach (GameObject g in typingUserInterefaces)
+            {
+                g.SetActive(true);
             }
         }
 
@@ -381,6 +385,13 @@ public class ColorManager : MonoBehaviour
                 if (curSat < 0f)
                 {
                     satFlag = true;
+                }            
+                if (curFrames == 0)
+                {
+                    if (augFrames > 2 * INIT_FRAMES / 10)
+                    {
+                        augFrames = (int) (augFrames - INIT_FRAMES / 10);
+                    }
                 }
             }
             // curHue += (1.0f / augFrames);
@@ -389,13 +400,6 @@ public class ColorManager : MonoBehaviour
             //     curHue -= 1.0f;
             // }
             curObject.GetComponent<Renderer>().material.color = Color.HSVToRGB(curHue, curSat, 1.0f);
-            if (curFrames == 0)
-            {
-                if (augFrames > INIT_FRAMES / 10)
-                {
-                    augFrames = (int) (augFrames - INIT_FRAMES / 10);
-                }
-            }
         }
     }
 
