@@ -278,6 +278,15 @@
                },
                "mode" : "button",
                "path" : "/user/hand/right/input/grip"
+            },
+            {
+               "inputs" : {
+                  "click" : {
+                     "output" : "/actions/default/in/capture"
+                  }
+               },
+               "mode" : "button",
+               "path" : "/user/hand/left/input/application_menu"
             }
          ]
       },
@@ -325,7 +334,8 @@
    "category" : "steamvr_input",
    "controller_type" : "vive_controller",
    "description" : "",
-   "name" : "为 Vive Controller 保存的 [Testing] SaliencyPlatform 配置",
+   "interaction_profile" : "",
+   "name" : "为 Vive Controller 保存的 SaliencyPlatform [Testing] 配置",
    "options" : {},
    "simulated_actions" : []
 }
