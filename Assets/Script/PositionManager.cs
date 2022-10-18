@@ -37,15 +37,15 @@ public class PositionManager : MonoBehaviour
     private int INIT_FRAMES = 600;
 
     public int augFrames;
-    private int curFrames = 0;
+    public int curFrames = 0;
 
     private float timer = 0f;
 
     public bool positionAug = false;
-    private Vector3 oriPosition;
-    private Vector3 tarPosition;
-    private Vector3 minPosition;
-    private Vector3 maxPosition;
+    public Vector3 oriPosition;
+    public Vector3 tarPosition;
+    public Vector3 minPosition;
+    public Vector3 maxPosition;
     public List<GameObject> typingUserInterefaces = new List<GameObject>();
     public List<GameObject> typingIconList = new List<GameObject>();
     public List<GameObject> typingViewerList = new List<GameObject>();
@@ -209,12 +209,12 @@ public class PositionManager : MonoBehaviour
         if (UnityEngine.Random.Range(0, 2) > 0.5f)
         {
             minPosition = new Vector3(curObject.transform.position.x, curObject.transform.position.y, curObject.transform.position.z);
-            maxPosition = new Vector3(curObject.transform.position.x, 0.1f + curObject.transform.position.y, curObject.transform.position.z);
+            maxPosition = new Vector3(curObject.transform.position.x, 0.05f + curObject.transform.position.y, curObject.transform.position.z);
         }
         else
         {
             minPosition = new Vector3(curObject.transform.position.x, curObject.transform.position.y, curObject.transform.position.z);
-            maxPosition = new Vector3(0.1f + curObject.transform.position.x, curObject.transform.position.y, curObject.transform.position.z);
+            maxPosition = new Vector3(0.05f + curObject.transform.position.x, curObject.transform.position.y, curObject.transform.position.z);
         }
 
         oriPosition = minPosition;
@@ -413,6 +413,7 @@ public class PositionManager : MonoBehaviour
         {
             isAug = false;
             positionAug = true;
+            isWait = false;
             writer.WriteLine(curObject.transform.name + " " + Time.time);
             writer.Flush();
         }

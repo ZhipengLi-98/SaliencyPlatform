@@ -54,7 +54,7 @@ public class ColorManager : MonoBehaviour
     private int INIT_FRAMES = 1200;
 
     public int augFrames;
-    private int curFrames = 0;
+    public int curFrames = 0;
 
     private float timer = 0f;
 
