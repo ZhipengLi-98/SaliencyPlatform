@@ -308,7 +308,7 @@ public class ScaleManager : MonoBehaviour
         }
         foreach (GameObject ui in userInterefaces)
         {
-            ui.transform.localScale = UnityEngine.Random.Range(0.8f, 1.2f) * ui.transform.localScale;
+            ui.transform.localScale = UnityEngine.Random.Range(0.9f, 1.1f) * ui.transform.localScale;
         }
         curObject = userInterefaces[UnityEngine.Random.Range(0, userInterefaces.Count)];
         curHue = curObject.GetComponent<Renderer>().material.color[0];
@@ -324,7 +324,7 @@ public class ScaleManager : MonoBehaviour
         }
         else if  (iconList.Contains(curObject))
         {
-            INIT_FRAMES = 600;
+            INIT_FRAMES = 360;
         }
         // int t = UnityEngine.Random.Range(1, 4);
         // startLevel = t;
@@ -434,24 +434,23 @@ public class ScaleManager : MonoBehaviour
         {
             augTimer -= Time.deltaTime;
         }
-        if (augTimer <= 0 && isAug)
+        else if (augTimer <= 0 && isAug)
         {
             isAug = false;
             scaleAug = true;
             writer.WriteLine(curObject.transform.name + " " + Time.time);
             writer.Flush();
         }
-        if (Input.GetKeyDown(KeyCode.S))
-        {
-            NoticeDown();
-            NoticeUp();
-        }
-        if (Input.GetKeyDown(KeyCode.Z))
-        {
-            NextLayout();
-        }
-        var eyeTrackingData = TobiiXR.GetEyeTrackingData(TobiiXR_TrackingSpace.World);
-        if (scaleAug)
+        // if (Input.GetKeyDown(KeyCode.S))
+        // {
+        //     NoticeDown();
+        //     NoticeUp();
+        // }
+        // if (Input.GetKeyDown(KeyCode.Z))
+        // {
+        //     NextLayout();
+        // }
+        else if (scaleAug)
         {   
             curObject.layer = augLayer;
             // waitTimer is a random time interval to prevent the sudden change between scaling up and down
@@ -494,34 +493,35 @@ public class ScaleManager : MonoBehaviour
             }
         }
 
-        // record gaze data
-        if (ifGaze && eyeTrackingData.GazeRay.IsValid)
-        {
-            string g = "Gaze: " + Vector3ToString(eyeTrackingData.GazeRay.Origin) + " " + Vector3ToString(eyeTrackingData.GazeRay.Direction) + " " + Time.time;
-            writer.WriteLine(g);
-            writer.Flush();
-            int layerMask = 1 << 6 | 1 << 7;
-            RaycastHit hit;
-            if (Physics.Raycast(eyeTrackingData.GazeRay.Origin, eyeTrackingData.GazeRay.Direction, out hit, Mathf.Infinity, layerMask))
-            {
-                if (Equals(hit.transform, curObject.transform))
-                {
-                    timer += Time.deltaTime;
-                }
-                else
-                {
-                    timer = 0f;
-                }
-            }
-        }
-        if (timer >= 1.5f && scaleAug)
-        {
-            NoticeDown();
-        }
-        if (timer >= 1.55f)
-        {
-            NoticeUp();
-            timer = 0f;
-        }
+        // var eyeTrackingData = TobiiXR.GetEyeTrackingData(TobiiXR_TrackingSpace.World);
+        // // record gaze data
+        // if (ifGaze && eyeTrackingData.GazeRay.IsValid)
+        // {
+        //     string g = "Gaze: " + Vector3ToString(eyeTrackingData.GazeRay.Origin) + " " + Vector3ToString(eyeTrackingData.GazeRay.Direction) + " " + Time.time;
+        //     writer.WriteLine(g);
+        //     writer.Flush();
+        //     int layerMask = 1 << 6 | 1 << 7;
+        //     RaycastHit hit;
+        //     if (Physics.Raycast(eyeTrackingData.GazeRay.Origin, eyeTrackingData.GazeRay.Direction, out hit, Mathf.Infinity, layerMask))
+        //     {
+        //         if (Equals(hit.transform, curObject.transform))
+        //         {
+        //             timer += Time.deltaTime;
+        //         }
+        //         else
+        //         {
+        //             timer = 0f;
+        //         }
+        //     }
+        // }
+        // if (timer >= 1.5f && scaleAug)
+        // {
+        //     NoticeDown();
+        // }
+        // if (timer >= 1.55f)
+        // {
+        //     NoticeUp();
+        //     timer = 0f;
+        // }
     }
 }

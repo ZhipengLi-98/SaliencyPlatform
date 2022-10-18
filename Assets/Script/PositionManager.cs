@@ -6,6 +6,7 @@ using System.IO;
 using Valve.VR.InteractionSystem;
 using Valve.VR;
 using System;
+using RockVR.Video;
 
 public class PositionManager : MonoBehaviour
 {
@@ -22,8 +23,12 @@ public class PositionManager : MonoBehaviour
     public Background curBackground;
 
     public SteamVR_Action_Boolean notice;
+    public SteamVR_Action_Boolean capture;
 
     public SteamVR_Input_Sources controller;
+    public bool isCapture = false;
+
+    public VideoCaptureCtrl captureCtrl;
 
     public GameObject camera;
 
@@ -52,6 +57,7 @@ public class PositionManager : MonoBehaviour
     private List<GameObject> viewerList;
     public GameObject videoPlayer;
     public GameObject keyboard;
+    public GameObject pointer;
 
     public bool isVideo;
     
@@ -93,6 +99,19 @@ public class PositionManager : MonoBehaviour
         return res;
     }
 
+    public void CaptureDown(SteamVR_Action_Boolean fromAction, SteamVR_Input_Sources fromSource)
+    {
+        isCapture = !isCapture;
+        if (isCapture)
+        {
+            captureCtrl.StartCapture();
+        }
+        else
+        {
+            captureCtrl.StopCapture();
+        }
+    }
+
     void ReadLayout()
     {
         StreamReader reader = new StreamReader(layoutFile);
@@ -127,7 +146,8 @@ public class PositionManager : MonoBehaviour
             int index = UnityEngine.Random.Range(0, list.Count - 1);
             int i = list[index];
             list.RemoveAt(index);
-            icon.transform.position = camera.transform.position + camera.transform.rotation * (layout[layoutCnt]["Icon"][i] - new Vector3(0f, 1.4f, 0f));
+            // icon.transform.position = camera.transform.position + camera.transform.rotation * (layout[layoutCnt]["Icon"][i] - new Vector3(0f, 1.4f, 0f));
+            icon.transform.position = layout[layoutCnt]["Icon"][i] - new Vector3(0f, 0f, 0.3f);
             icon.transform.LookAt(camera.transform);
             if (icon.transform.name == "HMDModel")
             {
@@ -140,6 +160,10 @@ public class PositionManager : MonoBehaviour
             if (icon.transform.name == "10621_CoastGuardHelicopter")
             {
                 icon.transform.rotation = icon.transform.rotation * Quaternion.Euler(-90, -45, 0);
+            }
+            if (icon.transform.name == "Controller")
+            {
+                icon.transform.rotation = icon.transform.rotation * Quaternion.Euler(-90, 180, 0);
             }
             // print(icon.transform.name + " " + i + " "+ icon.transform.position);
             // icon.GetComponent<Renderer>().material.color = Color.HSVToRGB(UnityEngine.Random.Range(0f, 1f), 1.0f, 1.0f);
@@ -154,15 +178,18 @@ public class PositionManager : MonoBehaviour
             int index = UnityEngine.Random.Range(0, list.Count - 1);
             int i = list[index];
             list.RemoveAt(index);
-            viewer.transform.position = camera.transform.position + camera.transform.rotation * (layout[layoutCnt]["Viewer"][i] - new Vector3(0f, 1.4f, 0f));
+            // viewer.transform.position = camera.transform.position + camera.transform.rotation * (layout[layoutCnt]["Viewer"][i] - new Vector3(0f, 1.4f, 0f));
+            viewer.transform.position = layout[layoutCnt]["Viewer"][i] - new Vector3(0f, 0f, 0.3f);
             viewer.transform.LookAt(camera.transform);
             // print(viewer.transform.name + " " + i + " "+ viewer.transform.position);
             // viewer.GetComponent<Renderer>().material.color = Color.HSVToRGB(UnityEngine.Random.Range(0f, 1f), 1.0f, 1.0f);
         }
-        keyboard.transform.position = camera.transform.position + camera.transform.rotation * (layout[layoutCnt]["Keyboard"][0] - new Vector3(0f, 1.4f, 0f));
+        // keyboard.transform.position = camera.transform.position + camera.transform.rotation * (layout[layoutCnt]["Keyboard"][0] - new Vector3(0f, 1.4f, 0f));
+        keyboard.transform.position = layout[layoutCnt]["Keyboard"][0] - new Vector3(0f, 0f, 0.3f);
         keyboard.transform.LookAt(camera.transform);
         keyboard.transform.rotation = keyboard.transform.rotation * Quaternion.Euler(0, 180, 0);
-        videoPlayer.transform.position = camera.transform.position + camera.transform.rotation * (layout[layoutCnt]["VideoPlayer"][0] - new Vector3(0f, 1.4f, 0f));
+        // videoPlayer.transform.position = camera.transform.position + camera.transform.rotation * (layout[layoutCnt]["VideoPlayer"][0] - new Vector3(0f, 1.4f, 0f));
+        videoPlayer.transform.position = layout[layoutCnt]["VideoPlayer"][0] - new Vector3(0f, 0f, 0.3f);
         videoPlayer.transform.LookAt(camera.transform);
         int next = UnityEngine.Random.Range(0, layout.Count);
         while (next == layoutCnt)
@@ -320,6 +347,7 @@ public class PositionManager : MonoBehaviour
         norLayer = LayerMask.NameToLayer("NorObj");
         notice.AddOnStateUpListener(TriggerUp, controller);
         notice.AddOnStateDownListener(TriggerDown, controller);
+        capture.AddOnStateDownListener(CaptureDown, controller);
         
         if (isVideo)
         {
@@ -334,6 +362,9 @@ public class PositionManager : MonoBehaviour
             {
                 g.SetActive(true);
             }
+            videoPlayer.SetActive(true);
+            keyboard.SetActive(false);
+            pointer.SetActive(false);
         }
         else
         {
@@ -348,6 +379,9 @@ public class PositionManager : MonoBehaviour
             {
                 g.SetActive(false);
             }
+            videoPlayer.SetActive(false);
+            keyboard.SetActive(true);
+            pointer.SetActive(true);
         }
 
         writer = new StreamWriter(user, false);
