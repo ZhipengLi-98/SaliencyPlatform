@@ -38,15 +38,15 @@ public class ScaleManager : MonoBehaviour
     private int INIT_FRAMES = 600;
 
     public int augFrames;
-    private int curFrames = 0;
+    public int curFrames = 0;
 
     private float timer = 0f;
 
     public bool scaleAug = false;
-    private Vector3 oriScale;
-    private Vector3 tarScale;
-    private Vector3 minScale;
-    private Vector3 maxScale;
+    public Vector3 oriScale;
+    public Vector3 tarScale;
+    public Vector3 minScale;
+    public Vector3 maxScale;
     public List<GameObject> typingUserInterefaces = new List<GameObject>();
     public List<GameObject> typingIconList = new List<GameObject>();
     public List<GameObject> typingViewerList = new List<GameObject>();
@@ -313,18 +313,18 @@ public class ScaleManager : MonoBehaviour
         curObject = userInterefaces[UnityEngine.Random.Range(0, userInterefaces.Count)];
         curHue = curObject.GetComponent<Renderer>().material.color[0];
         minScale = new Vector3(curObject.transform.localScale.x, curObject.transform.localScale.y, curObject.transform.localScale.z);
-        maxScale = new Vector3(1.35f * curObject.transform.localScale.x, 1.35f * curObject.transform.localScale.y, 1.35f * curObject.transform.localScale.z);
+        maxScale = new Vector3(1.45f * curObject.transform.localScale.x, 1.45f * curObject.transform.localScale.y, 1.45f * curObject.transform.localScale.z);
         oriScale = minScale;
         tarScale = maxScale;
         oriMaterial = curObject.GetComponent<Renderer>().material;
         
         if (viewerList.Contains(curObject))
         {
-            INIT_FRAMES = 900;
+            INIT_FRAMES = 600;
         }
         else if  (iconList.Contains(curObject))
         {
-            INIT_FRAMES = 360;
+            INIT_FRAMES = 180;
         }
         // int t = UnityEngine.Random.Range(1, 4);
         // startLevel = t;
@@ -438,6 +438,8 @@ public class ScaleManager : MonoBehaviour
         {
             isAug = false;
             scaleAug = true;
+            isWait = false;
+            curFrames = 0;
             writer.WriteLine(curObject.transform.name + " " + Time.time);
             writer.Flush();
         }
@@ -488,7 +490,7 @@ public class ScaleManager : MonoBehaviour
                     }
                     curFrames = -1;
                     isWait = true;
-                    waitTimer = UnityEngine.Random.Range(1, 3);
+                    waitTimer = UnityEngine.Random.Range(1f, 3f);
                 }
             }
         }
