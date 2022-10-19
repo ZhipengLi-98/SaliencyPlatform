@@ -87,6 +87,8 @@ public class PositionManager : MonoBehaviour
 
     private UnityEngine.Video.VideoPlayer player;
 
+    public ChangeText changeText;
+
     string Vector3ToString(Vector3 v)
     {
         string res = v.x + " " + v.y + " " + v.z;
@@ -222,13 +224,21 @@ public class PositionManager : MonoBehaviour
         
         oriMaterial = curObject.GetComponent<Renderer>().material;
 
+        if (!isVideo)
+        {
+            changeText.inputField.Select();
+            changeText.inputField.text = "";
+            changeText.tmp.text = changeText.sentences[changeText.cnt];
+            changeText.cnt += 1;
+        }
+
         if (viewerList.Contains(curObject))
         {
-            INIT_FRAMES = 600;
+            INIT_FRAMES = 480;
         }
         else if  (iconList.Contains(curObject))
         {
-            INIT_FRAMES = 300;
+            INIT_FRAMES = 240;
         }
         // int t = UnityEngine.Random.Range(1, 4);
         // startLevel = t;
@@ -264,15 +274,25 @@ public class PositionManager : MonoBehaviour
         writer.WriteLine("Noticed" + " " + Time.time);
         writer.Flush();
         
-        if (UnityEngine.Random.Range(0, 2) > 0.5f)
+        if (UnityEngine.Random.Range(0, 4) < 1)
         {
             minPosition = new Vector3(curObject.transform.position.x, curObject.transform.position.y, curObject.transform.position.z);
-            maxPosition = new Vector3(curObject.transform.position.x, 0.1f + curObject.transform.position.y, curObject.transform.position.z);
+            maxPosition = new Vector3(curObject.transform.position.x, 0.12f + curObject.transform.position.y, curObject.transform.position.z);
+        }
+        else if (UnityEngine.Random.Range(0, 4) < 2)
+        {
+            minPosition = new Vector3(curObject.transform.position.x, curObject.transform.position.y, curObject.transform.position.z);
+            maxPosition = new Vector3(curObject.transform.position.x, -0.12f + curObject.transform.position.y, curObject.transform.position.z);
+        }
+        else if (UnityEngine.Random.Range(0, 4) < 3)
+        {
+            minPosition = new Vector3(curObject.transform.position.x, curObject.transform.position.y, curObject.transform.position.z);
+            maxPosition = new Vector3(0.12f + curObject.transform.position.x, curObject.transform.position.y, curObject.transform.position.z);
         }
         else
         {
             minPosition = new Vector3(curObject.transform.position.x, curObject.transform.position.y, curObject.transform.position.z);
-            maxPosition = new Vector3(0.1f + curObject.transform.position.x, curObject.transform.position.y, curObject.transform.position.z);
+            maxPosition = new Vector3(-0.12f + curObject.transform.position.x, curObject.transform.position.y, curObject.transform.position.z);
         }
         
         oriPosition = minPosition;
@@ -371,13 +391,13 @@ public class PositionManager : MonoBehaviour
             userInterefaces = typingUserInterefaces;
             iconList = typingIconList;
             viewerList = typingViewerList;
-            foreach (GameObject g in typingUserInterefaces)
-            {
-                g.SetActive(true);
-            }
             foreach (GameObject g in videoUserInterefaces)
             {
                 g.SetActive(false);
+            }
+            foreach (GameObject g in typingUserInterefaces)
+            {
+                g.SetActive(true);
             }
             videoPlayer.SetActive(false);
             keyboard.SetActive(true);

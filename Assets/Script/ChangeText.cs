@@ -16,7 +16,7 @@ public class ChangeText : MonoBehaviour
 
     public InputField inputField;
 
-    private List<string> sentences;
+    public List<string> sentences;
     private string fileName = "./sentences.txt";
     private StreamReader reader;
 

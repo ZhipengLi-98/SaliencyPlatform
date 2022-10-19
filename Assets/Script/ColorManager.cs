@@ -86,6 +86,8 @@ public class ColorManager : MonoBehaviour
 
     private UnityEngine.Video.VideoPlayer player;
 
+    public ChangeText changeText;
+
     string Vector3ToString(Vector3 v)
     {
         string res = v.x + " " + v.y + " " + v.z;
@@ -232,9 +234,17 @@ public class ColorManager : MonoBehaviour
         curObject.GetComponent<Renderer>().material.color = Color.HSVToRGB(curHue, curSat, 1.0f);
         print(curObject.transform.name);
         
+        if (!isVideo)
+        {
+            changeText.inputField.Select();
+            changeText.inputField.text = "";
+            changeText.tmp.text = changeText.sentences[changeText.cnt];
+            changeText.cnt += 1;
+        }
+        
         if (viewerList.Contains(curObject))
         {
-            INIT_FRAMES = 480;
+            INIT_FRAMES = 540;
         }
         else if  (iconList.Contains(curObject))
         {

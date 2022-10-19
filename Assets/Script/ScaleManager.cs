@@ -90,6 +90,8 @@ public class ScaleManager : MonoBehaviour
 
     private UnityEngine.Video.VideoPlayer player;
 
+    public ChangeText changeText;
+
     string Vector3ToString(Vector3 v)
     {
         string res = v.x + " " + v.y + " " + v.z;
@@ -208,13 +210,13 @@ public class ScaleManager : MonoBehaviour
             userInterefaces = typingUserInterefaces;
             iconList = typingIconList;
             viewerList = typingViewerList;
-            foreach (GameObject g in typingUserInterefaces)
-            {
-                g.SetActive(true);
-            }
             foreach (GameObject g in videoUserInterefaces)
             {
                 g.SetActive(false);
+            }
+            foreach (GameObject g in typingUserInterefaces)
+            {
+                g.SetActive(true);
             }
             videoPlayer.SetActive(false);
             keyboard.SetActive(true);
@@ -313,14 +315,22 @@ public class ScaleManager : MonoBehaviour
         curObject = userInterefaces[UnityEngine.Random.Range(0, userInterefaces.Count)];
         curHue = curObject.GetComponent<Renderer>().material.color[0];
         minScale = new Vector3(curObject.transform.localScale.x, curObject.transform.localScale.y, curObject.transform.localScale.z);
-        maxScale = new Vector3(1.45f * curObject.transform.localScale.x, 1.45f * curObject.transform.localScale.y, 1.45f * curObject.transform.localScale.z);
+        maxScale = new Vector3(1.6f * curObject.transform.localScale.x, 1.6f * curObject.transform.localScale.y, 1.6f * curObject.transform.localScale.z);
         oriScale = minScale;
         tarScale = maxScale;
         oriMaterial = curObject.GetComponent<Renderer>().material;
+
+        if (!isVideo)
+        {
+            changeText.inputField.Select();
+            changeText.inputField.text = "";
+            changeText.tmp.text = changeText.sentences[changeText.cnt];
+            changeText.cnt += 1;
+        }
         
         if (viewerList.Contains(curObject))
         {
-            INIT_FRAMES = 600;
+            INIT_FRAMES = 540;
         }
         else if  (iconList.Contains(curObject))
         {
