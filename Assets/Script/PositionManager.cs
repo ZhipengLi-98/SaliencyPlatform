@@ -234,11 +234,11 @@ public class PositionManager : MonoBehaviour
 
         if (viewerList.Contains(curObject))
         {
-            INIT_FRAMES = 480;
+            INIT_FRAMES = 600;
         }
         else if  (iconList.Contains(curObject))
         {
-            INIT_FRAMES = 240;
+            INIT_FRAMES = 300;
         }
         // int t = UnityEngine.Random.Range(1, 4);
         // startLevel = t;
@@ -274,17 +274,18 @@ public class PositionManager : MonoBehaviour
         writer.WriteLine("Noticed" + " " + Time.time);
         writer.Flush();
         
-        if (UnityEngine.Random.Range(0, 4) < 1)
+        int randomTemp = UnityEngine.Random.Range(0, 4);
+        if (randomTemp < 1)
         {
             minPosition = new Vector3(curObject.transform.position.x, curObject.transform.position.y, curObject.transform.position.z);
             maxPosition = new Vector3(curObject.transform.position.x, 0.12f + curObject.transform.position.y, curObject.transform.position.z);
         }
-        else if (UnityEngine.Random.Range(0, 4) < 2)
+        else if (randomTemp < 2)
         {
             minPosition = new Vector3(curObject.transform.position.x, curObject.transform.position.y, curObject.transform.position.z);
             maxPosition = new Vector3(curObject.transform.position.x, -0.12f + curObject.transform.position.y, curObject.transform.position.z);
         }
-        else if (UnityEngine.Random.Range(0, 4) < 3)
+        else if (randomTemp < 3)
         {
             minPosition = new Vector3(curObject.transform.position.x, curObject.transform.position.y, curObject.transform.position.z);
             maxPosition = new Vector3(0.12f + curObject.transform.position.x, curObject.transform.position.y, curObject.transform.position.z);
