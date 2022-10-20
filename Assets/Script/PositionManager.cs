@@ -208,6 +208,11 @@ public class PositionManager : MonoBehaviour
         }
         curObject = userInterefaces[UnityEngine.Random.Range(0, userInterefaces.Count)];
         curHue = curObject.GetComponent<Renderer>().material.color[0];
+        foreach (GameObject ui in userInterefaces)
+        {
+            ui.transform.position += new Vector3(UnityEngine.Random.Range(-0.02f, 0.02f), UnityEngine.Random.Range(-0.02f, 0.02f), 0f);
+            ui.transform.localScale = UnityEngine.Random.Range(0.9f, 1.1f) * ui.transform.localScale;
+        }
         if (UnityEngine.Random.Range(0, 2) > 0.5f)
         {
             minPosition = new Vector3(curObject.transform.position.x, curObject.transform.position.y, curObject.transform.position.z);
@@ -221,7 +226,6 @@ public class PositionManager : MonoBehaviour
 
         oriPosition = minPosition;
         tarPosition = maxPosition;
-        
         oriMaterial = curObject.GetComponent<Renderer>().material;
 
         if (!isVideo)
@@ -230,15 +234,16 @@ public class PositionManager : MonoBehaviour
             changeText.inputField.text = "";
             changeText.tmp.text = changeText.sentences[changeText.cnt];
             changeText.cnt += 1;
+            changeText.cnt %= changeText.sentences.Count;
         }
 
         if (viewerList.Contains(curObject))
         {
-            INIT_FRAMES = 600;
+            INIT_FRAMES = 660;
         }
         else if  (iconList.Contains(curObject))
         {
-            INIT_FRAMES = 300;
+            INIT_FRAMES = 396;
         }
         // int t = UnityEngine.Random.Range(1, 4);
         // startLevel = t;
@@ -278,22 +283,22 @@ public class PositionManager : MonoBehaviour
         if (randomTemp < 1)
         {
             minPosition = new Vector3(curObject.transform.position.x, curObject.transform.position.y, curObject.transform.position.z);
-            maxPosition = new Vector3(curObject.transform.position.x, 0.12f + curObject.transform.position.y, curObject.transform.position.z);
+            maxPosition = new Vector3(curObject.transform.position.x, 0.1f + curObject.transform.position.y, curObject.transform.position.z);
         }
         else if (randomTemp < 2)
         {
             minPosition = new Vector3(curObject.transform.position.x, curObject.transform.position.y, curObject.transform.position.z);
-            maxPosition = new Vector3(curObject.transform.position.x, -0.12f + curObject.transform.position.y, curObject.transform.position.z);
+            maxPosition = new Vector3(curObject.transform.position.x, -0.1f + curObject.transform.position.y, curObject.transform.position.z);
         }
         else if (randomTemp < 3)
         {
             minPosition = new Vector3(curObject.transform.position.x, curObject.transform.position.y, curObject.transform.position.z);
-            maxPosition = new Vector3(0.12f + curObject.transform.position.x, curObject.transform.position.y, curObject.transform.position.z);
+            maxPosition = new Vector3(0.1f + curObject.transform.position.x, curObject.transform.position.y, curObject.transform.position.z);
         }
         else
         {
             minPosition = new Vector3(curObject.transform.position.x, curObject.transform.position.y, curObject.transform.position.z);
-            maxPosition = new Vector3(-0.12f + curObject.transform.position.x, curObject.transform.position.y, curObject.transform.position.z);
+            maxPosition = new Vector3(-0.1f + curObject.transform.position.x, curObject.transform.position.y, curObject.transform.position.z);
         }
         
         oriPosition = minPosition;

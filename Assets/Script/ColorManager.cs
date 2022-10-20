@@ -240,15 +240,20 @@ public class ColorManager : MonoBehaviour
             changeText.inputField.text = "";
             changeText.tmp.text = changeText.sentences[changeText.cnt];
             changeText.cnt += 1;
+            changeText.cnt %= changeText.sentences.Count;
         }
-        
+        foreach (GameObject ui in userInterefaces)
+        {
+            ui.transform.position += new Vector3(UnityEngine.Random.Range(-0.02f, 0.02f), UnityEngine.Random.Range(-0.02f, 0.02f), 0f);
+            ui.transform.localScale = UnityEngine.Random.Range(0.9f, 1.1f) * ui.transform.localScale;
+        }
         if (viewerList.Contains(curObject))
         {
-            INIT_FRAMES = 540;
+            INIT_FRAMES = 780;
         }
         else if  (iconList.Contains(curObject))
         {
-            INIT_FRAMES = 180;
+            INIT_FRAMES = 300;
         }
         // int t = UnityEngine.Random.Range(1, 4);
         // startLevel = t;

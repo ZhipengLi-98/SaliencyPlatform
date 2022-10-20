@@ -310,12 +310,13 @@ public class ScaleManager : MonoBehaviour
         }
         foreach (GameObject ui in userInterefaces)
         {
+            ui.transform.position += new Vector3(UnityEngine.Random.Range(-0.02f, 0.02f), UnityEngine.Random.Range(-0.02f, 0.02f), 0f);
             ui.transform.localScale = UnityEngine.Random.Range(0.9f, 1.1f) * ui.transform.localScale;
         }
         curObject = userInterefaces[UnityEngine.Random.Range(0, userInterefaces.Count)];
         curHue = curObject.GetComponent<Renderer>().material.color[0];
         minScale = new Vector3(curObject.transform.localScale.x, curObject.transform.localScale.y, curObject.transform.localScale.z);
-        maxScale = new Vector3(1.6f * curObject.transform.localScale.x, 1.6f * curObject.transform.localScale.y, 1.6f * curObject.transform.localScale.z);
+        maxScale = new Vector3(1.5f * curObject.transform.localScale.x, 1.5f * curObject.transform.localScale.y, 1.5f * curObject.transform.localScale.z);
         oriScale = minScale;
         tarScale = maxScale;
         oriMaterial = curObject.GetComponent<Renderer>().material;
@@ -326,11 +327,12 @@ public class ScaleManager : MonoBehaviour
             changeText.inputField.text = "";
             changeText.tmp.text = changeText.sentences[changeText.cnt];
             changeText.cnt += 1;
+            changeText.cnt %= changeText.sentences.Count;
         }
         
         if (viewerList.Contains(curObject))
         {
-            INIT_FRAMES = 540;
+            INIT_FRAMES = 660;
         }
         else if  (iconList.Contains(curObject))
         {
