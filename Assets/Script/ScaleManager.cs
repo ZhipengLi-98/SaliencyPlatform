@@ -495,9 +495,9 @@ public class ScaleManager : MonoBehaviour
                 {
                     if (tarScale.x < oriScale.x)
                     {
-                        if (augFrames > 2 * INIT_FRAMES / 10)
+                        if (augFrames > 3 * INIT_FRAMES / 10)
                         {
-                            augFrames = (int) (augFrames - INIT_FRAMES / 10);
+                            augFrames = (int) (augFrames - INIT_FRAMES / 5);
                         }
                     }
                     curFrames = -1;

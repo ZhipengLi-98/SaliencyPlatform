@@ -476,9 +476,9 @@ public class PositionManager : MonoBehaviour
                 {
                     if (tarPosition.y < oriPosition.y || tarPosition.x < oriPosition.x)
                     {
-                        if (augFrames > 2 * INIT_FRAMES / 10)
+                        if (augFrames > 3 * INIT_FRAMES / 10)
                         {
-                            augFrames = (int) (augFrames - INIT_FRAMES / 10);
+                            augFrames = (int) (augFrames - INIT_FRAMES / 5);
                         }
                     }
                     curFrames = -1;

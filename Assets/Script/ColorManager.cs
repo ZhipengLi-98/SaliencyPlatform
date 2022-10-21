@@ -437,9 +437,9 @@ public class ColorManager : MonoBehaviour
                 }            
                 if (curFrames == 0)
                 {
-                    if (augFrames > 2 * INIT_FRAMES / 10)
+                    if (augFrames > 3 * INIT_FRAMES / 10)
                     {
-                        augFrames = (int) (augFrames - INIT_FRAMES / 10);
+                        augFrames = (int) (augFrames - INIT_FRAMES / 5);
                     }
                 }
             }
