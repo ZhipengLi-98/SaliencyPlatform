@@ -225,7 +225,7 @@ public class ColorManager : MonoBehaviour
         curObject.GetComponent<Renderer>().material.color = Color.HSVToRGB(curHue, 0f, 1.0f);
         curObject = userInterefaces[UnityEngine.Random.Range(0, userInterefaces.Count)];
         curHue = UnityEngine.Random.Range(0f, 1f);
-        while (Math.Abs(curHue - 0f) < 0.1f || Math.Abs(curHue - 0.66f) < 0.1f)
+        while (Math.Abs(curHue - 0f) < 0.1f || Math.Abs(curHue - 0.66f) < 0.1f || Math.Abs(curHue - 0.25f) < 0.1f)
         {
             curHue = UnityEngine.Random.Range(0f, 1f);
         }
