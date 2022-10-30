@@ -142,6 +142,33 @@ public class PositionManager : AnimationManager
 
     private void NextLayout()
     {
+        // Maintain relative position to participant
+        Vector3 cameraPosition = camera.transform.position;
+        Vector3 cameraForward = camera.transform.forward;
+        cameraForward.y = 0;
+        cameraForward.Normalize();
+        Vector3 cameraRight = camera.transform.right;
+        cameraRight.y = 0;
+        cameraRight.Normalize();
+        Vector3 center = layout[layoutCnt]["Keyboard"][0];
+        if (isVideo)
+            center = layout[layoutCnt]["VideoPlayer"][0];
+
+        // keyboard.transform.position = camera.transform.position + camera.transform.rotation * (layout[layoutCnt]["Keyboard"][0] - new Vector3(0f, 1.4f, 0f));
+        //keyboard.transform.position = layout[layoutCnt]["Keyboard"][0] - new Vector3(0f, 0f, 0.3f);
+        Vector3 keyboardPosition = cameraPosition +
+            (0.3f + center.z) * cameraForward;
+        keyboard.transform.position = keyboardPosition;
+        keyboard.transform.LookAt(camera.transform);
+        keyboard.transform.rotation = keyboard.transform.rotation * Quaternion.Euler(0, 180, 0);
+
+        // videoPlayer.transform.position = camera.transform.position + camera.transform.rotation * (layout[layoutCnt]["VideoPlayer"][0] - new Vector3(0f, 1.4f, 0f));
+        //videoPlayer.transform.position = layout[layoutCnt]["VideoPlayer"][0] - new Vector3(0f, 0f, 0.3f);
+        Vector3 videoPosition = cameraPosition +
+            (0.3f + center.z) * cameraForward;
+        videoPlayer.transform.position = videoPosition;
+        videoPlayer.transform.LookAt(camera.transform);
+
         List<int> list = new List<int>();
         for (int n = 0; n < iconList.Count; n++) 
         {
@@ -153,7 +180,13 @@ public class PositionManager : AnimationManager
             int i = list[index];
             list.RemoveAt(index);
             // icon.transform.position = camera.transform.position + camera.transform.rotation * (layout[layoutCnt]["Icon"][i] - new Vector3(0f, 1.4f, 0f));
-            icon.transform.position = layout[layoutCnt]["Icon"][i] - new Vector3(0f, 0f, 0.3f);
+            //icon.transform.position = layout[layoutCnt]["Icon"][i] - new Vector3(0f, 0f, 0.3f);
+            Vector3 centerToIcon = layout[layoutCnt]["Icon"][i] - center;
+            Vector3 iconPosition = cameraPosition +
+                centerToIcon.x * cameraRight +
+                centerToIcon.y * Vector3.up +
+                (0.3f + centerToIcon.z + center.z) * cameraForward;
+            icon.transform.position = iconPosition;
             icon.transform.LookAt(camera.transform);
             if (icon.transform.name == "HMDModel")
             {
@@ -185,18 +218,18 @@ public class PositionManager : AnimationManager
             int i = list[index];
             list.RemoveAt(index);
             // viewer.transform.position = camera.transform.position + camera.transform.rotation * (layout[layoutCnt]["Viewer"][i] - new Vector3(0f, 1.4f, 0f));
-            viewer.transform.position = layout[layoutCnt]["Viewer"][i] - new Vector3(0f, 0f, 0.3f);
+            //viewer.transform.position = layout[layoutCnt]["Viewer"][i] - new Vector3(0f, 0f, 0.3f);
+            Vector3 centerToViewer = layout[layoutCnt]["Viewer"][i] - center;
+            Vector3 viewerPosition = cameraPosition +
+                centerToViewer.x * cameraRight +
+                centerToViewer.y * Vector3.up +
+                (0.3f + centerToViewer.z + center.z) * cameraForward;
+            viewer.transform.position = viewerPosition;
             viewer.transform.LookAt(camera.transform);
             // print(viewer.transform.name + " " + i + " "+ viewer.transform.position);
             // viewer.GetComponent<Renderer>().material.color = Color.HSVToRGB(UnityEngine.Random.Range(0f, 1f), 1.0f, 1.0f);
         }
-        // keyboard.transform.position = camera.transform.position + camera.transform.rotation * (layout[layoutCnt]["Keyboard"][0] - new Vector3(0f, 1.4f, 0f));
-        keyboard.transform.position = layout[layoutCnt]["Keyboard"][0] - new Vector3(0f, 0f, 0.3f);
-        keyboard.transform.LookAt(camera.transform);
-        keyboard.transform.rotation = keyboard.transform.rotation * Quaternion.Euler(0, 180, 0);
-        // videoPlayer.transform.position = camera.transform.position + camera.transform.rotation * (layout[layoutCnt]["VideoPlayer"][0] - new Vector3(0f, 1.4f, 0f));
-        videoPlayer.transform.position = layout[layoutCnt]["VideoPlayer"][0] - new Vector3(0f, 0f, 0.3f);
-        videoPlayer.transform.LookAt(camera.transform);
+        
         int next = UnityEngine.Random.Range(0, layout.Count);
         while (next == layoutCnt)
         {
