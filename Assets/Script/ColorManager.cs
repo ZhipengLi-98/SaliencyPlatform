@@ -90,6 +90,7 @@ public class ColorManager : AnimationManager
 
     public ChangeText changeText;
 
+    /*
     string Vector3ToString(Vector3 v)
     {
         string res = v.x + " " + v.y + " " + v.z;
@@ -101,6 +102,7 @@ public class ColorManager : AnimationManager
         string res = q.x + " " + q.y + " " + q.z + " " + q.w;
         return res;
     }
+    */
 
     public void CaptureDown(SteamVR_Action_Boolean fromAction, SteamVR_Input_Sources fromSource)
     {
@@ -120,11 +122,14 @@ public class ColorManager : AnimationManager
         // Set as white
         curObject.layer = norLayer;
         curObject.GetComponent<Renderer>().material.color = Color.HSVToRGB(curHue, 0f, 1.0f);
+
+        /*
         if (writer != null && writer.BaseStream != null)
         {
             writer.WriteLine("Noticed" + " " + Time.time);
             writer.Flush();
         }
+        */
         
         augTimer = UnityEngine.Random.Range(5, 15);
         isAug = true;
@@ -368,12 +373,14 @@ public class ColorManager : AnimationManager
         notice.AddOnStateDownListener(TriggerDown, controller);
         capture.AddOnStateDownListener(CaptureDown, controller);
 
+        /*
         if (writer != null && writer.BaseStream != null)
         {
             writer.Flush();
             writer.Close();
             writer = new StreamWriter(user, false);
         }
+        */
 
         augFrames = INIT_FRAMES;
         curObject = userInterefaces[UnityEngine.Random.Range(0, userInterefaces.Count)];
@@ -397,7 +404,7 @@ public class ColorManager : AnimationManager
     // Update is called once per frame
     void Update()
     {
-        var eyeTrackingData = TobiiXR.GetEyeTrackingData(TobiiXR_TrackingSpace.World);
+        //var eyeTrackingData = TobiiXR.GetEyeTrackingData(TobiiXR_TrackingSpace.World);
         if (Input.GetKeyDown(KeyCode.A))
         {
             augTimer = UnityEngine.Random.Range(5, 15);
@@ -424,20 +431,25 @@ public class ColorManager : AnimationManager
         {
             isAug = false;
             colorAug = true;
+            /*
             if (writer != null && writer.BaseStream != null) { 
                 writer.WriteLine(curObject.transform.name + " " + Time.time);
                 writer.Flush();
             }
+            */
         }
         if (colorAug)
         {   
             curObject.layer = augLayer;
-            string t = "Camera: " + Vector3ToString(camera.transform.position) + " " + QuaternionToString(camera.transform.rotation) + " " + Time.time;
+            //string t = "Camera: " + Vector3ToString(camera.transform.position) + " " + QuaternionToString(camera.transform.rotation) + " " + Time.time;
+
+            /*
             if (writer != null && writer.BaseStream != null)
             {
                 writer.WriteLine(t);
                 writer.Flush();
             }
+            */
 
             curFrames = (curFrames + 1) % (augFrames);
             if (satFlag)
@@ -474,10 +486,12 @@ public class ColorManager : AnimationManager
 
     void OnApplicationQuit()
     {
+        /*
         if (writer != null && writer.BaseStream != null)
         {
             writer.Flush();
             writer.Close();
         }
+        */
     }
 }

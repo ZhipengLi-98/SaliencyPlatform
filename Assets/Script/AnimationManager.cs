@@ -24,7 +24,7 @@ public class AnimationManager : MonoBehaviour
 
     public bool isVideo;
 
-    protected StreamWriter writer;
+    //protected StreamWriter writer;
 
     public virtual void init()
     {

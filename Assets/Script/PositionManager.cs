@@ -91,6 +91,7 @@ public class PositionManager : AnimationManager
 
     public ChangeText changeText;
 
+    /*
     string Vector3ToString(Vector3 v)
     {
         string res = v.x + " " + v.y + " " + v.z;
@@ -102,6 +103,7 @@ public class PositionManager : AnimationManager
         string res = q.x + " " + q.y + " " + q.z + " " + q.w;
         return res;
     }
+    */
 
     public void CaptureDown(SteamVR_Action_Boolean fromAction, SteamVR_Input_Sources fromSource)
     {
@@ -278,11 +280,13 @@ public class PositionManager : AnimationManager
         curObject = userInterefaces[UnityEngine.Random.Range(0, userInterefaces.Count)];
         curHue = curObject.GetComponent<Renderer>().material.color[0];
         print(curObject.transform.name);
+        /*
         if (writer != null && writer.BaseStream != null)
         {
             writer.WriteLine("Noticed" + " " + Time.time);
             writer.Flush();
         }
+        */
         
         int randomTemp = UnityEngine.Random.Range(0, 4);
         if (randomTemp < 1)
@@ -414,12 +418,14 @@ public class PositionManager : AnimationManager
             pointer.SetActive(true);
         }
 
+        /*
         if (writer != null && writer.BaseStream != null)
         {
             writer.Flush();
             writer.Close();
             writer = new StreamWriter(user, false);
         }
+        */
 
         augFrames = INIT_FRAMES;
 
@@ -455,14 +461,17 @@ public class PositionManager : AnimationManager
             isAug = false;
             positionAug = true;
             isWait = false;
+
+            /*
             if (writer != null && writer.BaseStream != null)
             {
                 writer.WriteLine(curObject.transform.name + " " + Time.time);
                 writer.Flush();
             }
+            */
         }
         
-        var eyeTrackingData = TobiiXR.GetEyeTrackingData(TobiiXR_TrackingSpace.World);
+        //var eyeTrackingData = TobiiXR.GetEyeTrackingData(TobiiXR_TrackingSpace.World);
         if (positionAug)
         {   
             curObject.layer = augLayer;
@@ -480,12 +489,14 @@ public class PositionManager : AnimationManager
             }
             if (!isWait)
             {
-                string t = "Camera: " + Vector3ToString(camera.transform.position) + " " + QuaternionToString(camera.transform.rotation) + " " + Time.time;
+                //string t = "Camera: " + Vector3ToString(camera.transform.position) + " " + QuaternionToString(camera.transform.rotation) + " " + Time.time;
+                /*
                 if (writer != null && writer.BaseStream != null)
                 {
                     writer.WriteLine(t);
                     writer.Flush();
                 }
+                */
 
                 curFrames = (curFrames + 1) % (augFrames + 1);
                 float interpolationRatio = (float) curFrames / augFrames;
@@ -512,10 +523,12 @@ public class PositionManager : AnimationManager
 
     void OnApplicationQuit()
     {
+        /*
         if (writer != null && writer.BaseStream != null)
         {
             writer.Flush();
             writer.Close();
         }
+        */
     }
 }

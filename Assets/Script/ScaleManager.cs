@@ -66,7 +66,7 @@ public class ScaleManager : AnimationManager
 
     public GameObject curObject;
 
-    public string user = "test.txt";
+    //public string user = "test.txt";
     //private StreamWriter writer;
 
     public bool ifGaze = false;
@@ -94,6 +94,7 @@ public class ScaleManager : AnimationManager
 
     public ChangeText changeText;
 
+    /*
     string Vector3ToString(Vector3 v)
     {
         string res = v.x + " " + v.y + " " + v.z;
@@ -105,6 +106,7 @@ public class ScaleManager : AnimationManager
         string res = q.x + " " + q.y + " " + q.z + " " + q.w;
         return res;
     }
+    */
 
     public void CaptureDown(SteamVR_Action_Boolean fromAction, SteamVR_Input_Sources fromSource)
     {
@@ -231,6 +233,7 @@ public class ScaleManager : AnimationManager
             capture.AddOnStateDownListener(CaptureDown, controller);
         }
 
+        /*
         if (writer != null && writer.BaseStream != null)
         {
             writer.Flush(); 
@@ -238,6 +241,7 @@ public class ScaleManager : AnimationManager
             writer = null; 
             writer = new StreamWriter(user, false);
         }
+        */
 
         augFrames = INIT_FRAMES;
 
@@ -404,11 +408,14 @@ public class ScaleManager : AnimationManager
         curObject = userInterefaces[UnityEngine.Random.Range(0, userInterefaces.Count)];
         curHue = curObject.GetComponent<Renderer>().material.color[0];
         print(curObject.transform.name);
+
+        /*
         if (writer != null && writer.BaseStream != null)
         {
             writer.WriteLine("Noticed" + " " + Time.time);
             writer.Flush();
         }
+        */
         
         minScale = new Vector3(curObject.transform.localScale.x, curObject.transform.localScale.y, curObject.transform.localScale.z);
         maxScale = new Vector3(1.5f * curObject.transform.localScale.x, 1.5f * curObject.transform.localScale.y, 1.5f * curObject.transform.localScale.z);
@@ -452,11 +459,14 @@ public class ScaleManager : AnimationManager
         curObject = userInterefaces[UnityEngine.Random.Range(0, userInterefaces.Count)];
         curObject.layer = augLayer;
         print(curObject.transform.name);
+
+        /*
         if (writer != null && writer.BaseStream != null)
         {
             writer.WriteLine("Noticed" + " " + Time.time);
             writer.Flush();
         }
+        */
         
         minScale = new Vector3(curObject.transform.localScale.x, curObject.transform.localScale.y, curObject.transform.localScale.z);
         maxScale = new Vector3(1.5f * curObject.transform.localScale.x, 1.5f * curObject.transform.localScale.y, 1.5f * curObject.transform.localScale.z);
@@ -467,11 +477,13 @@ public class ScaleManager : AnimationManager
 
     void OnApplicationQuit()
     {
+        /*
         if (writer != null && writer.BaseStream != null)
         {
             writer.Flush();
             writer.Close();
         }
+        */
     }
 
     // Update is called once per frame
@@ -496,11 +508,14 @@ public class ScaleManager : AnimationManager
             scaleAug = true;
             isWait = false;
             curFrames = 0;
+
+            /*
             if (writer != null && writer.BaseStream != null)
             {
                 writer.WriteLine(curObject.transform.name + " " + Time.time);
                 writer.Flush();
             }
+            */
         }
         // if (Input.GetKeyDown(KeyCode.S))
         // {
@@ -528,12 +543,15 @@ public class ScaleManager : AnimationManager
             }
             if (!isWait)
             {
-                string t = "Camera: " + Vector3ToString(camera.transform.position) + " " + QuaternionToString(camera.transform.rotation) + " " + Time.time;
+                //string t = "Camera: " + Vector3ToString(camera.transform.position) + " " + QuaternionToString(camera.transform.rotation) + " " + Time.time;
+                
+                /*
                 if (writer != null && writer.BaseStream != null)
                 {
                     writer.WriteLine(t);
                     writer.Flush();
                 }
+                */
 
                 curFrames = (curFrames + 1) % (augFrames + 1);
                 float interpolationRatio = (float) curFrames / augFrames;
