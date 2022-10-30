@@ -9,8 +9,9 @@ using System;
 using UnityEngine.UI;
 using RockVR.Video;
 
-public class ColorManager : MonoBehaviour
+public class ColorManager : AnimationManager
 {
+    /*
     public GameObject VirtualHome;
     public GameObject VirtualLab;
     public GameObject VirtualCafe;
@@ -22,6 +23,7 @@ public class ColorManager : MonoBehaviour
         VirtualHome, VirtualLab, VirtualCafe, PhysicalHome1, PhysicalHome2, PhysicalHome3
     }
     public Background curBackground;
+    */
 
     public SteamVR_Action_Boolean notice;
     public SteamVR_Action_Boolean capture;
@@ -44,7 +46,7 @@ public class ColorManager : MonoBehaviour
     public GameObject keyboard;
     public GameObject pointer;
 
-    public bool isVideo;
+    //public bool isVideo;
 
     public GameObject camera;
 
@@ -61,7 +63,7 @@ public class ColorManager : MonoBehaviour
     public bool colorAug = false;
 
     public string user = "test.txt";
-    private StreamWriter writer;
+    //private StreamWriter writer;
 
     public GameObject curObject;
 
@@ -118,8 +120,11 @@ public class ColorManager : MonoBehaviour
         // Set as white
         curObject.layer = norLayer;
         curObject.GetComponent<Renderer>().material.color = Color.HSVToRGB(curHue, 0f, 1.0f);
-        writer.WriteLine("Noticed" + " " + Time.time);
-        writer.Flush();
+        if (writer != null && writer.BaseStream != null)
+        {
+            writer.WriteLine("Noticed" + " " + Time.time);
+            writer.Flush();
+        }
         
         augTimer = UnityEngine.Random.Range(5, 15);
         isAug = true;
@@ -276,8 +281,7 @@ public class ColorManager : MonoBehaviour
         player.url = "./Assets/Videos/" + videoIndex + ".mp4";
     }
 
-    // Start is called before the first frame update
-    void Start()
+    public override void init()
     {
         INIT_FRAMES = 1200;
         // if (startLevel == 1)
@@ -359,13 +363,18 @@ public class ColorManager : MonoBehaviour
             default:
                 break;
         }
-        
+
         notice.AddOnStateUpListener(TriggerUp, controller);
         notice.AddOnStateDownListener(TriggerDown, controller);
         capture.AddOnStateDownListener(CaptureDown, controller);
-        
-        writer = new StreamWriter(user, false);
-        
+
+        if (writer != null && writer.BaseStream != null)
+        {
+            writer.Flush();
+            writer.Close();
+            writer = new StreamWriter(user, false);
+        }
+
         augFrames = INIT_FRAMES;
         curObject = userInterefaces[UnityEngine.Random.Range(0, userInterefaces.Count)];
         curHue = UnityEngine.Random.Range(0f, 1f);
@@ -377,6 +386,12 @@ public class ColorManager : MonoBehaviour
         layout = new List<Dictionary<string, List<Vector3>>>();
         ReadLayout();
         NextLayout();
+    }
+
+    // Start is called before the first frame update
+    void Start()
+    {
+        //init();
     }
 
     // Update is called once per frame
@@ -409,15 +424,20 @@ public class ColorManager : MonoBehaviour
         {
             isAug = false;
             colorAug = true;
-            writer.WriteLine(curObject.transform.name + " " + Time.time);
-            writer.Flush();
+            if (writer != null && writer.BaseStream != null) { 
+                writer.WriteLine(curObject.transform.name + " " + Time.time);
+                writer.Flush();
+            }
         }
         if (colorAug)
         {   
             curObject.layer = augLayer;
             string t = "Camera: " + Vector3ToString(camera.transform.position) + " " + QuaternionToString(camera.transform.rotation) + " " + Time.time;
-            writer.WriteLine(t);
-            writer.Flush();
+            if (writer != null && writer.BaseStream != null)
+            {
+                writer.WriteLine(t);
+                writer.Flush();
+            }
 
             curFrames = (curFrames + 1) % (augFrames);
             if (satFlag)
@@ -452,9 +472,12 @@ public class ColorManager : MonoBehaviour
         }
     }
 
-    // void OnApplicationQuit()
-    // {
-    //     writer.Flush();
-    //     writer.Close();
-    // }
+    void OnApplicationQuit()
+    {
+        if (writer != null && writer.BaseStream != null)
+        {
+            writer.Flush();
+            writer.Close();
+        }
+    }
 }

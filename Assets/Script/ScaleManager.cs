@@ -8,8 +8,9 @@ using Valve.VR;
 using System;
 using RockVR.Video;
 
-public class ScaleManager : MonoBehaviour
+public class ScaleManager : AnimationManager
 {
+    /*
     public GameObject VirtualHome;
     public GameObject VirtualLab;
     public GameObject VirtualCafe;
@@ -21,6 +22,7 @@ public class ScaleManager : MonoBehaviour
         VirtualHome, VirtualLab, VirtualCafe, PhysicalHome1, PhysicalHome2, PhysicalHome3
     }
     public Background curBackground;
+    */
 
     public SteamVR_Action_Boolean notice;
     public SteamVR_Action_Boolean capture;
@@ -60,12 +62,12 @@ public class ScaleManager : MonoBehaviour
     public GameObject keyboard;
     public GameObject pointer;
 
-    public bool isVideo;
+    //public bool isVideo;
 
     public GameObject curObject;
 
     public string user = "test.txt";
-    private StreamWriter writer;
+    //private StreamWriter writer;
 
     public bool ifGaze = false;
 
@@ -139,8 +141,7 @@ public class ScaleManager : MonoBehaviour
         }
     }
 
-    // Start is called before the first frame update
-    void Start()
+    public override void init()
     {
         INIT_FRAMES = 900;
         // if (startLevel == 1)
@@ -184,7 +185,7 @@ public class ScaleManager : MonoBehaviour
             default:
                 break;
         }
-        
+
         augLayer = LayerMask.NameToLayer("AugObj");
         norLayer = LayerMask.NameToLayer("NorObj");
 
@@ -230,13 +231,25 @@ public class ScaleManager : MonoBehaviour
             capture.AddOnStateDownListener(CaptureDown, controller);
         }
 
-        writer = new StreamWriter(user, false);
+        if (writer != null && writer.BaseStream != null)
+        {
+            writer.Flush(); 
+            writer.Close();
+            writer = null; 
+            writer = new StreamWriter(user, false);
+        }
 
         augFrames = INIT_FRAMES;
 
         layout = new List<Dictionary<string, List<Vector3>>>();
         ReadLayout();
         NextLayout();
+    }
+
+    // Start is called before the first frame update
+    void Start()
+    {
+        //init();
     }
 
     private void NextLayout()
@@ -246,13 +259,32 @@ public class ScaleManager : MonoBehaviour
         {
             list.Add(n);
         }
+
+        // Yi Fei: Maintain relative position to participant
+        /*
+        Vector3 cameraPosition = camera.transform.position;
+        cameraPosition.y = 0;
+        Vector3 cameraForward = camera.transform.forward;
+        cameraForward.y = 0;
+        cameraForward.Normalize();
+        Matrix4x4 cameraPose = Matrix4x4.TRS(cameraPosition, Quaternion.LookRotation(cameraForward), Vector3.one);
+        */
+
         foreach (GameObject icon in iconList)
         {
             int index = UnityEngine.Random.Range(0, list.Count - 1);
             int i = list[index];
             list.RemoveAt(index);
             // icon.transform.position = camera.transform.position + camera.transform.rotation * (layout[layoutCnt]["Icon"][i] - new Vector3(0f, 1.4f, 0f));
-            icon.transform.position = layout[layoutCnt]["Icon"][i] - new Vector3(0f, 0f, 0.3f);
+            //icon.transform.position = layout[layoutCnt]["Icon"][i] - new Vector3(0f, 0f, 0.3f);
+
+            Vector3 iconPosition = layout[layoutCnt]["Icon"][i] - new Vector3(0f, 0f, 0.3f);
+            //Debug.Log(icon.name + ": " + iconPosition);
+            //iconPosition = cameraPose.MultiplyPoint(iconPosition);
+            //Debug.Log(icon.name + " oriented: " + iconPosition);
+            icon.transform.position = iconPosition;
+            
+
             icon.transform.LookAt(camera.transform);
             if (icon.transform.name == "HMDModel")
             {
@@ -283,16 +315,19 @@ public class ScaleManager : MonoBehaviour
             int i = list[index];
             list.RemoveAt(index);
             // viewer.transform.position = camera.transform.position + camera.transform.rotation * (layout[layoutCnt]["Viewer"][i] - new Vector3(0f, 1.4f, 0f));
-            viewer.transform.position = layout[layoutCnt]["Viewer"][i] - new Vector3(0f, 0f, 0.3f);
+            Vector3 viewerPosition = layout[layoutCnt]["Viewer"][i] - new Vector3(0f, 0f, 0.3f);
+            viewer.transform.position = viewerPosition;
             viewer.transform.LookAt(camera.transform);
             // viewer.GetComponent<Renderer>().material.color = Color.HSVToRGB(UnityEngine.Random.Range(0f, 1f), 1.0f, 1.0f);
         }
         // keyboard.transform.position = camera.transform.position + camera.transform.rotation * (layout[layoutCnt]["Keyboard"][0] - new Vector3(0f, 1.4f, 0f));
-        keyboard.transform.position = layout[layoutCnt]["Keyboard"][0] - new Vector3(0f, 0f, 0.3f);
+        Vector3 keyboardPosition = layout[layoutCnt]["Keyboard"][0] - new Vector3(0f, 0f, 0.3f);
+        keyboard.transform.position = keyboardPosition;
         keyboard.transform.LookAt(camera.transform);
         keyboard.transform.rotation = keyboard.transform.rotation * Quaternion.Euler(0, 180, 0);
         // videoPlayer.transform.position = camera.transform.position + camera.transform.rotation * (layout[layoutCnt]["VideoPlayer"][0] - new Vector3(0f, 1.4f, 0f));
-        videoPlayer.transform.position = layout[layoutCnt]["VideoPlayer"][0] - new Vector3(0f, 0f, 0.3f);
+        Vector3 videoPosition = layout[layoutCnt]["VideoPlayer"][0] - new Vector3(0f, 0f, 0.3f);
+        videoPlayer.transform.position = videoPosition;
         videoPlayer.transform.LookAt(camera.transform);
         int next = UnityEngine.Random.Range(0, layout.Count);
         while (next == layoutCnt)
@@ -369,8 +404,11 @@ public class ScaleManager : MonoBehaviour
         curObject = userInterefaces[UnityEngine.Random.Range(0, userInterefaces.Count)];
         curHue = curObject.GetComponent<Renderer>().material.color[0];
         print(curObject.transform.name);
-        writer.WriteLine("Noticed" + " " + Time.time);
-        writer.Flush();
+        if (writer != null && writer.BaseStream != null)
+        {
+            writer.WriteLine("Noticed" + " " + Time.time);
+            writer.Flush();
+        }
         
         minScale = new Vector3(curObject.transform.localScale.x, curObject.transform.localScale.y, curObject.transform.localScale.z);
         maxScale = new Vector3(1.5f * curObject.transform.localScale.x, 1.5f * curObject.transform.localScale.y, 1.5f * curObject.transform.localScale.z);
@@ -414,8 +452,11 @@ public class ScaleManager : MonoBehaviour
         curObject = userInterefaces[UnityEngine.Random.Range(0, userInterefaces.Count)];
         curObject.layer = augLayer;
         print(curObject.transform.name);
-        writer.WriteLine("Noticed" + " " + Time.time);
-        writer.Flush();
+        if (writer != null && writer.BaseStream != null)
+        {
+            writer.WriteLine("Noticed" + " " + Time.time);
+            writer.Flush();
+        }
         
         minScale = new Vector3(curObject.transform.localScale.x, curObject.transform.localScale.y, curObject.transform.localScale.z);
         maxScale = new Vector3(1.5f * curObject.transform.localScale.x, 1.5f * curObject.transform.localScale.y, 1.5f * curObject.transform.localScale.z);
@@ -426,8 +467,11 @@ public class ScaleManager : MonoBehaviour
 
     void OnApplicationQuit()
     {
-        writer.Flush();
-        writer.Close();
+        if (writer != null && writer.BaseStream != null)
+        {
+            writer.Flush();
+            writer.Close();
+        }
     }
 
     // Update is called once per frame
@@ -452,8 +496,11 @@ public class ScaleManager : MonoBehaviour
             scaleAug = true;
             isWait = false;
             curFrames = 0;
-            writer.WriteLine(curObject.transform.name + " " + Time.time);
-            writer.Flush();
+            if (writer != null && writer.BaseStream != null)
+            {
+                writer.WriteLine(curObject.transform.name + " " + Time.time);
+                writer.Flush();
+            }
         }
         // if (Input.GetKeyDown(KeyCode.S))
         // {
@@ -482,8 +529,11 @@ public class ScaleManager : MonoBehaviour
             if (!isWait)
             {
                 string t = "Camera: " + Vector3ToString(camera.transform.position) + " " + QuaternionToString(camera.transform.rotation) + " " + Time.time;
-                writer.WriteLine(t);
-                writer.Flush();
+                if (writer != null && writer.BaseStream != null)
+                {
+                    writer.WriteLine(t);
+                    writer.Flush();
+                }
 
                 curFrames = (curFrames + 1) % (augFrames + 1);
                 float interpolationRatio = (float) curFrames / augFrames;

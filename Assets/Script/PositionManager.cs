@@ -8,8 +8,9 @@ using Valve.VR;
 using System;
 using RockVR.Video;
 
-public class PositionManager : MonoBehaviour
+public class PositionManager : AnimationManager
 {
+    /*
     public GameObject VirtualHome;
     public GameObject VirtualLab;
     public GameObject VirtualCafe;
@@ -21,6 +22,7 @@ public class PositionManager : MonoBehaviour
         VirtualHome, VirtualLab, VirtualCafe, PhysicalHome1, PhysicalHome2, PhysicalHome3
     }
     public Background curBackground;
+    */
 
     public SteamVR_Action_Boolean notice;
     public SteamVR_Action_Boolean capture;
@@ -59,12 +61,12 @@ public class PositionManager : MonoBehaviour
     public GameObject keyboard;
     public GameObject pointer;
 
-    public bool isVideo;
+    //public bool isVideo;
     
     public GameObject curObject;
 
     public string user = "test.txt";
-    private StreamWriter writer;
+    //private StreamWriter writer;
 
     private int augLayer;
     private int norLayer;
@@ -276,8 +278,11 @@ public class PositionManager : MonoBehaviour
         curObject = userInterefaces[UnityEngine.Random.Range(0, userInterefaces.Count)];
         curHue = curObject.GetComponent<Renderer>().material.color[0];
         print(curObject.transform.name);
-        writer.WriteLine("Noticed" + " " + Time.time);
-        writer.Flush();
+        if (writer != null && writer.BaseStream != null)
+        {
+            writer.WriteLine("Noticed" + " " + Time.time);
+            writer.Flush();
+        }
         
         int randomTemp = UnityEngine.Random.Range(0, 4);
         if (randomTemp < 1)
@@ -322,8 +327,7 @@ public class PositionManager : MonoBehaviour
         curFrames = 0;
     }
 
-    // Start is called before the first frame update
-    void Start()
+    public override void init()
     {
         INIT_FRAMES = 900;
         // if (startLevel == 1)
@@ -368,13 +372,13 @@ public class PositionManager : MonoBehaviour
             default:
                 break;
         }
-        
+
         augLayer = LayerMask.NameToLayer("AugObj");
         norLayer = LayerMask.NameToLayer("NorObj");
         notice.AddOnStateUpListener(TriggerUp, controller);
         notice.AddOnStateDownListener(TriggerDown, controller);
         capture.AddOnStateDownListener(CaptureDown, controller);
-        
+
         if (isVideo)
         {
             userInterefaces = videoUserInterefaces;
@@ -410,13 +414,24 @@ public class PositionManager : MonoBehaviour
             pointer.SetActive(true);
         }
 
-        writer = new StreamWriter(user, false);
+        if (writer != null && writer.BaseStream != null)
+        {
+            writer.Flush();
+            writer.Close();
+            writer = new StreamWriter(user, false);
+        }
 
         augFrames = INIT_FRAMES;
 
         layout = new List<Dictionary<string, List<Vector3>>>();
         ReadLayout();
         NextLayout();
+    }
+
+    // Start is called before the first frame update
+    void Start()
+    {
+        //init();
     }
 
     // Update is called once per frame
@@ -440,8 +455,11 @@ public class PositionManager : MonoBehaviour
             isAug = false;
             positionAug = true;
             isWait = false;
-            writer.WriteLine(curObject.transform.name + " " + Time.time);
-            writer.Flush();
+            if (writer != null && writer.BaseStream != null)
+            {
+                writer.WriteLine(curObject.transform.name + " " + Time.time);
+                writer.Flush();
+            }
         }
         
         var eyeTrackingData = TobiiXR.GetEyeTrackingData(TobiiXR_TrackingSpace.World);
@@ -463,8 +481,11 @@ public class PositionManager : MonoBehaviour
             if (!isWait)
             {
                 string t = "Camera: " + Vector3ToString(camera.transform.position) + " " + QuaternionToString(camera.transform.rotation) + " " + Time.time;
-                writer.WriteLine(t);
-                writer.Flush();
+                if (writer != null && writer.BaseStream != null)
+                {
+                    writer.WriteLine(t);
+                    writer.Flush();
+                }
 
                 curFrames = (curFrames + 1) % (augFrames + 1);
                 float interpolationRatio = (float) curFrames / augFrames;
@@ -486,6 +507,15 @@ public class PositionManager : MonoBehaviour
                     waitTimer = UnityEngine.Random.Range(1, 3);
                 }
             }
+        }
+    }
+
+    void OnApplicationQuit()
+    {
+        if (writer != null && writer.BaseStream != null)
+        {
+            writer.Flush();
+            writer.Close();
         }
     }
 }

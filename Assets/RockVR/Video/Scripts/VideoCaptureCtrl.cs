@@ -221,6 +221,7 @@ namespace RockVR.Video
                 !isCaptureAudio)// No audio capture required.
             {
                 status = StatusType.FINISH;
+                //Debug.Log("OnVideoCaptureComplete: Set status complete");
                 if (eventDelegate.OnComplete != null)
                     eventDelegate.OnComplete();
             }
@@ -267,7 +268,9 @@ namespace RockVR.Video
                 }
                 PathConfig.lastVideoFile = muxing.filePath;
             }
-            status = StatusType.FINISH;
+            //Debug.Log("VideoMergeThreadFunction: Set status complete");
+            //status = StatusType.FINISH; TODO: We introduced this modification to enable recording of multiple videos
+            status = StatusType.NOT_START;
             if (eventDelegate.OnComplete != null)
                 eventDelegate.OnComplete();
             Cleanup();
