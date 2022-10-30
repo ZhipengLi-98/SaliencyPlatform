@@ -245,6 +245,8 @@ public class ScaleManager : AnimationManager
 
         augFrames = INIT_FRAMES;
 
+        trialNum = 0; 
+
         layout = new List<Dictionary<string, List<Vector3>>>();
         ReadLayout();
         NextLayout();
@@ -397,6 +399,23 @@ public class ScaleManager : AnimationManager
         player = videoPlayer.GetComponent<UnityEngine.Video.VideoPlayer>();
         int videoIndex = UnityEngine.Random.Range(1, 20);
         player.url = "./Assets/Videos/" + videoIndex + ".mp4";
+
+        if (Logging.Log != null)
+        {
+            Logging.Log.logTrialStart(
+                userInterefaces,
+                videoPlayer.transform,
+                keyboard.transform,
+                curObject.name,
+                augTimer,
+                minScale,
+                maxScale,
+                Vector3.zero,
+                Vector3.zero,
+                0,
+                augFrames
+                ); 
+        }
     }
 
     public void TriggerUp(SteamVR_Action_Boolean fromAction, SteamVR_Input_Sources fromSource)
@@ -408,6 +427,11 @@ public class ScaleManager : AnimationManager
         curObject = userInterefaces[UnityEngine.Random.Range(0, userInterefaces.Count)];
         curHue = curObject.GetComponent<Renderer>().material.color[0];
         print(curObject.transform.name);
+
+        if (Logging.Log != null)
+        {
+            Logging.Log.logTrialNoticed(); 
+        }
 
         /*
         if (writer != null && writer.BaseStream != null)
@@ -427,6 +451,13 @@ public class ScaleManager : AnimationManager
         isAug = true;
         scaleAug = false;
         curFrames = 0;
+
+        trialNum++;
+        if (isNextCondition != null)
+        {
+            isNextCondition(trialNum);
+        }
+
         NextLayout();
     }
 
@@ -508,6 +539,11 @@ public class ScaleManager : AnimationManager
             scaleAug = true;
             isWait = false;
             curFrames = 0;
+
+            if (Logging.Log != null)
+            {
+                Logging.Log.logEffectStart();
+            }
 
             /*
             if (writer != null && writer.BaseStream != null)

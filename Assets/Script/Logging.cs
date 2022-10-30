@@ -6,6 +6,8 @@ using Tobii.XR;
 
 public class Logging : MonoBehaviour
 {
+    public static Logging Log;
+
     private StreamWriter m_swConditions;
     private StreamWriter m_swTracked;
     private StreamWriter m_swNoticeability;
@@ -41,13 +43,13 @@ public class Logging : MonoBehaviour
 
     string Vector3ToString(Vector3 v)
     {
-        string res = v.x + " " + v.y + " " + v.z;
+        string res = v.x + "," + v.y + "," + v.z;
         return res;
     }
 
     string QuaternionToString(Quaternion q)
     {
-        string res = q.x + " " + q.y + " " + q.z + " " + q.w;
+        string res = q.x + "," + q.y + "," + q.z + "," + q.w;
         return res;
     }
 
@@ -100,7 +102,7 @@ public class Logging : MonoBehaviour
         m_swLayouts = new StreamWriter(m_logDirectory + "/" + "layouts" + "-" + fid + ".csv");
     }
 
-    private void logCondition(
+    public void logCondition(
         int conditionID,
         AnimationManager.Background background, 
         bool isVideo, 
@@ -156,26 +158,32 @@ public class Logging : MonoBehaviour
         entry += HandToString(m_rHand) + ",";
 
         // Eye-tracking 
-        // TODO: Potentially uncomment
-        /*
         var eyeTrackingData = TobiiXR.GetEyeTrackingData(TobiiXR_TrackingSpace.World);
         entry += eyeTrackingData.GazeRay.IsValid + "," +
             Vector3ToString(eyeTrackingData.GazeRay.Origin) + "," + 
             Vector3ToString(eyeTrackingData.GazeRay.Direction);
-        */
 
         m_swTracked.WriteLine(entry);
 
     }
 
-    private void logTrialStart(List<GameObject> elements, 
+    public void logTrialStart(List<GameObject> elements, 
         Transform videoPlayer, 
         Transform keyboard, 
         string updatedElement, 
-        float effectDelay)
+        float effectDelay,
+        Vector3 effectMinScale, 
+        Vector3 effectMaxScale,
+        Vector3 effectMinPosition,
+        Vector3 effectMaxPosition,
+        float effectHue,
+        int augFrames)
     {
         if (m_swNoticeability == null || m_swNoticeability.BaseStream == null)
             return;
+
+        Debug.Log("Updated Element: " + updatedElement + ", " +
+            "Delay: " + effectDelay);
 
         // Trial details 
         string entry = m_currCondition + "," +
@@ -184,34 +192,41 @@ public class Logging : MonoBehaviour
             m_t + "," +
             "start" + "," +
             updatedElement + "," +
-            effectDelay;
-
-        // TODO: each effect may have their own parameters, this should also be logged
-
+            effectDelay + "," + 
+            Vector3ToString(effectMinScale) + "," + 
+            Vector3ToString(effectMaxScale) + "," + 
+            Vector3ToString(effectMinPosition) + "," +
+            Vector3ToString(effectMaxPosition) + "," +
+            effectHue + "," + 
+            augFrames;
         m_swNoticeability.WriteLine(entry);
 
         if (m_swLayouts == null || m_swLayouts.BaseStream == null)
             return;
 
+        // Trial layout 
         entry = m_currCondition + "," +
             m_currConditionTrial + "," +
             m_currTrial + "," +
             m_t + ",";
         foreach(GameObject element in elements)
         {
-            entry += element.name + ",";
-            entry += PoseToString(element.transform) + ",";
+            entry += element.name + "," + 
+                element.activeInHierarchy + "," +
+                PoseToString(element.transform) + ",";
         }
         entry += videoPlayer.name + "," +
+                videoPlayer.gameObject.activeInHierarchy + "," +
             PoseToString(videoPlayer.transform) + ",";
         entry += keyboard.name + "," +
+                keyboard.gameObject.activeInHierarchy + "," +
             PoseToString(keyboard.transform) + ",";
 
         m_swLayouts.WriteLine(entry);
 
     }
 
-    private void logEffectStart()
+    public void logEffectStart()
     {
         if (m_swNoticeability == null || m_swNoticeability.BaseStream == null)
             return;
@@ -224,7 +239,7 @@ public class Logging : MonoBehaviour
         m_swNoticeability.WriteLine(entry);
     }
 
-    private void logTrialNoticed()
+    public void logTrialNoticed()
     {
         if (m_swNoticeability == null || m_swNoticeability.BaseStream == null)
             return;
@@ -240,17 +255,21 @@ public class Logging : MonoBehaviour
         m_currTrial++; 
     }
 
-    // TODO: Call log functions accordingly
-
     // Start is called before the first frame update
     void Start()
     {
-        
+        Log = this; 
+        init(); 
     }
 
     // Update is called once per frame
     void Update()
     {
-        
+        logTracked();
+    }
+
+    private void OnApplicationQuit()
+    {
+        reset();
     }
 }

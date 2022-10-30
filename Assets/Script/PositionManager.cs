@@ -269,6 +269,23 @@ public class PositionManager : AnimationManager
         player = videoPlayer.GetComponent<UnityEngine.Video.VideoPlayer>();
         int videoIndex = UnityEngine.Random.Range(1, 20);
         player.url = "./Assets/Videos/" + videoIndex + ".mp4";
+
+        if (Logging.Log != null)
+        {
+            Logging.Log.logTrialStart(
+                userInterefaces,
+                videoPlayer.transform,
+                keyboard.transform,
+                curObject.name,
+                augTimer,
+                Vector3.zero,
+                Vector3.zero,
+                minPosition,
+                maxPosition,
+                0,
+                augFrames
+                );
+        }
     }
 
     public void TriggerUp(SteamVR_Action_Boolean fromAction, SteamVR_Input_Sources fromSource)
@@ -280,6 +297,12 @@ public class PositionManager : AnimationManager
         curObject = userInterefaces[UnityEngine.Random.Range(0, userInterefaces.Count)];
         curHue = curObject.GetComponent<Renderer>().material.color[0];
         print(curObject.transform.name);
+
+        if (Logging.Log != null)
+        {
+            Logging.Log.logTrialNoticed();
+        }
+
         /*
         if (writer != null && writer.BaseStream != null)
         {
@@ -287,7 +310,7 @@ public class PositionManager : AnimationManager
             writer.Flush();
         }
         */
-        
+
         int randomTemp = UnityEngine.Random.Range(0, 4);
         if (randomTemp < 1)
         {
@@ -317,6 +340,13 @@ public class PositionManager : AnimationManager
         isAug = true;
         positionAug = false;
         curFrames = 0;
+
+        trialNum++;
+        if (isNextCondition != null)
+        {
+            isNextCondition(trialNum);
+        }
+
         NextLayout();
     }
 
@@ -429,6 +459,8 @@ public class PositionManager : AnimationManager
 
         augFrames = INIT_FRAMES;
 
+        trialNum = 0;
+
         layout = new List<Dictionary<string, List<Vector3>>>();
         ReadLayout();
         NextLayout();
@@ -461,6 +493,11 @@ public class PositionManager : AnimationManager
             isAug = false;
             positionAug = true;
             isWait = false;
+
+            if (Logging.Log != null)
+            {
+                Logging.Log.logEffectStart();
+            }
 
             /*
             if (writer != null && writer.BaseStream != null)

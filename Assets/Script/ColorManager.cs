@@ -123,6 +123,11 @@ public class ColorManager : AnimationManager
         curObject.layer = norLayer;
         curObject.GetComponent<Renderer>().material.color = Color.HSVToRGB(curHue, 0f, 1.0f);
 
+        if (Logging.Log != null)
+        {
+            Logging.Log.logTrialNoticed();
+        }
+
         /*
         if (writer != null && writer.BaseStream != null)
         {
@@ -130,10 +135,17 @@ public class ColorManager : AnimationManager
             writer.Flush();
         }
         */
-        
+
         augTimer = UnityEngine.Random.Range(5, 15);
         isAug = true;
         colorAug = false;
+
+        trialNum++;
+        if (isNextCondition != null)
+        {
+            isNextCondition(trialNum);
+        }
+
         NextLayout();
     }
 
@@ -284,6 +296,23 @@ public class ColorManager : AnimationManager
         player = videoPlayer.GetComponent<UnityEngine.Video.VideoPlayer>();
         int videoIndex = UnityEngine.Random.Range(1, 20);
         player.url = "./Assets/Videos/" + videoIndex + ".mp4";
+
+        if (Logging.Log != null)
+        {
+            Logging.Log.logTrialStart(
+                userInterefaces,
+                videoPlayer.transform,
+                keyboard.transform,
+                curObject.name,
+                augTimer,
+                Vector3.zero,
+                Vector3.zero,
+                Vector3.zero,
+                Vector3.zero,
+                curHue,
+                augFrames
+                );
+        }
     }
 
     public override void init()
@@ -390,6 +419,8 @@ public class ColorManager : AnimationManager
         curObject.GetComponent<Renderer>().material.color = Color.HSVToRGB(curHue, curSat, 1.0f);
         print(curObject.transform.name);
 
+        trialNum = 0; 
+
         layout = new List<Dictionary<string, List<Vector3>>>();
         ReadLayout();
         NextLayout();
@@ -431,6 +462,12 @@ public class ColorManager : AnimationManager
         {
             isAug = false;
             colorAug = true;
+
+            if (Logging.Log != null)
+            {
+                Logging.Log.logEffectStart();
+            }
+
             /*
             if (writer != null && writer.BaseStream != null) { 
                 writer.WriteLine(curObject.transform.name + " " + Time.time);

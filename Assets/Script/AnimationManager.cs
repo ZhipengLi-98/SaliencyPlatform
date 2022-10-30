@@ -30,4 +30,9 @@ public class AnimationManager : MonoBehaviour
     {
 
     }
+
+    protected int trialNum;
+
+    public delegate void IsNextCondition(int trialNum);
+    public IsNextCondition isNextCondition; 
 }
