@@ -1216,7 +1216,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 447954, guid: dc06161b6d97feb419f45f03b62e14b9, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 1.309
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 447954, guid: dc06161b6d97feb419f45f03b62e14b9, type: 3}
       propertyPath: m_LocalPosition.z
@@ -1773,6 +1773,11 @@ MonoBehaviour:
     actionPath: /actions/default/in/Notice
     needsReinit: 0
   controller: 1
+  res: []
+  waitTimer: 0
+  changeTime: 0
+  times: 0
+  curObject: {fileID: 0}
 --- !u!1 &1897787269
 GameObject:
   m_ObjectHideFlags: 0
