@@ -119,6 +119,7 @@ public class ColorManager : AnimationManager
     
     public void TriggerUp(SteamVR_Action_Boolean fromAction, SteamVR_Input_Sources fromSource)
     {
+
         // Set as white
         curObject.layer = norLayer;
         curObject.GetComponent<Renderer>().material.color = Color.HSVToRGB(curHue, 0f, 1.0f);
@@ -141,9 +142,14 @@ public class ColorManager : AnimationManager
         colorAug = false;
 
         trialNum++;
-        if (isNextCondition != null)
+        if (StudyManager.Study != null && 
+            StudyManager.Study.isAutoNext && 
+            trialNum >= StudyManager.Study.totalTrialNum)
         {
-            isNextCondition(trialNum);
+            //notice.RemoveOnStateUpListener(TriggerUp, controller);
+            //notice.RemoveOnStateDownListener(TriggerDown, controller);
+            //capture.RemoveOnStateDownListener(CaptureDown, controller);
+            StudyManager.Study.nextCondition();
         }
 
         NextLayout();
@@ -198,7 +204,7 @@ public class ColorManager : AnimationManager
         // keyboard.transform.position = camera.transform.position + camera.transform.rotation * (layout[layoutCnt]["Keyboard"][0] - new Vector3(0f, 1.4f, 0f));
         //keyboard.transform.position = layout[layoutCnt]["Keyboard"][0] - new Vector3(0f, 0f, 0.3f);
         Vector3 keyboardPosition = cameraPosition +
-            (0.3f + center.z) * cameraForward;
+            (0.2f + center.z) * cameraForward;
         keyboard.transform.position = keyboardPosition;
         keyboard.transform.LookAt(camera.transform);
         keyboard.transform.rotation = keyboard.transform.rotation * Quaternion.Euler(0, 180, 0);
@@ -206,7 +212,7 @@ public class ColorManager : AnimationManager
         // videoPlayer.transform.position = camera.transform.position + camera.transform.rotation * (layout[layoutCnt]["VideoPlayer"][0] - new Vector3(0f, 1.4f, 0f));
         //videoPlayer.transform.position = layout[layoutCnt]["VideoPlayer"][0] - new Vector3(0f, 0f, 0.3f);
         Vector3 videoPosition = cameraPosition +
-            (0.3f + center.z) * cameraForward;
+            (0.2f + center.z) * cameraForward;
         videoPlayer.transform.position = videoPosition;
         videoPlayer.transform.LookAt(camera.transform);
 
@@ -226,7 +232,7 @@ public class ColorManager : AnimationManager
             Vector3 iconPosition = cameraPosition +
                 centerToIcon.x * cameraRight +
                 centerToIcon.y * Vector3.up +
-                (0.3f + centerToIcon.z + center.z) * cameraForward;
+                (0.2f + centerToIcon.z + center.z) * cameraForward;
             icon.transform.position = iconPosition;
             icon.transform.LookAt(camera.transform);
             if (icon.transform.name == "HMDModel")
@@ -263,7 +269,7 @@ public class ColorManager : AnimationManager
             Vector3 viewerPosition = cameraPosition +
                 centerToViewer.x * cameraRight +
                 centerToViewer.y * Vector3.up +
-                (0.3f + centerToViewer.z + center.z) * cameraForward;
+                (0.2f + centerToViewer.z + center.z) * cameraForward;
             viewer.transform.position = viewerPosition;
             viewer.transform.LookAt(camera.transform);
             // viewer.GetComponent<Renderer>().material.color = Color.HSVToRGB(UnityEngine.Random.Range(0f, 1f), 1.0f, 1.0f);
@@ -329,6 +335,8 @@ public class ColorManager : AnimationManager
         player = videoPlayer.GetComponent<UnityEngine.Video.VideoPlayer>();
         int videoIndex = UnityEngine.Random.Range(1, 20);
         player.url = "./Assets/Videos/" + videoIndex + ".mp4";
+
+        Debug.Log("Trial: " + trialNum + ", " + curObject.name + ", " + augTimer);
 
         if (Logging.Log != null)
         {
@@ -431,6 +439,8 @@ public class ColorManager : AnimationManager
                 break;
         }
 
+        notice.RemoveAllListeners(controller);
+        capture.RemoveAllListeners(controller);
         notice.AddOnStateUpListener(TriggerUp, controller);
         notice.AddOnStateDownListener(TriggerDown, controller);
         capture.AddOnStateDownListener(CaptureDown, controller);

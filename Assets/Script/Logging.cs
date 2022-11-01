@@ -182,8 +182,8 @@ public class Logging : MonoBehaviour
         if (m_swNoticeability == null || m_swNoticeability.BaseStream == null)
             return;
 
-        Debug.Log("Updated Element: " + updatedElement + ", " +
-            "Delay: " + effectDelay);
+        //Debug.Log("Updated Element: " + updatedElement + ", " +
+        //    "Delay: " + effectDelay);
 
         // Trial details 
         string entry = m_currCondition + "," +

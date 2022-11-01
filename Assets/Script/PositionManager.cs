@@ -157,7 +157,7 @@ public class PositionManager : AnimationManager
         // keyboard.transform.position = camera.transform.position + camera.transform.rotation * (layout[layoutCnt]["Keyboard"][0] - new Vector3(0f, 1.4f, 0f));
         //keyboard.transform.position = layout[layoutCnt]["Keyboard"][0] - new Vector3(0f, 0f, 0.3f);
         Vector3 keyboardPosition = cameraPosition +
-            (0.3f + center.z) * cameraForward;
+            (0.2f + center.z) * cameraForward;
         keyboard.transform.position = keyboardPosition;
         keyboard.transform.LookAt(camera.transform);
         keyboard.transform.rotation = keyboard.transform.rotation * Quaternion.Euler(0, 180, 0);
@@ -165,7 +165,7 @@ public class PositionManager : AnimationManager
         // videoPlayer.transform.position = camera.transform.position + camera.transform.rotation * (layout[layoutCnt]["VideoPlayer"][0] - new Vector3(0f, 1.4f, 0f));
         //videoPlayer.transform.position = layout[layoutCnt]["VideoPlayer"][0] - new Vector3(0f, 0f, 0.3f);
         Vector3 videoPosition = cameraPosition +
-            (0.3f + center.z) * cameraForward;
+            (0.2f + center.z) * cameraForward;
         videoPlayer.transform.position = videoPosition;
         videoPlayer.transform.LookAt(camera.transform);
 
@@ -185,7 +185,7 @@ public class PositionManager : AnimationManager
             Vector3 iconPosition = cameraPosition +
                 centerToIcon.x * cameraRight +
                 centerToIcon.y * Vector3.up +
-                (0.3f + centerToIcon.z + center.z) * cameraForward;
+                (0.2f + centerToIcon.z + center.z) * cameraForward;
             icon.transform.position = iconPosition;
             icon.transform.LookAt(camera.transform);
             if (icon.transform.name == "HMDModel")
@@ -223,7 +223,7 @@ public class PositionManager : AnimationManager
             Vector3 viewerPosition = cameraPosition +
                 centerToViewer.x * cameraRight +
                 centerToViewer.y * Vector3.up +
-                (0.3f + centerToViewer.z + center.z) * cameraForward;
+                (0.2f + centerToViewer.z + center.z) * cameraForward;
             viewer.transform.position = viewerPosition;
             viewer.transform.LookAt(camera.transform);
             // print(viewer.transform.name + " " + i + " "+ viewer.transform.position);
@@ -303,6 +303,8 @@ public class PositionManager : AnimationManager
         int videoIndex = UnityEngine.Random.Range(1, 20);
         player.url = "./Assets/Videos/" + videoIndex + ".mp4";
 
+        Debug.Log("Trial: " + trialNum + ", " + curObject.name + ", " + augTimer);
+
         if (Logging.Log != null)
         {
             Logging.Log.logTrialStart(
@@ -323,6 +325,7 @@ public class PositionManager : AnimationManager
 
     public void TriggerUp(SteamVR_Action_Boolean fromAction, SteamVR_Input_Sources fromSource)
     {
+
         curObject.transform.position = minPosition;
         curObject.layer = norLayer;
         // curObject.GetComponent<Renderer>().material = oriMaterial;
@@ -375,16 +378,22 @@ public class PositionManager : AnimationManager
         curFrames = 0;
 
         trialNum++;
-        if (isNextCondition != null)
+        if (StudyManager.Study != null &&
+            StudyManager.Study.isAutoNext &&
+            trialNum >= StudyManager.Study.totalTrialNum)
         {
-            isNextCondition(trialNum);
+            //notice.RemoveOnStateUpListener(TriggerUp, controller);
+            //notice.RemoveOnStateDownListener(TriggerDown, controller);
+            //capture.RemoveOnStateDownListener(CaptureDown, controller);
+            StudyManager.Study.nextCondition();
         }
-
         NextLayout();
     }
 
     public void TriggerDown(SteamVR_Action_Boolean fromAction, SteamVR_Input_Sources fromSource)
     {
+        Debug.Log(this.name);
+
         // oriMaterial = curObject.GetComponent<Renderer>().material;
         // print(oriMaterial.name);
         // curObject.GetComponent<Renderer>().material = redMaterial;
@@ -442,6 +451,8 @@ public class PositionManager : AnimationManager
 
         augLayer = LayerMask.NameToLayer("AugObj");
         norLayer = LayerMask.NameToLayer("NorObj");
+        notice.RemoveAllListeners(controller);
+        capture.RemoveAllListeners(controller);
         notice.AddOnStateUpListener(TriggerUp, controller);
         notice.AddOnStateDownListener(TriggerDown, controller);
         capture.AddOnStateDownListener(CaptureDown, controller);

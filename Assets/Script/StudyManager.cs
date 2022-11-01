@@ -11,16 +11,23 @@ public class StudyCondition
 }
 public class StudyManager : MonoBehaviour
 {
+    public static StudyManager Study; 
+
     public List<StudyCondition> m_conditions = new List<StudyCondition>();
     public int m_currCondition; 
     public List<AnimationManager> m_changeAnimations = new List<AnimationManager>();
-    public bool m_autoNext;
-    public int m_conditionTrialNum; 
-
-    public void isNextCondition(int trialNum)
+    private StudyCondition m_currAnim;
+    [SerializeField]
+    private bool m_autoNext;
+    public bool isAutoNext
     {
-        if (m_autoNext && trialNum >= m_conditionTrialNum)
-            nextCondition(); 
+        get { return m_autoNext; }
+    }
+    [SerializeField]
+    private int m_conditionTrialNum; 
+    public int totalTrialNum
+    {
+        get { return m_conditionTrialNum; }
     }
 
     public void nextCondition()
@@ -34,6 +41,7 @@ public class StudyManager : MonoBehaviour
             return; 
         }
         StudyCondition condition = m_conditions[m_currCondition];
+        m_currAnim = condition;
         AnimationManager currAnim = m_changeAnimations[(int)condition.animation];
         currAnim.curBackground = condition.background;
         currAnim.isVideo = condition.isVideo;
@@ -56,10 +64,7 @@ public class StudyManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        foreach (AnimationManager anim in m_changeAnimations)
-        {
-            anim.isNextCondition = isNextCondition;
-        }
+        Study = this; 
     }
 
     // Update is called once per frame
