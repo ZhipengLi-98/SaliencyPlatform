@@ -94,6 +94,8 @@ public class ScaleManager : AnimationManager
 
     public ChangeText changeText;
 
+    public float m_placementDistance; 
+
     /*
     string Vector3ToString(Vector3 v)
     {
@@ -277,7 +279,8 @@ public class ScaleManager : AnimationManager
         // keyboard.transform.position = camera.transform.position + camera.transform.rotation * (layout[layoutCnt]["Keyboard"][0] - new Vector3(0f, 1.4f, 0f));
         //Vector3 keyboardPosition = layout[layoutCnt]["Keyboard"][0] - new Vector3(0f, 0f, 0.3f);
         Vector3 keyboardPosition = cameraPosition +
-            (0.2f + center.z) * cameraForward; 
+            (m_placementDistance + center.z) * cameraForward; 
+            //m_placementDistance * cameraForward;
         keyboard.transform.position = keyboardPosition;
         keyboard.transform.LookAt(camera.transform);
         keyboard.transform.rotation = keyboard.transform.rotation * Quaternion.Euler(0, 180, 0);
@@ -285,7 +288,8 @@ public class ScaleManager : AnimationManager
         // videoPlayer.transform.position = camera.transform.position + camera.transform.rotation * (layout[layoutCnt]["VideoPlayer"][0] - new Vector3(0f, 1.4f, 0f));
         //Vector3 videoPosition = layout[layoutCnt]["VideoPlayer"][0] - new Vector3(0f, 0f, 0.3f);
         Vector3 videoPosition = cameraPosition +
-            (0.2f + center.z) * cameraForward;
+            (m_placementDistance + center.z) * cameraForward;
+            //m_placementDistance * cameraForward;
         videoPlayer.transform.position = videoPosition;
         videoPlayer.transform.LookAt(camera.transform);
 
@@ -306,8 +310,8 @@ public class ScaleManager : AnimationManager
             Vector3 centerToIcon = layout[layoutCnt]["Icon"][i] - center;
             Vector3 iconPosition = cameraPosition +
                 centerToIcon.x * cameraRight + 
-                centerToIcon.y * Vector3.up + 
-                (0.2f + centerToIcon.z + center.z) * cameraForward;
+                centerToIcon.y * Vector3.up +
+                (m_placementDistance + centerToIcon.z + center.z) * cameraForward;
 
             //Debug.Log(icon.name + ": " + iconPosition);
             //iconPosition = cameraPose.MultiplyPoint(iconPosition);
@@ -351,7 +355,7 @@ public class ScaleManager : AnimationManager
             Vector3 viewerPosition = cameraPosition +
                 centerToViewer.x * cameraRight +
                 centerToViewer.y * Vector3.up +
-                (0.2f + centerToViewer.z + center.z) * cameraForward;
+                (m_placementDistance + centerToViewer.z + center.z) * cameraForward;
 
             viewer.transform.position = viewerPosition;
             viewer.transform.LookAt(camera.transform);
