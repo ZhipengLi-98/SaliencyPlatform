@@ -289,8 +289,19 @@ public class ColorManager : AnimationManager
         curObject.layer = norLayer;
         curObject.GetComponent<Renderer>().material.color = Color.HSVToRGB(curHue, 0f, 1.0f);
         curObject = userInterefaces[UnityEngine.Random.Range(0, userInterefaces.Count)];
-        curHue = UnityEngine.Random.Range(0f, 1f);
-        while (Math.Abs(curHue - 0f) < 0.1f || Math.Abs(curHue - 0.66f) < 0.1f || Math.Abs(curHue - 0.25f) < 0.1f)
+        if (curObject.transform.name == "10621_CoastGuardHelicopter")
+        {
+            curHue = UnityEngine.Random.Range(0.35f, 0.65f);
+        }
+        else if (curObject.transform.name == "Controller")
+        {
+            curHue = UnityEngine.Random.Range(0.6f, 1f);
+        }
+        else if (curObject.transform.name == "HMDModel")
+        {
+            curHue = UnityEngine.Random.Range(0f, 0.4f);
+        }
+        else
         {
             curHue = UnityEngine.Random.Range(0f, 1f);
         }
